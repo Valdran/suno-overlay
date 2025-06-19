@@ -22,9 +22,10 @@
 
     .container {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 2rem;
-      gap: 2rem;
-      position: relative;
+      gap: 1rem;
     }
 
     .lyrics-box {
@@ -36,9 +37,12 @@
       font-size: 1rem;
       text-align: center;
       text-shadow: 0 0 5px #ff1a1a;
-      background: transparent;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid black;
       scrollbar-width: none;
+      margin-bottom: 1rem;
     }
+
     .lyrics-box::-webkit-scrollbar {
       display: none;
     }
@@ -79,22 +83,24 @@
 
     .player-wrapper {
       width: 400px;
-      margin-top: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
 
     .custom-player {
       display: flex;
       align-items: center;
       background: black;
-      border: 2px solid black;
+      border: 1px solid #00ff00;
+      box-shadow: 0 0 5px #00ff00;
       border-radius: 8px;
       width: 100%;
       padding: 0.5rem 1rem;
       gap: 1rem;
       position: relative;
+      z-index: 2;
     }
 
     .play-button {
@@ -156,6 +162,7 @@
       max-height: 200px;
       overflow-y: auto;
       animation: fadein 0.3s ease-out forwards;
+      z-index: 3;
     }
 
     .playlist-panel.visible {
@@ -201,26 +208,26 @@
   <div class="container">
     <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
 
+    <div class="player-wrapper">
+      <div class="playlist-panel" id="playlistPanel">
+        <div class="playlist-title">PLAYLIST</div>
+        <div id="playlistEntries"></div>
+      </div>
+      <div class="custom-player">
+        <div class="playlist-button" id="togglePlaylist"></div>
+        <div class="play-button" id="playButton"></div>
+        <div class="time" id="currentTime">0:00</div>
+        <div class="progress" id="progressBar">
+          <div class="progress-bar" id="progressFill"></div>
+        </div>
+        <div class="time" id="duration">0:00</div>
+      </div>
+    </div>
+
     <div class="metadata">
       <img id="coverArt" class="cover" src="" alt="Cover Art">
       <div class="title" id="songTitle">Loading title…</div>
       <div class="artist" id="artistName">Loading artist…</div>
-
-      <div class="player-wrapper">
-        <div class="playlist-panel" id="playlistPanel">
-          <div class="playlist-title">PLAYLIST</div>
-          <div id="playlistEntries"></div>
-        </div>
-        <div class="custom-player">
-          <div class="playlist-button" id="togglePlaylist"></div>
-          <div class="play-button" id="playButton"></div>
-          <div class="time" id="currentTime">0:00</div>
-          <div class="progress" id="progressBar">
-            <div class="progress-bar" id="progressFill"></div>
-          </div>
-          <div class="time" id="duration">0:00</div>
-        </div>
-      </div>
     </div>
   </div>
 
