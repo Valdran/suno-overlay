@@ -28,7 +28,7 @@
       align-items: flex-start;
     }
 
-    .lyrics-area {
+    .left-section {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -51,40 +51,6 @@
 
     .lyrics-box::-webkit-scrollbar {
       display: none;
-    }
-
-    .metadata {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .cover {
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 12px;
-      background: #111;
-      box-shadow: 0 0 20px 10px red;
-    }
-
-    .title, .artist {
-      font-family: 'Creepster', cursive;
-      -webkit-text-stroke: 1px black;
-      text-align: center;
-    }
-
-    .title {
-      color: #ff4d4d;
-      font-size: 2.2rem;
-      margin-top: 1rem;
-    }
-
-    .artist {
-      color: #0f0;
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
     }
 
     .player-wrapper {
@@ -208,17 +174,45 @@
     .playlist-entry:hover {
       background: #111;
     }
+
+    .metadata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .cover {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #111;
+      box-shadow: 0 0 20px 10px red;
+    }
+
+    .title, .artist {
+      font-family: 'Creepster', cursive;
+      -webkit-text-stroke: 1px black;
+      text-align: center;
+    }
+
+    .title {
+      color: #ff4d4d;
+      font-size: 2.2rem;
+      margin-top: 1rem;
+    }
+
+    .artist {
+      color: #0f0;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="metadata">
-      <img id="coverArt" class="cover" src="" alt="Cover Art">
-      <div class="title" id="songTitle">Loading title…</div>
-      <div class="artist" id="artistName">Loading artist…</div>
-    </div>
-
-    <div class="lyrics-area">
+    <div class="left-section">
       <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
 
       <div class="player-wrapper">
@@ -236,6 +230,12 @@
           <div class="time" id="duration">0:00</div>
         </div>
       </div>
+    </div>
+
+    <div class="metadata">
+      <img id="coverArt" class="cover" src="" alt="Cover Art">
+      <div class="title" id="songTitle">Loading title…</div>
+      <div class="artist" id="artistName">Loading artist…</div>
     </div>
   </div>
 
