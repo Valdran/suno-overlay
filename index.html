@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spooky Player Overlay</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
+  <title>Spooky Lyrics Player</title>
+  <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       background: transparent;
       font-family: 'Carrois Gothic SC', sans-serif;
+      font-variant: small-caps;
       color: #ccc;
     }
 
@@ -18,13 +19,15 @@
       padding: 2rem;
       gap: 2rem;
       align-items: flex-start;
+      justify-content: center;
     }
 
     .lyrics {
-      flex: 1;
+      width: 400px;
       max-height: 500px;
       overflow-y: scroll;
       padding-right: 10px;
+      margin-right: 2rem;
     }
 
     .lyrics::-webkit-scrollbar {
@@ -55,20 +58,16 @@
     }
 
     .title {
-      font-family: 'Creepster', cursive;
       font-size: 2rem;
       color: #ff4d4d;
       margin-top: 0.5rem;
-      -webkit-text-stroke: 1px black;
       text-align: center;
     }
 
     .artist {
-      font-family: 'Creepster', cursive;
       color: #0f0;
       font-size: 1.2rem;
       margin-bottom: 1rem;
-      -webkit-text-stroke: 1px black;
       text-align: center;
     }
 
@@ -82,13 +81,14 @@
       position: relative;
     }
 
-    .progress {
+    .progress-container {
       width: 100%;
       height: 10px;
       background: #333;
       border-radius: 5px;
-      overflow: hidden;
+      position: relative;
       margin: 0.5rem 0;
+      cursor: pointer;
     }
 
     .progress-fill {
@@ -102,9 +102,20 @@
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 5px red; }
+      0%, 100% { box-shadow: 0 0 5px red; }
       50% { box-shadow: 0 0 15px red; }
-      100% { box-shadow: 0 0 5px red; }
+    }
+
+    .hover-time {
+      position: absolute;
+      top: -1.5rem;
+      background: black;
+      color: red;
+      padding: 2px 6px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      display: none;
+      transform: translateX(-50%);
     }
 
     .controls {
@@ -112,6 +123,7 @@
       align-items: center;
       justify-content: space-between;
       font-size: 0.9rem;
+      position: relative;
     }
 
     .play-button {
@@ -121,18 +133,15 @@
       padding: 0.3rem 1rem;
       cursor: pointer;
       font-weight: bold;
-      font-family: 'Creepster', cursive;
     }
 
     .playlist-button {
-      position: absolute;
-      top: -15px;
-      right: 10px;
       background: none;
       border: none;
       font-size: 1.5rem;
       cursor: pointer;
       color: #0f0;
+      margin-right: 1rem;
     }
 
     .playlist {
@@ -147,11 +156,13 @@
       border: 1px solid black;
       border-radius: 8px 8px 0 0;
       text-align: center;
+      transform-origin: bottom;
+      animation: collapse 0.3s ease-out reverse;
     }
 
     .playlist.open {
       display: block;
-      animation: expand 0.3s ease-out;
+      animation: expand 0.3s ease-out forwards;
     }
 
     .playlist-title {
@@ -168,6 +179,11 @@
       from { transform: scaleY(0); }
       to { transform: scaleY(1); }
     }
+
+    @keyframes collapse {
+      from { transform: scaleY(1); }
+      to { transform: scaleY(0); }
+    }
   </style>
 </head>
 <body>
@@ -178,16 +194,19 @@
       <div id="songTitle" class="title">Loading title…</div>
       <div id="artistName" class="artist">Loading artist…</div>
       <div class="player">
-        <button class="playlist-button" id="togglePlaylist">☰</button>
+        <div class="controls">
+          <button class="playlist-button" id="togglePlaylist">☰</button>
+          <button id="playBtn" class="play-button">▶</button>
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+        <div class="progress-container" id="progressBar">
+          <div class="hover-time" id="hoverTime">0:00</div>
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
         <div class="playlist" id="playlist">
           <div class="playlist-title">PLAYLIST</div>
         </div>
-        <div class="controls">
-          <span id="currentTime">0:00</span>
-          <button id="playBtn" class="play-button">▶</button>
-          <span id="duration">0:00</span>
-        </div>
-        <div class="progress"><div id="progressFill" class="progress-fill"></div></div>
         <audio id="audioPlayer"></audio>
       </div>
     </div>
@@ -204,6 +223,8 @@
     const lyricsBox = document.getElementById('lyricsBox');
     const playlistBtn = document.getElementById('togglePlaylist');
     const playlistEl = document.getElementById('playlist');
+    const progressBar = document.getElementById('progressBar');
+    const hoverTime = document.getElementById('hoverTime');
 
     let trackList = [];
     let currentTrack = 0;
@@ -293,6 +314,25 @@
 
     playlistBtn.onclick = () => {
       playlistEl.classList.toggle('open');
+    };
+
+    progressBar.onmousemove = (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      const time = formatTime(audio.duration * percent);
+      hoverTime.style.left = `${e.clientX - rect.left}px`;
+      hoverTime.textContent = time;
+      hoverTime.style.display = 'block';
+    };
+
+    progressBar.onmouseleave = () => {
+      hoverTime.style.display = 'none';
+    };
+
+    progressBar.onclick = (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = audio.duration * percent;
     };
   </script>
 </body>
