@@ -40,12 +40,13 @@
       max-width: 1200px;
       width: 100%;
       z-index: 1;
+      align-items: flex-start;
     }
 
     .lyrics-box {
       flex: 1;
       max-width: 500px;
-      height: 420px; /* slightly less than cover height */
+      max-height: 300px; /* adjusted height to match cover */
       overflow-y: auto;
       padding: 1rem;
       background: transparent;
@@ -83,7 +84,6 @@
     .text-info {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
     }
 
     .title, .artist {
@@ -95,6 +95,7 @@
     .title {
       font-size: clamp(1.5rem, 5vw, 2.4rem);
       color: #ff4d4d;
+      margin-bottom: 0.3rem;
     }
 
     .artist {
@@ -103,9 +104,8 @@
     }
 
     audio {
-      width: 150px;
-      border-radius: 6px;
-      box-shadow: none;
+      width: 180px;
+      height: 32px;
     }
 
     .audio-error {
