@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spooky Overlay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&amp;display=swap" rel="stylesheet">
+  <style>
+    body { background: black; color: white; font-family: 'Creepster', cursive; }
+  </style>
+</head>
+<body>
+  <h1>🎃 Spooky Lyrics Overlay</h1>
+  <div id="lyrics">Loading lyrics...</div>
+  <script>
+    fetch('/.netlify/functions/fetchSheet')
+      .then(res => res.text())
+      .then(data => document.getElementById('lyrics').textContent = data.slice(0, 300) + '...');
+  </script>
+</body>
+</html>
