@@ -4,39 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lyrics Overlay</title>
-  <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       background: transparent;
       color: #ccc;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Carrois Gothic SC', sans-serif;
       display: flex;
       justify-content: center;
-      padding: 2rem;
+      align-items: flex-start;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .container {
       display: flex;
       gap: 2rem;
+      padding: 2rem;
       align-items: flex-start;
     }
 
     .lyrics-box {
       width: 400px;
       max-height: 300px;
-      overflow-y: scroll;
-      font-family: 'Carrois Gothic SC', sans-serif;
-      font-variant: small-caps;
-      color: #ff1c1c;
-      text-shadow: 0 0 4px #ff1c1c;
-      padding-right: 1rem;
-      scroll-behavior: smooth;
+      overflow-y: auto;
+      background: transparent;
+      padding: 1rem;
+      text-align: center;
+      line-height: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      scrollbar-width: none;
     }
 
     .lyrics-box::-webkit-scrollbar {
-      width: 0px;
-      background: transparent;
+      display: none;
+    }
+
+    .lyrics-line {
+      color: #ff2222;
+      text-shadow: 0 0 2px #ff0000, 0 0 6px #ff0000;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      margin: 0.2rem 0;
     }
 
     .metadata {
@@ -50,20 +62,20 @@
       height: 300px;
       object-fit: cover;
       border-radius: 12px;
-      box-shadow: 0 0 10px black;
-      background: #000;
+      background: #111;
+      box-shadow: 0 0 20px 10px red;
     }
 
     .title, .artist {
       font-family: 'Creepster', cursive;
       -webkit-text-stroke: 1px black;
+      color: #ff4d4d;
       text-align: center;
-      margin: 0.5rem 0 0;
+      margin-top: 0.5rem;
     }
 
     .title {
-      font-size: clamp(1.5rem, 5vw, 2.4rem);
-      color: #ff4d4d;
+      font-size: 2.2rem;
     }
 
     .artist {
@@ -73,240 +85,247 @@
     }
 
     .player-container {
-      width: 400px;
+      width: 100%;
       margin-top: 1rem;
-      background: #000;
-      border: 1px solid black;
-      border-radius: 10px;
-      padding: 0.5rem;
-      box-shadow: 0 0 10px #000;
-      position: relative;
-      font-variant: small-caps;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .controls {
+    .audio-wrapper {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      width: 100%;
+      max-width: 400px;
+      background: black;
+      border: 2px solid black;
+      border-radius: 10px;
+      padding: 0.5rem;
+      position: relative;
     }
 
-    .playlist-toggle {
-      cursor: pointer;
-      font-size: 1.2rem;
+    .btn {
       background: none;
       border: none;
-      color: #ff1c1c;
-      text-shadow: 0 0 6px #ff1c1c;
-      margin-right: 0.5rem;
-    }
-
-    .play-btn {
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      color: #ff1c1c;
-      text-shadow: 0 0 8px #ff1c1c;
       cursor: pointer;
+      margin: 0 0.5rem;
+      width: 30px;
+      height: 30px;
     }
 
-    .time, .duration {
-      color: #fff;
-      font-size: 0.8rem;
+    .btn.play svg {
+      fill: red;
+      filter: drop-shadow(0 0 6px red);
     }
 
-    .progress-container {
-      flex-grow: 1;
-      height: 6px;
+    .btn.play:hover svg {
+      transform: scale(1.1);
+    }
+
+    .btn.playlist svg {
+      fill: #ff2222;
+      filter: drop-shadow(0 0 4px red);
+    }
+
+    .time {
+      font-size: 0.9rem;
+      color: white;
+      min-width: 45px;
+      text-align: center;
+    }
+
+    .bar {
+      flex: 1;
+      height: 8px;
+      margin: 0 0.5rem;
       background: #333;
-      border-radius: 4px;
+      border-radius: 5px;
       position: relative;
       cursor: pointer;
     }
 
-    .progress {
+    .bar .progress {
       height: 100%;
-      background: #ff0000;
-      border-radius: 4px;
-      width: 0%;
+      width: 0;
+      background: red;
+      border-radius: 5px;
       animation: pulse 1s infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 4px #ff0000; }
-      50% { box-shadow: 0 0 10px #ff0000; }
+      0%, 100% { box-shadow: 0 0 4px red; }
+      50% { box-shadow: 0 0 10px red; }
     }
 
-    .playlist {
-      display: none;
-      position: absolute;
-      bottom: 110%;
-      left: 0;
+    .playlist-panel {
       width: 100%;
-      background: #0f0;
-      color: black;
-      border-radius: 6px;
-      overflow: hidden;
-      animation: fadeOut 0.3s ease-in-out forwards;
+      max-width: 400px;
+      background: black;
+      border: 2px solid red;
+      color: #ff2222;
+      text-transform: uppercase;
       font-family: 'Carrois Gothic SC', sans-serif;
-      font-variant: small-caps;
-    }
-
-    .playlist.open {
-      display: block;
-      animation: fadeIn 0.3s ease-in-out forwards;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeOut {
-      0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(10px); }
-    }
-
-    .playlist h3 {
-      margin: 0;
       padding: 0.5rem;
-      background: #0f0;
+      overflow-y: auto;
+      max-height: 200px;
+      position: absolute;
+      bottom: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(20px);
+      z-index: 10;
+    }
+
+    .playlist-panel.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .playlist-panel h3 {
+      margin: 0 0 0.5rem 0;
+      background: lime;
+      color: black;
+      padding: 0.3rem;
       font-size: 1rem;
       text-align: center;
     }
 
-    .playlist ul {
-      list-style: none;
-      margin: 0;
-      padding: 0.5rem;
-    }
-
-    .playlist li {
-      padding: 0.4rem;
+    .playlist-panel div {
+      padding: 0.3rem;
       cursor: pointer;
     }
 
-    .playlist li:hover {
+    .playlist-panel div:hover {
       background: #222;
-      color: #0f0;
     }
+
   </style>
 </head>
 <body>
   <div class="container">
-    <div>
-      <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
-      <div class="player-container">
-        <div class="playlist" id="playlist">
-          <h3>PLAYLIST</h3>
-          <ul id="trackList"></ul>
-        </div>
-        <div class="controls">
-          <button class="playlist-toggle" id="togglePlaylist" title="Toggle Playlist">≡</button>
-          <button class="play-btn" id="playBtn" title="Play/Pause">▶️</button>
-          <span class="time" id="currentTime">0:00</span>
-          <div class="progress-container" id="progressContainer">
-            <div class="progress" id="progress"></div>
-          </div>
-          <span class="duration" id="duration">0:00</span>
-        </div>
-        <audio id="audio" preload="metadata"></audio>
-      </div>
-    </div>
+    <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
 
     <div class="metadata">
       <img id="coverArt" class="cover" src="" alt="Cover Art">
       <div class="title" id="songTitle">Loading title…</div>
       <div class="artist" id="artistName">Loading artist…</div>
+
+      <div class="player-container">
+        <div class="playlist-panel" id="playlistPanel">
+          <h3>Playlist</h3>
+          <div onclick="selectTrack(0)">Track 1</div>
+          <div onclick="selectTrack(1)">Track 2</div>
+          <!-- Dynamically filled -->
+        </div>
+
+        <div class="audio-wrapper">
+          <button class="btn playlist" id="playlistBtn" title="Playlist">
+            <svg viewBox="0 0 100 80" width="25" height="25">
+              <rect width="100" height="15"></rect>
+              <rect y="30" width="100" height="15"></rect>
+              <rect y="60" width="100" height="15"></rect>
+            </svg>
+          </button>
+
+          <button class="btn play" id="playBtn" title="Play">
+            <!-- Replace with your horror-themed SVG -->
+            <svg viewBox="0 0 64 64" width="30" height="30">
+              <path d="M16 8 L56 32 L16 56 Z" />
+            </svg>
+          </button>
+
+          <span class="time" id="currentTime">0:00</span>
+          <div class="bar" id="progressBar">
+            <div class="progress" id="progress"></div>
+          </div>
+          <span class="time" id="totalTime">0:00</span>
+        </div>
+
+        <audio id="audioPlayer" preload="metadata"></audio>
+      </div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
-    const csvURL = '/.netlify/functions/fetchSheet'; // Or direct CSV link
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
-    const progressContainer = document.getElementById('progressContainer');
-    const progress = document.getElementById('progress');
-    const currentTimeEl = document.getElementById('currentTime');
-    const durationEl = document.getElementById('duration');
-    const togglePlaylist = document.getElementById('togglePlaylist');
-    const playlistEl = document.getElementById('playlist');
-    const trackList = document.getElementById('trackList');
+    const audio = document.getElementById("audioPlayer");
+    const playBtn = document.getElementById("playBtn");
+    const playlistBtn = document.getElementById("playlistBtn");
+    const playlistPanel = document.getElementById("playlistPanel");
+    const progressBar = document.getElementById("progressBar");
+    const progress = document.getElementById("progress");
+    const currentTimeEl = document.getElementById("currentTime");
+    const totalTimeEl = document.getElementById("totalTime");
 
-    let tracks = [];
-    let currentTrack = 0;
+    let isPlaying = false;
 
+    playBtn.onclick = () => {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+    };
+
+    audio.onplay = () => isPlaying = true;
+    audio.onpause = () => isPlaying = false;
+
+    audio.ontimeupdate = () => {
+      const pct = audio.currentTime / audio.duration;
+      progress.style.width = (pct * 100) + "%";
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+      totalTimeEl.textContent = formatTime(audio.duration);
+    };
+
+    progressBar.onclick = (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const pct = x / rect.width;
+      audio.currentTime = pct * audio.duration;
+    };
+
+    function formatTime(sec) {
+      if (isNaN(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    playlistBtn.onclick = () => {
+      playlistPanel.classList.toggle('open');
+    };
+
+    function selectTrack(index) {
+      // Replace this with real dynamic selection using PapaParse
+      alert('Switching to track #' + (index + 1));
+      playlistPanel.classList.remove('open');
+    }
+
+    // CSV parsing logic (placeholder)
+    const csvURL = '/.netlify/functions/fetchSheet';
     Papa.parse(csvURL, {
       download: true,
       header: true,
       complete: (res) => {
         const data = res.data.filter(r => r['Song title'] && r['Lyrics']);
-        tracks = data;
-
-        renderTrack(currentTrack);
-        renderPlaylist();
+        const last = data[data.length - 1];
+        document.getElementById('songTitle').textContent = last['Song title'];
+        document.getElementById('artistName').textContent = last['Artist name'];
+        document.getElementById('coverArt').src = last['Cover art'];
+        audio.src = last['Direct download link'];
+        const lines = last['Lyrics'].split('\n').map(l => l.trim()).filter(Boolean);
+        const box = document.getElementById('lyricsBox');
+        box.innerHTML = '';
+        lines.forEach(line => {
+          const div = document.createElement('div');
+          div.className = 'lyrics-line';
+          div.textContent = line;
+          box.appendChild(div);
+        });
       }
     });
-
-    function convertUrl(url) {
-      return url.includes('dropbox') ? url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '') : url;
-    }
-
-    function renderTrack(i) {
-      const track = tracks[i];
-      if (!track) return;
-      document.getElementById('songTitle').textContent = track['Song title'];
-      document.getElementById('artistName').textContent = track['Artist name'];
-      document.getElementById('coverArt').src = convertUrl(track['Cover art']);
-      document.getElementById('lyricsBox').innerHTML = track['Lyrics'].split('\n').map(l => `<div>${l}</div>`).join('');
-      audio.src = convertUrl(track['Direct download link']);
-    }
-
-    function renderPlaylist() {
-      trackList.innerHTML = '';
-      tracks.forEach((track, i) => {
-        const li = document.createElement('li');
-        li.textContent = track['Song title'] + ' — ' + track['Artist name'];
-        li.onclick = () => {
-          currentTrack = i;
-          renderTrack(i);
-          audio.play();
-        };
-        trackList.appendChild(li);
-      });
-    }
-
-    togglePlaylist.onclick = () => {
-      playlistEl.classList.toggle('open');
-    };
-
-    playBtn.onclick = () => {
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-    };
-
-    audio.ontimeupdate = () => {
-      const percent = (audio.currentTime / audio.duration) * 100;
-      progress.style.width = percent + '%';
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-      durationEl.textContent = formatTime(audio.duration);
-    };
-
-    function formatTime(time) {
-      if (isNaN(time)) return '0:00';
-      const minutes = Math.floor(time / 60);
-      const seconds = Math.floor(time % 60).toString().padStart(2, '0');
-      return `${minutes}:${seconds}`;
-    }
-
-    progressContainer.onclick = (e) => {
-      const rect = progressContainer.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = percent * audio.duration;
-    };
   </script>
 </body>
 </html>
