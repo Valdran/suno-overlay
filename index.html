@@ -10,12 +10,8 @@
       margin: 0;
       background: transparent;
       color: #ccc;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
-      overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
     }
 
     .fog {
@@ -28,78 +24,19 @@
       opacity: 0.2;
       z-index: 0;
       animation: fogDrift 60s linear infinite;
+      pointer-events: none;
     }
+
     @keyframes fogDrift {
       0% { background-position: 0 0; }
       100% { background-position: -1000px 0; }
-    }
-
-    .bat-fly {
-      position: absolute;
-      top: 50px;
-      left: -100px;
-      width: 60px;
-      z-index: 2;
-      animation: flyBat 15s linear infinite;
-    }
-    .bat-fly.second {
-      top: 120px;
-      animation-delay: 7s;
-    }
-    @keyframes flyBat {
-      0% { left: -100px; transform: scale(1) rotate(0deg); }
-      100% { left: 110vw; transform: scale(1.2) rotate(360deg); }
-    }
-
-    .container {
-      display: flex;
-      gap: 2rem;
-      padding: 2rem;
-      z-index: 1;
-    }
-
-    .lyrics-box {
-      width: 400px;
-      height: 320px;
-      overflow: hidden;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.2rem;
-      line-height: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .lyrics-line {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      display: none;
-      height: 2rem;
-      color: #39ff14;
-      text-shadow: 0 0 4px #39ff14, 0 0 8px #39ff14, 1px 1px 2px #000;
-    }
-
-    .active-line {
-      display: block !important;
-      opacity: 1 !important;
-      transform: translateY(0) !important;
-      animation: flicker 1.5s infinite;
-    }
-
-    @keyframes flicker {
-      0%,100% { text-shadow: 0 0 4px #0f0; }
-      50% { text-shadow: 0 0 2px #0f0, 0 0 10px #0f0; }
     }
 
     .metadata {
       display: flex;
       flex-direction: column;
       align-items: center;
+      z-index: 1;
     }
 
     .cover {
@@ -139,23 +76,33 @@
       color: red;
       margin-top: 0.5rem;
     }
+
+    .lyrics {
+      max-width: 800px;
+      margin: 2rem auto 0;
+      padding: 1rem;
+      color: #39ff14;
+      text-shadow: 0 0 4px #39ff14, 0 0 6px #39ff14, 1px 1px 2px #000;
+      font-size: 1.2rem;
+      line-height: 2rem;
+      white-space: pre-wrap;
+      z-index: 1;
+      position: relative;
+    }
   </style>
 </head>
 <body>
   <div class="fog"></div>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bat_icon_black.svg" class="bat-fly" alt="Bat">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bat_icon_black.svg" class="bat-fly second" alt="Bat">
 
-  <div class="container">
-    <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
-    <div class="metadata">
-      <img id="coverArt" class="cover" src="" alt="Cover Art">
-      <div class="title" id="songTitle">Loading title…</div>
-      <div class="artist" id="artistName">Loading artist…</div>
-      <audio id="audioPlayer" controls></audio>
-      <div id="audioError" class="audio-error" style="display:none;">⚠️ Audio could not be loaded.</div>
-    </div>
+  <div class="metadata">
+    <img id="coverArt" class="cover" src="" alt="Cover Art">
+    <div class="title" id="songTitle">Loading title…</div>
+    <div class="artist" id="artistName">Loading artist…</div>
+    <audio id="audioPlayer" controls></audio>
+    <div id="audioError" class="audio-error" style="display:none;">⚠️ Audio could not be loaded.</div>
   </div>
+
+  <div id="lyricsBox" class="lyrics">Loading lyrics…</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
@@ -177,8 +124,6 @@
       return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
     }
 
-    let intervalRef = null;
-
     Papa.parse(csvURL, {
       download: true,
       header: true,
@@ -198,54 +143,7 @@
         document.getElementById('coverArt').src = coverUrl;
         document.getElementById('audioPlayer').src = audioUrl;
 
-        const lines = lyrics.split('\n').map(l => l.trim()).filter(Boolean);
-        const box = document.getElementById('lyricsBox');
-        box.innerHTML = '';
-        lines.forEach(line => {
-          const div = document.createElement('div');
-          div.textContent = line;
-          div.className = 'lyrics-line';
-          box.appendChild(div);
-        });
-
-        const allLines = box.querySelectorAll('.lyrics-line');
-        let i = 0;
-
-        function updateLyrics() {
-          allLines.forEach((el, idx) => {
-            el.classList.remove('active-line');
-            el.style.display = 'none';
-          });
-
-          const start = Math.max(0, i - 2);
-          const end = Math.min(allLines.length, i + 3);
-          for (let j = start; j < end; j++) {
-            allLines[j].style.display = 'block';
-          }
-
-          if (allLines[i]) {
-            allLines[i].classList.add('active-line');
-          }
-
-          i++;
-          if (i >= allLines.length) clearInterval(intervalRef);
-        }
-
-        const player = document.getElementById('audioPlayer');
-        player.addEventListener('play', () => {
-          clearInterval(intervalRef);
-          i = 0;
-          updateLyrics();
-          intervalRef = setInterval(updateLyrics, 4000);
-        });
-
-        player.addEventListener('pause', () => {
-          clearInterval(intervalRef);
-        });
-
-        document.getElementById('audioPlayer').onerror = () => {
-          document.getElementById('audioError').style.display = 'block';
-        };
+        document.getElementById('lyricsBox').textContent = lyrics;
       },
       error: (err) => alert('CSV load failed: ' + err.message)
     });
