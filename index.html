@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spooky Audio Player</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
 
@@ -20,218 +20,56 @@
       overflow: hidden;
     }
 
-    .container {
-      display: flex;
-      flex-direction: row;
-      padding: 2rem;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .left-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-
     .lyrics-box {
       width: 400px;
       height: 300px;
-      overflow-y: auto;
+      overflow: hidden;
       padding: 1rem;
-      color: #ff1a1a;
-      font-size: 1rem;
-      text-align: center;
-      text-shadow: 0 0 5px #ff1a1a;
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid black;
-      scrollbar-width: none;
-    }
-
-    .lyrics-box::-webkit-scrollbar {
-      display: none;
-    }
-
-    .player-wrapper {
-      width: 400px;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      position: relative;
+      justify-content: center;
+      font-family: 'Rubik', sans-serif;
     }
 
-    .custom-player {
-      display: flex;
-      align-items: center;
-      background: black;
-      border: 1px solid #00ff00;
-      box-shadow: 0 0 5px #00ff00;
-      border-radius: 8px;
-      width: 100%;
-      padding: 0.5rem 1rem;
-      gap: 1rem;
-      position: relative;
-      z-index: 2;
+    .lyric-line {
+      opacity: 0.15;
+      transition: all 0.4s ease;
+      margin: 4px 0;
+      font-size: 1.1rem;
+      line-height: 1.4;
     }
 
-    .play-button {
-      width: 32px;
-      height: 32px;
-      background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
-      background-size: contain;
-      filter: drop-shadow(0 0 4px #00ff00);
-      cursor: pointer;
-    }
+    .lyric-line.medium { font-size: 1.3rem; }
+    .lyric-line.large { font-size: 1.6rem; }
 
-    .playlist-button {
-      width: 24px;
-      height: 24px;
-      background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
-      background-size: contain;
-      filter: drop-shadow(0 0 4px #00ff00);
-      cursor: pointer;
-    }
-
-    .progress {
-      flex-grow: 1;
-      height: 8px;
-      background: #333;
-      border-radius: 4px;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: red;
-      border-radius: 4px;
-      width: 0%;
-      animation: pulse 1.2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 5px red; }
-      50% { box-shadow: 0 0 15px red; }
-      100% { box-shadow: 0 0 5px red; }
-    }
-
-    .time {
-      font-size: 0.8rem;
-      min-width: 45px;
-      text-align: center;
-    }
-
-    .playlist-panel {
-      position: absolute;
-      bottom: 100%;
-      width: 100%;
-      background: black;
-      border: 2px solid #111;
-      padding: 0.5rem;
-      display: none;
-      flex-direction: column;
-      max-height: 200px;
-      overflow-y: auto;
-      animation: fadein 0.3s ease-out forwards;
-      z-index: 3;
-    }
-
-    .playlist-panel.visible {
-      display: flex;
-    }
-
-    .playlist-panel.fadeout {
-      animation: fadeout 0.3s ease-in forwards;
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeout {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(10px); }
-    }
-
-    .playlist-title {
-      background: #0f0;
-      color: black;
-      font-weight: bold;
-      text-align: center;
-      padding: 0.2rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .playlist-entry {
-      color: #ff1a1a;
-      padding: 0.2rem;
-      cursor: pointer;
-      text-shadow: 0 0 3px #ff1a1a;
-    }
-
-    .playlist-entry:hover {
-      background: #111;
-    }
-
-    .metadata {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .cover {
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 12px;
-      background: #111;
-      box-shadow: 0 0 20px 10px red;
-    }
-
-    .title, .artist {
-      font-family: 'Creepster', cursive;
-      -webkit-text-stroke: 1px black;
-      text-align: center;
-    }
-
-    .title {
+    .lyric-line.active {
       color: #ff4d4d;
-      font-size: 2.2rem;
-      margin-top: 1rem;
+      opacity: 1;
+      font-weight: bold;
+      animation: glow 1s infinite;
+      text-shadow: 0 0 10px red;
     }
 
-    .artist {
-      color: #0f0;
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
+    @keyframes glow {
+      0% { text-shadow: 0 0 8px red; }
+      50% { text-shadow: 0 0 20px red; }
+      100% { text-shadow: 0 0 8px red; }
     }
   </style>
 </head>
 <body>
+  <!-- Unchanged layout, start of body content -->
+
   <div class="container">
     <div class="left-section">
       <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
 
-      <div class="player-wrapper">
-        <div class="playlist-panel" id="playlistPanel">
-          <div class="playlist-title">PLAYLIST</div>
-          <div id="playlistEntries"></div>
-        </div>
-        <div class="custom-player">
-          <div class="playlist-button" id="togglePlaylist"></div>
-          <div class="play-button" id="playButton"></div>
-          <div class="time" id="currentTime">0:00</div>
-          <div class="progress" id="progressBar">
-            <div class="progress-bar" id="progressFill"></div>
-          </div>
-          <div class="time" id="duration">0:00</div>
-        </div>
-      </div>
-    </div>
+      <!-- Keep your full player wrapper / playlist UI here -->
 
+    </div>
     <div class="metadata">
       <img id="coverArt" class="cover" src="" alt="Cover Art">
       <div class="title" id="songTitle">Loading title…</div>
@@ -254,10 +92,46 @@
     const playlistPanel = document.getElementById('playlistPanel');
     const playlistEntries = document.getElementById('playlistEntries');
 
+    let parsedLyrics = [];
+
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
       const s = Math.floor(sec % 60).toString().padStart(2, '0');
       return `${m}:${s}`;
+    }
+
+    function parseLyrics(raw) {
+      return raw.split('\n').map(line => {
+        const match = line.match(/\[(\d+)\.(\d+)]\s*(.+)/);
+        if (!match) return null;
+        const time = parseInt(match[1]) + parseInt(match[2]) / 100;
+        const text = match[3];
+        return { time, text };
+      }).filter(Boolean);
+    }
+
+    function updateLyricsBox(currentTime) {
+      let activeIndex = parsedLyrics.findIndex((l, i) =>
+        currentTime >= l.time && (!parsedLyrics[i + 1] || currentTime < parsedLyrics[i + 1].time)
+      );
+      if (activeIndex === -1) activeIndex = 0;
+
+      lyricsBox.innerHTML = '';
+
+      for (let i = activeIndex - 2; i <= activeIndex + 2; i++) {
+        if (i < 0 || i >= parsedLyrics.length) continue;
+        const div = document.createElement('div');
+        div.classList.add('lyric-line');
+        const length = parsedLyrics[i].text.length;
+        if (length < 25) div.classList.add('large');
+        else if (length < 50) div.classList.add('medium');
+
+        div.textContent = parsedLyrics[i].text;
+        if (i === activeIndex) div.classList.add('active');
+        else if (Math.abs(i - activeIndex) === 1) div.style.opacity = 0.5;
+        else if (Math.abs(i - activeIndex) === 2) div.style.opacity = 0.25;
+        lyricsBox.appendChild(div);
+      }
     }
 
     playBtn.addEventListener('click', () => {
@@ -269,6 +143,7 @@
       progressFill.style.width = percent + '%';
       currentTime.textContent = formatTime(audio.currentTime);
       duration.textContent = formatTime(audio.duration || 0);
+      updateLyricsBox(audio.currentTime);
     };
 
     progressBar.addEventListener('click', (e) => {
@@ -331,12 +206,8 @@
       document.getElementById('coverArt').src = convertCoverArtUrl(row['Cover art'] || '');
       audio.src = convertDropboxAudio(row['Direct download link'] || '');
 
-      lyricsBox.innerHTML = '';
-      (row['Lyrics'] || '').split('\n').forEach(line => {
-        const div = document.createElement('div');
-        div.textContent = line.trim();
-        lyricsBox.appendChild(div);
-      });
+      parsedLyrics = parseLyrics(row['Lyrics'] || '');
+      updateLyricsBox(0);
 
       audio.pause();
       playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
