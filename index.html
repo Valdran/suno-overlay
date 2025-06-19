@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spooky Lyrics Overlay</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&family=Creepster&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -53,19 +53,27 @@
 
     .lyrics-box {
       width: 100%;
-      height: auto;
+      max-height: 500px;
       padding: 1rem;
+      overflow-y: auto;
       background: transparent;
       border-radius: 10px;
       color: #39ff14;
       text-shadow: 0 0 4px #39ff14, 0 0 6px #39ff14, 1px 1px 2px #000;
       font-size: 1.3rem;
       line-height: 2.2rem;
-      font-family: 'UnifrakturCook', cursive;
-      white-space: pre-wrap;
+      font-family: 'Carrois Gothic SC', sans-serif;
       text-align: center;
       box-sizing: border-box;
-      overflow: hidden;
+    }
+
+    /* Hide scrollbar */
+    .lyrics-box::-webkit-scrollbar {
+      display: none;
+    }
+    .lyrics-box {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
 
     .metadata {
@@ -171,7 +179,7 @@
 
         const lines = lyrics.split('\n').map(l => l.trim()).filter(Boolean);
         const box = document.getElementById('lyricsBox');
-        box.innerHTML = lines.join('\n');
+        box.innerHTML = lines.join('<br>');
 
         document.getElementById('audioPlayer').onerror = () => {
           document.getElementById('audioError').style.display = 'block';
