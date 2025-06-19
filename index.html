@@ -254,6 +254,8 @@
     const playlistPanel = document.getElementById('playlistPanel');
     const playlistEntries = document.getElementById('playlistEntries');
 
+    let currentTrackId = '';
+
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
       const s = Math.floor(sec % 60).toString().padStart(2, '0');
@@ -306,26 +308,12 @@
       return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
     }
 
-    Papa.parse(csvURL, {
-      download: true,
-      header: true,
-      complete: (res) => {
-        const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
-        if (songs.length === 0) return;
-
-        songs.forEach((row, idx) => {
-          const entry = document.createElement('div');
-          entry.className = 'playlist-entry';
-          entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
-          entry.addEventListener('click', () => loadTrack(row));
-          playlistEntries.appendChild(entry);
-        });
-
-        loadTrack(songs[songs.length - 1]);
-      }
-    });
-
     function loadTrack(row) {
+      const newTrackId = row['Song title'] + row['Artist name'];
+      if (newTrackId === currentTrackId) return;
+
+      currentTrackId = newTrackId;
+
       document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
       document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
       document.getElementById('coverArt').src = convertCoverArtUrl(row['Cover art'] || '');
@@ -341,6 +329,32 @@
       audio.pause();
       playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
     }
+
+    function refreshPlaylist() {
+      Papa.parse(csvURL + '?t=' + Date.now(), {
+        download: true,
+        header: true,
+        complete: (res) => {
+          const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
+          if (songs.length === 0) return;
+
+          if (playlistEntries.childElementCount === 0) {
+            songs.forEach(row => {
+              const entry = document.createElement('div');
+              entry.className = 'playlist-entry';
+              entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
+              entry.addEventListener('click', () => loadTrack(row));
+              playlistEntries.appendChild(entry);
+            });
+          }
+
+          loadTrack(songs[songs.length - 1]);
+        }
+      });
+    }
+
+    refreshPlaylist();
+    setInterval(refreshPlaylist, 10000);
 
     audio.onplay = () => {
       playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
