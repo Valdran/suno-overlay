@@ -1,224 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spooky Player Overlay</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --neon-red: #ff1a1a;
-      --neon-green: #39ff14;
-      --font-glow: 0 0 4px, 0 0 8px, 1px 1px 2px #000;
-    }
-
-    body {
-      margin: 0;
-      padding: 2rem;
-      background: transparent;
-      font-family: 'Carrois Gothic SC', sans-serif;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 2rem;
-    }
-
-    .lyrics-box {
-      width: 400px;
-      max-height: 300px;
-      overflow-y: auto;
-      background: transparent;
-      border-top: 5px solid black;
-      border-bottom: 5px solid black;
-      text-align: center;
-      padding: 1rem;
-      font-size: 1rem;
-      color: var(--neon-red);
-      text-shadow: 0 0 4px var(--neon-red), 0 0 8px var(--neon-red);
-    }
-
-    .lyrics-box::-webkit-scrollbar {
-      width: 0px;
-      background: transparent;
-    }
-
-    .metadata {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .cover {
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 12px;
-      box-shadow: 0 0 20px 10px red;
-      background: black;
-    }
-
-    .title, .artist {
-      text-align: center;
-      font-family: 'Creepster', cursive;
-      -webkit-text-stroke: 1px black;
-    }
-
-    .title {
-      font-size: clamp(1.5rem, 5vw, 2.4rem);
-      color: #ff4d4d;
-    }
-
-    .artist {
-      font-size: 1.4rem;
-      color: #0f0;
-      margin-bottom: 1rem;
-    }
-
-    /* AUDIO PLAYER */
-    .audio-player {
-      margin-top: 1rem;
-      width: 400px;
-      background: black;
-      border-radius: 10px;
-      padding: 0.5rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      box-shadow: 0 0 8px #000;
-    }
-
-    .play-button, .playlist-button {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-size: 1.4rem;
-      margin-right: 0.5rem;
-    }
-
-    .play-button svg, .playlist-button svg {
-      filter: drop-shadow(0 0 4px lime);
-    }
-
-    .playlist-button {
-      margin-right: 0.25rem;
-    }
-
-    .time {
-      color: #fff;
-      font-size: 0.9rem;
-    }
-
-    .progress {
-      flex-grow: 1;
-      margin: 0 0.5rem;
-      height: 6px;
-      background: #444;
-      position: relative;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .progress-filled {
-      height: 100%;
-      width: 0%;
-      background: var(--neon-red);
-      animation: pulse 1.5s infinite;
-      border-radius: 4px;
-    }
-
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 4px red; }
-      50% { box-shadow: 0 0 10px red; }
-    }
-
-    /* PLAYLIST PANEL */
-    .playlist-container {
-      position: absolute;
-      bottom: 100%;
-      width: 100%;
-      left: 0;
-      background: black;
-      color: var(--neon-red);
-      font-size: 0.9rem;
-      max-height: 200px;
-      overflow-y: auto;
-      display: none;
-      flex-direction: column;
-      animation: fadeIn 0.4s ease forwards;
-      border-radius: 6px 6px 0 0;
-      text-transform: uppercase;
-    }
-
-    .playlist-container.fade-out {
-      animation: fadeOut 0.3s ease forwards;
-    }
-
-    .playlist-container::-webkit-scrollbar {
-      width: 6px;
-      background: #111;
-    }
-
-    .playlist-container::-webkit-scrollbar-thumb {
-      background: #f00;
-    }
-
-    .playlist-container .track {
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-    }
-
-    .playlist-container .track:hover {
-      background: #222;
-    }
-
-    .playlist-title {
-      background: var(--neon-green);
-      color: black;
-      font-weight: bold;
-      text-align: center;
-      padding: 0.4rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); display: flex; }
-    }
-
-    @keyframes fadeOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(10px); }
-    }
-
-    .tooltip {
-      position: absolute;
-      top: -20px;
-      font-size: 0.7rem;
-      color: #fff;
-      background: #222;
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: none;
-      pointer-events: none;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Spooky Lyrics Overlay</title>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Carrois+Gothic+SC&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --neon-red: #f22;
+  --neon-green: #0f0;
+  --neon-glow: 0 0 6px var(--neon-green);
+}
+body {
+  margin:0; padding:2rem;
+  background:transparent; color:#ccc;
+  font-family:'Carrois Gothic SC',sans-serif;
+  display:flex; justify-content:center; align-items:flex-start;
+}
+.container {
+  display:flex; gap:2rem;
+}
+.lyrics-box {
+  width:400px; height:300px;
+  overflow-y:auto;
+  text-align:center;
+  padding:1rem;
+  font-size:1rem;
+  color:var(--neon-red);
+  text-shadow:0 0 4px var(--neon-red);
+  box-sizing:border-box;
+}
+.lyrics-box::-webkit-scrollbar{width:0}
+.metadata {
+  display:flex; flex-direction:column; align-items:center;
+}
+.cover {
+  width:300px; height:300px;
+  object-fit:cover;
+  border-radius:12px;
+  background:#111;
+  box-shadow:0 0 20px 10px red;
+}
+.title, .artist {
+  font-family:'Creepster',cursive;
+  -webkit-text-stroke:1px black;
+  text-align:center;
+}
+.title { font-size:2.2rem; color:#f44; margin-top:0.5rem }
+.artist { font-size:1.4rem; color:#0f0; margin-bottom:1rem }
+.player {
+  width:400px;
+  background:#000;
+  border:2px solid #000;
+  border-radius:10px;
+  padding:0.5rem;
+  margin-top:1rem;
+  display:flex; align-items:center;
+  position:relative;
+  box-shadow:0 0 8px #000;
+}
+.btn {
+  background:transparent; border:none;
+  cursor:pointer; padding:0; margin-right:0.5rem;
+}
+.btn svg {
+  fill: white;
+  filter: var(--neon-glow);
+  transition:transform .2s;
+}
+.btn.green svg {
+  filter: drop-shadow(0 0 6px var(--neon-green));
+}
+.btn.green:hover svg {
+  transform:scale(1.2);
+}
+.time {
+  color:#fff; font-size:0.9rem;
+  width:45px; text-align:center;
+}
+.progress {
+  flex:1; height:6px;
+  background:#444; margin:0 0.5rem;
+  cursor:pointer; position:relative;
+  border-radius:4px;
+}
+.progress-filled {
+  height:100%; width:0;
+  background:var(--neon-red);
+  border-radius:4px;
+  transition:width .1s linear;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%,100%{box-shadow:0 0 4px var(--neon-red)}
+  50%{box-shadow:0 0 10px var(--neon-red)}
+}
+.tooltip {
+  position:absolute; top:-25px;
+  background:#222; color:#fff;
+  padding:2px 6px;
+  font-size:0.8rem; border-radius:4px;
+  display:none;
+}
+.playlist-panel {
+  position:absolute; bottom:100%;
+  width:100%;
+  max-height:200px;
+  background:#000;
+  border:2px solid var(--neon-green);
+  overflow-y:auto;
+  display:none;
+  flex-direction:column;
+  animation:fadeIn 0.3s ease forwards;
+  text-transform:none;
+}
+.playlist-panel.fade-out {
+  animation:fadeOut .3s ease forwards;
+}
+.playlist-panel::-webkit-scrollbar {
+  width:6px; background:#111
+}
+.playlist-panel::-webkit-scrollbar-thumb {
+  background:var(--neon-red)
+}
+.track {
+  padding:.4rem 1rem;
+  cursor:pointer;
+  color:var(--neon-red); font-weight:bold;
+}
+.track:hover { background:#222 }
+.playlist-title {
+  background:var(--neon-green);
+  color:#000;
+  text-align:center;
+  padding:.3rem;
+  font-weight:bold;
+}
+@keyframes fadeIn {
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
+@keyframes fadeOut {
+  from{opacity:1;transform:none}
+  to{opacity:0;transform:translateY(10px)}
+}
+</style>
 </head>
 <body>
+<div class="container">
   <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
 
   <div class="metadata">
-    <img id="coverArt" class="cover" src="" alt="Cover Art">
+    <img id="coverArt" class="cover" src="" alt="Cover"/>
     <div class="title" id="songTitle">Loading title…</div>
     <div class="artist" id="artistName">Loading artist…</div>
 
-    <div class="audio-player">
-      <button class="playlist-button" id="playlistToggle" title="Playlist">
-        <svg width="20" height="20"><rect y="3" width="20" height="3" fill="white"/><rect y="9" width="20" height="3" fill="white"/><rect y="15" width="20" height="3" fill="white"/></svg>
+    <div class="player">
+      <button class="btn green playlist-button" id="playlistToggle">
+        <svg width="20" height="20"><rect y="3" width="20" height="3"/><rect y="9" width="20" height="3"/><rect y="15" width="20" height="3"/></svg>
       </button>
-      <button class="play-button" id="playButton" title="Play">
-        <svg width="20" height="20" viewBox="0 0 100 100"><polygon fill="white" points="40,30 70,50 40,70"/></svg>
+      <button class="btn green play-button" id="playButton">
+        <svg width="20" height="20" viewBox="0 0 100 100"><polygon points="40,30 70,50 40,70"/></svg>
       </button>
       <span class="time" id="currentTime">0:00</span>
       <div class="progress" id="progressBar">
@@ -227,124 +169,86 @@
       </div>
       <span class="time" id="totalTime">0:00</span>
 
-      <div class="playlist-container" id="playlistContainer">
+      <div class="playlist-panel" id="playlistPanel">
         <div class="playlist-title">PLAYLIST</div>
         <div id="playlistTracks"></div>
       </div>
     </div>
-
-    <audio id="audioPlayer" preload="auto"></audio>
+    <audio id="audioPlayer"></audio>
   </div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script>
-    const csvURL = '/.netlify/functions/fetchSheet';
-    const audio = document.getElementById('audioPlayer');
-    const playBtn = document.getElementById('playButton');
-    const progress = document.getElementById('progressBar');
-    const fill = document.getElementById('progressFill');
-    const cur = document.getElementById('currentTime');
-    const total = document.getElementById('totalTime');
-    const lyricsBox = document.getElementById('lyricsBox');
-    const title = document.getElementById('songTitle');
-    const artist = document.getElementById('artistName');
-    const cover = document.getElementById('coverArt');
-    const playlistToggle = document.getElementById('playlistToggle');
-    const playlistContainer = document.getElementById('playlistContainer');
-    const playlistTracks = document.getElementById('playlistTracks');
-    const tooltip = document.getElementById('tooltip');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+const audio=document.getElementById('audioPlayer'),
+ playBtn=document.getElementById('playButton'),
+ playSvg=playBtn.querySelector('svg'),
+ playlistBtn=document.getElementById('playlistToggle'),
+ playlistPanel=document.getElementById('playlistPanel'),
+ tracksContainer=document.getElementById('playlistTracks'),
+ progressBar=document.getElementById('progressBar'),
+ progressFill=document.getElementById('progressFill'),
+ curTime=document.getElementById('currentTime'),
+ totalTime=document.getElementById('totalTime'),
+ tooltip=document.getElementById('tooltip'),
+ lyricsBox=document.getElementById('lyricsBox'),
+ titleEl=document.getElementById('songTitle'),
+ artistEl=document.getElementById('artistName'),
+ coverEl=document.getElementById('coverArt');
 
-    function formatTime(t) {
-      const m = Math.floor(t / 60);
-      const s = Math.floor(t % 60).toString().padStart(2, '0');
-      return `${m}:${s}`;
-    }
+function fmt(t){if(isNaN(t))return"0:00";const m=Math.floor(t/60),s=Math.floor(t%60).toString().padStart(2,'0');return`${m}:${s}`}
+function conv(u){return u?.includes("dropbox")?u.replace("www.dropbox.com","dl.dropboxusercontent.com").replace("&dl=0",""):u}
 
-    function convertURL(url) {
-      return url?.includes("dropbox.com") ? url.replace("www.dropbox.com", "dl.dropboxusercontent.com").replace("&dl=0", "") : url;
-    }
+let data=[];
+Papa.parse('/.netlify/functions/fetchSheet',{download:true,header:true,complete:r=>{
+ data=r.data.filter(r=>r['Song title']&&r['Lyrics']);
+ data.forEach((d,i)=>{
+   const div=document.createElement('div');
+   div.className='track';
+   div.textContent=`${d['Song title']} — ${d['Artist name']}`;
+   div.onclick=()=>loadTrack(i);
+   tracksContainer.appendChild(div);
+ });
+ loadTrack(data.length-1);
+}});
 
-    let csvData = [];
-    Papa.parse(csvURL, {
-      download: true,
-      header: true,
-      complete: (res) => {
-        csvData = res.data.filter(r => r['Song title'] && r['Lyrics']);
-        if (!csvData.length) return;
+function loadTrack(i){
+ const d=data[i];
+ titleEl.textContent=d['Song title'];
+ artistEl.textContent=d['Artist name'];
+ coverEl.src=conv(d['Cover art']);
+ audio.src=conv(d['Direct download link']);
+ lyricsBox.innerHTML=d['Lyrics'].split('\n').map(l=>`<div>${l}</div>`).join('');
+}
 
-        csvData.forEach((row, idx) => {
-          const div = document.createElement('div');
-          div.className = 'track';
-          div.textContent = `${row['Song title']} — ${row['Artist name']}`;
-          div.onclick = () => loadTrack(idx);
-          playlistTracks.appendChild(div);
-        });
+audio.ontimeupdate=()=>{
+ curTime.textContent=fmt(audio.currentTime);
+ progressFill.style.width=(audio.currentTime/audio.duration)*100+'%';
+};
+audio.onloadedmetadata=()=>totalTime.textContent=fmt(audio.duration);
+audio.onplay=()=>playSvg.innerHTML='<polygon fill="white" points="37,30 47,30 47,70 37,70 60,70 60,30"/>'; 
+audio.onpause=()=>playSvg.innerHTML='<polygon fill="white" points="40,30 70,50 40,70"/>';
 
-        loadTrack(csvData.length - 1); // Last track by default
-      }
-    });
+playBtn.onclick=()=>audio.paused?audio.play():audio.pause();
 
-    function loadTrack(i) {
-      const d = csvData[i];
-      title.textContent = d['Song title'];
-      artist.textContent = d['Artist name'];
-      cover.src = convertURL(d['Cover art']);
-      audio.src = convertURL(d['Direct download link']);
-      lyricsBox.innerHTML = d['Lyrics'].split('\n').map(line => `<div>${line}</div>`).join('');
-    }
+progressBar.onclick=e=>{
+ const r=progressBar.getBoundingClientRect(),pct=(e.clientX-r.left)/r.width;
+ audio.currentTime=pct*audio.duration;
+};
+progressBar.onmousemove=e=>{
+ const r=progressBar.getBoundingClientRect(),pct=(e.clientX-r.left)/r.width;
+ tooltip.style.left=(e.clientX-r.left)+'px';
+ tooltip.textContent=fmt(pct*audio.duration);
+ tooltip.style.display='block';
+};
+progressBar.onmouseleave=()=>tooltip.style.display='none';
 
-    audio.ontimeupdate = () => {
-      cur.textContent = formatTime(audio.currentTime);
-      fill.style.width = (audio.currentTime / audio.duration) * 100 + '%';
-    };
-
-    audio.onloadedmetadata = () => {
-      total.textContent = formatTime(audio.duration);
-    };
-
-    playBtn.onclick = () => {
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-    };
-
-    audio.onplay = () => playBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 100 100"><rect x="30" y="30" width="10" height="40" fill="white"/><rect x="60" y="30" width="10" height="40" fill="white"/></svg>';
-    audio.onpause = () => playBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 100 100"><polygon fill="white" points="40,30 70,50 40,70"/></svg>';
-
-    progress.onclick = (e) => {
-      const rect = progress.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = percent * audio.duration;
-    };
-
-    progress.onmousemove = (e) => {
-      const rect = progress.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      tooltip.style.display = 'block';
-      tooltip.style.left = `${e.clientX - rect.left - 15}px`;
-      tooltip.textContent = formatTime(percent * audio.duration);
-    };
-
-    progress.onmouseleave = () => {
-      tooltip.style.display = 'none';
-    };
-
-    let playlistVisible = false;
-    playlistToggle.onclick = () => {
-      playlistVisible = !playlistVisible;
-      playlistContainer.classList.remove('fade-out');
-      if (playlistVisible) {
-        playlistContainer.style.display = 'flex';
-      } else {
-        playlistContainer.classList.add('fade-out');
-        setTimeout(() => {
-          if (!playlistVisible) playlistContainer.style.display = 'none';
-          playlistContainer.classList.remove('fade-out');
-        }, 300);
-      }
-    };
-  </script>
+let plOpen=false;
+playlistBtn.onclick=()=>{
+ plOpen=!plOpen;
+ if(plOpen)playlistPanel.style.display='flex',playlistPanel.classList.remove('fade-out');
+ else playlistPanel.classList.add('fade-out'),setTimeout(()=>{playlistPanel.style.display='none'},300);
+};
+</script>
 </body>
 </html>
