@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spooky Audio Player</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
 
@@ -42,11 +42,23 @@
       padding: 1rem;
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid black;
-      text-align: center;
+      font-family: 'Rubik', sans-serif;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      font-family: 'Rubik', sans-serif;
+      position: relative;
+      text-align: left;
+    }
+
+    .lyrics-inner {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 1rem;
     }
 
     .lyric-line {
@@ -234,8 +246,9 @@
 <body>
   <div class="container">
     <div class="left-section">
-      <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
-
+      <div class="lyrics-box" id="lyricsBox">
+        <div class="lyrics-inner" id="lyricsInner">Loading lyrics…</div>
+      </div>
       <div class="player-wrapper">
         <div class="playlist-panel" id="playlistPanel">
           <div class="playlist-title">PLAYLIST</div>
@@ -270,49 +283,15 @@
     const progressFill = document.getElementById('progressFill');
     const currentTime = document.getElementById('currentTime');
     const duration = document.getElementById('duration');
-    const lyricsBox = document.getElementById('lyricsBox');
+    const lyricsInner = document.getElementById('lyricsInner');
     const togglePlaylist = document.getElementById('togglePlaylist');
     const playlistPanel = document.getElementById('playlistPanel');
     const playlistEntries = document.getElementById('playlistEntries');
-
-    let parsedLyrics = [];
 
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
       const s = Math.floor(sec % 60).toString().padStart(2, '0');
       return `${m}:${s}`;
-    }
-
-    function parseLyrics(raw) {
-      return raw.split('\n').map(line => {
-        const match = line.match(/\[(\d+)\.(\d+)]\s*(.+)/);
-        if (!match) return null;
-        const time = parseInt(match[1]) + parseInt(match[2]) / 100;
-        const text = match[3];
-        return { time, text };
-      }).filter(Boolean);
-    }
-
-    function updateLyricsBox(currentTime) {
-      let activeIndex = parsedLyrics.findIndex((l, i) =>
-        currentTime >= l.time && (!parsedLyrics[i + 1] || currentTime < parsedLyrics[i + 1].time)
-      );
-      if (activeIndex === -1) activeIndex = 0;
-
-      lyricsBox.innerHTML = '';
-
-      for (let i = activeIndex - 2; i <= activeIndex + 2; i++) {
-        if (i < 0 || i >= parsedLyrics.length) continue;
-        const div = document.createElement('div');
-        div.classList.add('lyric-line');
-        const length = parsedLyrics[i].text.length;
-        if (length < 25) div.classList.add('large');
-        else if (length < 50) div.classList.add('medium');
-
-        div.textContent = parsedLyrics[i].text;
-        if (i === activeIndex) div.classList.add('active');
-        lyricsBox.appendChild(div);
-      }
     }
 
     playBtn.addEventListener('click', () => {
@@ -362,6 +341,58 @@
       return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
     }
 
+    let parsedLyrics = [];
+    let hasTimestamps = false;
+
+    function parseLyrics(raw) {
+      const lines = raw.split('\n');
+      const parsed = lines.map((line) => {
+        const match = line.match(/\[(\d+)\.(\d+)]\s*(.+)/);
+        if (match) {
+          const time = parseInt(match[1]) + parseInt(match[2]) / 100;
+          return { time, text: match[3] };
+        } else {
+          return { time: null, text: line.trim() };
+        }
+      }).filter(l => l.text);
+      hasTimestamps = parsed.some(l => l.time !== null);
+      return parsed;
+    }
+
+    function updateLyricsBox(currentTime) {
+      if (!hasTimestamps) {
+        lyricsInner.innerHTML = '';
+        parsedLyrics.forEach(l => {
+          const div = document.createElement('div');
+          div.className = 'lyric-line';
+          const len = l.text.length;
+          if (len < 25) div.classList.add('large');
+          else if (len < 50) div.classList.add('medium');
+          div.textContent = l.text;
+          lyricsInner.appendChild(div);
+        });
+        return;
+      }
+
+      let activeIndex = parsedLyrics.findIndex((l, i) =>
+        currentTime >= l.time && (!parsedLyrics[i + 1] || currentTime < parsedLyrics[i + 1].time)
+      );
+      if (activeIndex === -1) activeIndex = 0;
+
+      lyricsInner.innerHTML = '';
+      for (let i = activeIndex - 2; i <= activeIndex + 2; i++) {
+        if (i < 0 || i >= parsedLyrics.length) continue;
+        const div = document.createElement('div');
+        div.classList.add('lyric-line');
+        const len = parsedLyrics[i].text.length;
+        if (len < 25) div.classList.add('large');
+        else if (len < 50) div.classList.add('medium');
+        div.textContent = parsedLyrics[i].text;
+        if (i === activeIndex) div.classList.add('active');
+        lyricsInner.appendChild(div);
+      }
+    }
+
     Papa.parse(csvURL, {
       download: true,
       header: true,
@@ -369,7 +400,7 @@
         const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
         if (songs.length === 0) return;
 
-        songs.forEach((row, idx) => {
+        songs.forEach((row) => {
           const entry = document.createElement('div');
           entry.className = 'playlist-entry';
           entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
