@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spooky Lyrics Overlay</title>
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&family=Creepster&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -39,8 +41,8 @@
       gap: 2rem;
       max-width: 1200px;
       width: 100%;
-      z-index: 1;
       align-items: flex-start;
+      z-index: 1;
     }
 
     .lyrics-wrapper {
@@ -68,13 +70,8 @@
     }
 
     /* Hide scrollbar */
-    .lyrics-box::-webkit-scrollbar {
-      display: none;
-    }
-    .lyrics-box {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    .lyrics-box::-webkit-scrollbar { display: none; }
+    .lyrics-box { -ms-overflow-style: none; scrollbar-width: none; }
 
     .metadata {
       display: flex;
@@ -114,27 +111,76 @@
       display: flex;
       justify-content: center;
       width: 100%;
+      position: relative;
     }
 
-    audio {
-      width: 240px;
-      height: 32px;
+    .custom-player {
+      background: #000;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #0f0;
+      padding: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
     }
 
-    .audio-error {
-      color: red;
-      margin-top: 0.5rem;
+    .playlist-toggle {
+      cursor: pointer;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    .playlist {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: -180px;
+      background: rgba(0,0,0,0.85);
+      border-radius: 6px;
+      padding: 0.5rem;
+      width: 100%;
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 2;
+    }
+
+    .playlist div {
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+      color: #39ff14;
+    }
+
+    .playlist div:hover {
+      background: #222;
+    }
+
+    .time-display, .icon-vol { color: #fff; }
+
+    .volume-slider {
+      width: 80px;
     }
   </style>
 </head>
 <body>
+
   <div class="fog"></div>
 
   <div class="container">
     <div class="lyrics-wrapper">
       <div id="lyricsBox" class="lyrics-box">Loading lyrics…</div>
       <div class="audio-player-wrapper">
-        <audio id="audioPlayer" controls></audio>
+        <div class="playlist" id="playlist"></div>
+
+        <div class="custom-player">
+          <div class="playlist-toggle" onclick="togglePlaylist()">☰</div>
+          <button onclick="togglePlay()">▶️</button>
+          <span class="time-display" id="timeDisplay">0:00</span>
+          <input type="range" id="volumeSlider" class="volume-slider"
+                 min="0" max="1" step="0.01" onchange="audio.volume = this.value" />
+          <span class="icon-vol">🔊</span>
+        </div>
+
+        <audio id="audioPlayer"></audio>
       </div>
     </div>
 
@@ -142,59 +188,75 @@
       <img id="coverArt" class="cover" src="" alt="Cover Art">
       <div class="title" id="songTitle">Loading title…</div>
       <div class="artist" id="artistName">Loading artist…</div>
-      <div id="audioError" class="audio-error" style="display:none;">⚠️ Audio could not be loaded.</div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
     const csvURL = '/.netlify/functions/fetchSheet';
+    const audio = document.getElementById('audioPlayer');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const playlistEl = document.getElementById('playlist');
+    let trackList = [], currentIndex = 0;
+
+    function togglePlaylist() {
+      playlistEl.style.display = playlistEl.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function togglePlay() {
+      audio.paused ? audio.play() : audio.pause();
+    }
+
+    audio.ontimeupdate = () => {
+      const m = Math.floor(audio.currentTime / 60);
+      const s = String(Math.floor(audio.currentTime % 60)).padStart(2, '0');
+      timeDisplay.textContent = `${m}:${s}`;
+    }
 
     function convertCoverArtUrl(url) {
       if (!url) return '';
-      if (url.includes('drive.google.com')) {
-        const match = url.match(/\/d\/([-\w]{25,})/);
-        return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : '';
-      }
-      if (url.includes('dropbox.com')) {
-        return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
-      }
-      return url;
+      const match = url.match(/\/d\/([-\w]{25,})/);
+      return match
+        ? `https://drive.google.com/uc?export=view&id=${match[1]}`
+        : url.includes('dropbox.com')
+          ? url.replace('www.dropbox.com','dl.dropboxusercontent.com').replace('&dl=0','')
+          : url;
     }
 
     function convertDropboxAudio(url) {
-      return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
+      return url.replace('www.dropbox.com','dl.dropboxusercontent.com').replace('&dl=0','');
+    }
+
+    function loadTrack(i) {
+      const t = trackList[i];
+      currentIndex = i;
+      document.getElementById('songTitle').textContent = t['Song title'];
+      document.getElementById('artistName').textContent = t['Artist name'];
+      document.getElementById('coverArt').src = convertCoverArtUrl(t['Cover art']);
+      audio.src = convertDropboxAudio(t['Direct download link']);
+      document.getElementById('lyricsBox').innerHTML = t['Lyrics']
+        .split('\n')
+        .map(l=>l.trim()).filter(Boolean).join('<br>');
+      audio.play();
     }
 
     Papa.parse(csvURL, {
       download: true,
       header: true,
-      complete: (res) => {
-        const data = res.data.filter(r => r['Song title'] && r['Lyrics']);
-        if (data.length === 0) return alert('No lyric rows found.');
-
-        const last = data[data.length - 1];
-        const songTitle = last['Song title']?.trim();
-        const artistName = last['Artist name']?.trim();
-        const lyrics = last['Lyrics']?.trim();
-        const coverUrl = convertCoverArtUrl(last['Cover art']?.trim());
-        const audioUrl = convertDropboxAudio(last['Direct download link']?.trim());
-
-        document.getElementById('songTitle').textContent = songTitle || 'Unknown Title';
-        document.getElementById('artistName').textContent = artistName || 'Unknown Artist';
-        document.getElementById('coverArt').src = coverUrl;
-        document.getElementById('audioPlayer').src = audioUrl;
-
-        const lines = lyrics.split('\n').map(l => l.trim()).filter(Boolean);
-        const box = document.getElementById('lyricsBox');
-        box.innerHTML = lines.join('<br>');
-
-        document.getElementById('audioPlayer').onerror = () => {
-          document.getElementById('audioError').style.display = 'block';
-        };
+      complete: res => {
+        trackList = res.data.filter(r => r['Song title'] && r['Lyrics']);
+        if (!trackList.length) alert('No tracks found');
+        trackList.forEach((t,i) => {
+          const el = document.createElement('div');
+          el.textContent = `${t['Song title']} — ${t['Artist name']}`;
+          el.onclick = () => loadTrack(i);
+          playlistEl.appendChild(el);
+        });
+        loadTrack(0);
       },
-      error: (err) => alert('CSV load failed: ' + err.message)
+      error: e => alert('CSV error: '+e.message)
     });
   </script>
+
 </body>
 </html>
