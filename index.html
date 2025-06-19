@@ -22,9 +22,16 @@
 
     .container {
       display: flex;
+      flex-direction: row;
+      padding: 2rem;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .lyrics-area {
+      display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
       gap: 1rem;
     }
 
@@ -40,7 +47,6 @@
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid black;
       scrollbar-width: none;
-      margin-bottom: 1rem;
     }
 
     .lyrics-box::-webkit-scrollbar {
@@ -206,28 +212,30 @@
 </head>
 <body>
   <div class="container">
-    <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
-
-    <div class="player-wrapper">
-      <div class="playlist-panel" id="playlistPanel">
-        <div class="playlist-title">PLAYLIST</div>
-        <div id="playlistEntries"></div>
-      </div>
-      <div class="custom-player">
-        <div class="playlist-button" id="togglePlaylist"></div>
-        <div class="play-button" id="playButton"></div>
-        <div class="time" id="currentTime">0:00</div>
-        <div class="progress" id="progressBar">
-          <div class="progress-bar" id="progressFill"></div>
-        </div>
-        <div class="time" id="duration">0:00</div>
-      </div>
-    </div>
-
     <div class="metadata">
       <img id="coverArt" class="cover" src="" alt="Cover Art">
       <div class="title" id="songTitle">Loading title…</div>
       <div class="artist" id="artistName">Loading artist…</div>
+    </div>
+
+    <div class="lyrics-area">
+      <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
+
+      <div class="player-wrapper">
+        <div class="playlist-panel" id="playlistPanel">
+          <div class="playlist-title">PLAYLIST</div>
+          <div id="playlistEntries"></div>
+        </div>
+        <div class="custom-player">
+          <div class="playlist-button" id="togglePlaylist"></div>
+          <div class="play-button" id="playButton"></div>
+          <div class="time" id="currentTime">0:00</div>
+          <div class="progress" id="progressBar">
+            <div class="progress-bar" id="progressFill"></div>
+          </div>
+          <div class="time" id="duration">0:00</div>
+        </div>
+      </div>
     </div>
   </div>
 
