@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spooky Playlist Overlay</title>
-  <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&family=Creepster:wght@400&display=swap" rel="stylesheet">
+  <title>Spooky Lyrics Overlay</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&family=Creepster&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -15,24 +17,40 @@
       display: flex;
       justify-content: center;
     }
+
     .fog {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       background: url('fog-overlay.png') repeat;
-      opacity: 0.2; pointer-events: none;
+      opacity: 0.2;
+      z-index: 0;
       animation: fogDrift 60s linear infinite;
+      pointer-events: none;
     }
-    @keyframes fogDrift { 0% { background-position:0 0 } 100% { background-position:-1000px 0 } }
+
+    @keyframes fogDrift {
+      0% { background-position: 0 0; }
+      100% { background-position: -1000px 0; }
+    }
 
     .container {
-      display: flex; gap: 2rem;
-      max-width: 1200px; width: 100%;
-      align-items: flex-start; z-index: 1;
+      display: flex;
+      gap: 2rem;
+      max-width: 1200px;
+      width: 100%;
+      align-items: flex-start;
+      z-index: 1;
     }
 
     .lyrics-wrapper {
-      display: flex; flex-direction: column;
-      align-items: center; max-width: 500px; flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 500px;
+      flex: 1;
     }
 
     .lyrics-box {
@@ -48,122 +66,12 @@
       line-height: 2.2rem;
       font-family: 'Carrois Gothic SC', sans-serif;
       text-align: center;
+      box-sizing: border-box;
     }
-    .lyrics-box::-webkit-scrollbar { display:none }
+
+    /* Hide scrollbar */
+    .lyrics-box::-webkit-scrollbar { display: none; }
     .lyrics-box { -ms-overflow-style: none; scrollbar-width: none; }
-
-    .audio-player-wrapper {
-      width: 100%;
-      position: relative;
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .playlist-label {
-      display: none;
-      padding: 0.2rem 1rem;
-      background: #39ff14;
-      color: #000;
-      font-weight: bold;
-      font-family: 'Segoe UI', sans-serif;
-      margin-bottom: 0.3rem;
-      border-radius: 4px 4px 0 0;
-    }
-
-    .custom-player {
-      width: 100%;
-      background: #39ff14;
-      border-radius: 12px;
-      box-shadow: 0 0 12px #39ff14;
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .playlist-toggle {
-      cursor: pointer;
-      font-size: 1.4rem;
-      user-select: none;
-    }
-
-    button.play-pause {
-      background: none;
-      border: 2px solid #000;
-      color: #000;
-      font-size: 1.2rem;
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    button.play-pause:hover {
-      background: #000;
-      color: #39ff14;
-    }
-
-    .time-display {
-      color: #000;
-      min-width: 3.5rem;
-      text-align: center;
-      font-family: monospace;
-    }
-
-    .progress-bar-wrapper {
-      flex: 1;
-      height: 8px;
-      background: #222;
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: #f00;
-      animation: none;
-    }
-
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 6px #f00; }
-      50% { box-shadow: 0 0 14px #f00; }
-    }
-
-    .playlist {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: calc(-100% - 0.5rem);
-      background: rgba(0,0,0,0.85);
-      border-radius: 4px;
-      padding: 0.5rem;
-      width: 100%;
-      max-height: 160px;
-      overflow-y: auto;
-      z-index: 2;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    }
-
-    .playlist.open {
-      display: flex;
-      opacity: 1;
-    }
-
-    .playlist div {
-      padding: 0.3rem 0.5rem;
-      cursor: pointer;
-      color: #39ff14;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .playlist div:hover {
-      background: rgba(57,255,20,0.2);
-    }
 
     .metadata {
       display: flex;
@@ -171,45 +79,108 @@
       align-items: center;
       flex-shrink: 0;
     }
-                                
+
     .cover {
-      width: 300px; height: 300px; object-fit: cover;
-      border-radius: 12px; background: #111;
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #111;
       box-shadow: 0 0 20px 10px red;
     }
+
     .title, .artist {
       font-family: 'Creepster', cursive;
-      -webkit-text-stroke:1px black; text-align: center;
+      -webkit-text-stroke: 1px black;
+      text-align: center;
       margin: 0.3rem 0;
     }
+
     .title {
-      font-size: clamp(1.5rem,5vw,2.4rem);
+      font-size: clamp(1.5rem, 5vw, 2.4rem);
       color: #ff4d4d;
     }
+
     .artist {
       font-size: 1.4rem;
       color: #0f0;
     }
+
+    .audio-player-wrapper {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+    }
+
+    .custom-player {
+      background: #000;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #0f0;
+      padding: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .playlist-toggle {
+      cursor: pointer;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    .playlist {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: -180px;
+      background: rgba(0,0,0,0.85);
+      border-radius: 6px;
+      padding: 0.5rem;
+      width: 100%;
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 2;
+    }
+
+    .playlist div {
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+      color: #39ff14;
+    }
+
+    .playlist div:hover {
+      background: #222;
+    }
+
+    .time-display, .icon-vol { color: #fff; }
+
+    .volume-slider {
+      width: 80px;
+    }
   </style>
 </head>
-
 <body>
+
   <div class="fog"></div>
+
   <div class="container">
     <div class="lyrics-wrapper">
       <div id="lyricsBox" class="lyrics-box">Loading lyrics…</div>
       <div class="audio-player-wrapper">
-        <div class="playlist-label" id="playlistLabel">PLAYLIST</div>
         <div class="playlist" id="playlist"></div>
-        <div class="custom-player" id="customPlayer">
-          <div class="playlist-toggle" id="toggleBtn">☰</div>
-          <button class="play-pause" id="playPauseBtn">👻</button>
+
+        <div class="custom-player">
+          <div class="playlist-toggle" onclick="togglePlaylist()">☰</div>
+          <button onclick="togglePlay()">▶️</button>
           <span class="time-display" id="timeDisplay">0:00</span>
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar" id="progressBar"></div>
-          </div>
-          <span class="time-display" id="durationDisplay">0:00</span>
+          <input type="range" id="volumeSlider" class="volume-slider"
+                 min="0" max="1" step="0.01" onchange="audio.volume = this.value" />
+          <span class="icon-vol">🔊</span>
         </div>
+
+        <audio id="audioPlayer"></audio>
       </div>
     </div>
 
@@ -220,54 +191,40 @@
     </div>
   </div>
 
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
     const csvURL = '/.netlify/functions/fetchSheet';
     const audio = document.getElementById('audioPlayer');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const toggleBtn = document.getElementById('toggleBtn');
-    const playlistEl = document.getElementById('playlist');
-    const playlistLabel = document.getElementById('playlistLabel');
-    const progressBar = document.getElementById('progressBar');
     const timeDisplay = document.getElementById('timeDisplay');
-    const durationDisplay = document.getElementById('durationDisplay');
+    const playlistEl = document.getElementById('playlist');
     let trackList = [], currentIndex = 0;
 
-    toggleBtn.onclick = () => {
-      const open = playlistEl.classList.toggle('open');
-      playlistLabel.style.display = open ? 'block' : 'none';
-    };
+    function togglePlaylist() {
+      playlistEl.style.display = playlistEl.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-    playPauseBtn.onclick = () => {
+    function togglePlay() {
       audio.paused ? audio.play() : audio.pause();
-    };
+    }
 
     audio.ontimeupdate = () => {
-      const cur = audio.currentTime, dur = audio.duration || 0;
-      timeDisplay.textContent = `${Math.floor(cur/60)}:${String(Math.floor(cur%60)).padStart(2,'0')}`;
-      durationDisplay.textContent = `${Math.floor(dur/60)}:${String(Math.floor(dur%60)).padStart(2,'0')}`;
-      const pct = dur ? ((cur/dur)*100) : 0;
-      progressBar.style.width = pct + '%';
-      progressBar.style.animation = audio.paused ? 'none' : 'pulse 1s infinite';
-    };
-
-    progressBar.parentElement.onclick = e => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const pct = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = pct * audio.duration;
-    };
-
-    function convertCoverArtUrl(u) {
-      if (!u) return '';
-      const m = u.match(/\/d\/([-\w]{25,})/);
-      if (m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
-      return u.includes('dropbox.com')
-        ? u.replace('www.dropbox.com','dl.dropboxusercontent.com').replace('&dl=0','')
-        : u;
+      const m = Math.floor(audio.currentTime / 60);
+      const s = String(Math.floor(audio.currentTime % 60)).padStart(2, '0');
+      timeDisplay.textContent = `${m}:${s}`;
     }
-    function convertDropboxAudio(u) {
-      return u.replace('www.dropbox.com','dl.dropboxusercontent.com').replace('&dl=0','');
+
+    function convertCoverArtUrl(url) {
+      if (!url) return '';
+      const match = url.match(/\/d\/([-\w]{25,})/);
+      return match
+        ? `https://drive.google.com/uc?export=view&id=${match[1]}`
+        : url.includes('dropbox.com')
+          ? url.replace('www.dropbox.com','dl.dropboxusercontent.com').replace('&dl=0','')
+          : url;
+    }
+
+    function convertDropboxAudio(url) {
+      return url.replace('www.dropbox.com','dl.dropboxusercontent.com').replace('&dl=0','');
     }
 
     function loadTrack(i) {
@@ -276,18 +233,19 @@
       document.getElementById('songTitle').textContent = t['Song title'];
       document.getElementById('artistName').textContent = t['Artist name'];
       document.getElementById('coverArt').src = convertCoverArtUrl(t['Cover art']);
-      document.getElementById('lyricsBox').innerHTML = t['Lyrics']
-        .split('\n').map(l=>l.trim()).filter(Boolean).join('<br>');
       audio.src = convertDropboxAudio(t['Direct download link']);
+      document.getElementById('lyricsBox').innerHTML = t['Lyrics']
+        .split('\n')
+        .map(l=>l.trim()).filter(Boolean).join('<br>');
       audio.play();
-      toggleBtn.click(); // close playlist
     }
 
     Papa.parse(csvURL, {
-      download: true, header:true,
-      complete: r => {
-        trackList = r.data.filter(r => r['Song title'] && r['Lyrics']);
-        if (!trackList.length) return alert('No tracks.');
+      download: true,
+      header: true,
+      complete: res => {
+        trackList = res.data.filter(r => r['Song title'] && r['Lyrics']);
+        if (!trackList.length) alert('No tracks found');
         trackList.forEach((t,i) => {
           const el = document.createElement('div');
           el.textContent = `${t['Song title']} — ${t['Artist name']}`;
@@ -299,5 +257,6 @@
       error: e => alert('CSV error: '+e.message)
     });
   </script>
+
 </body>
 </html>
