@@ -24,7 +24,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: url('https://i.ibb.co/cLY2ycH/fog-overlay.png') repeat;
+      background: url('fog-overlay.png') repeat;
       opacity: 0.2;
       z-index: 0;
       animation: fogDrift 60s linear infinite;
@@ -51,7 +51,12 @@
       100% { left: 110vw; transform: scale(1.2) rotate(360deg); }
     }
 
-    .container { display: flex; gap: 2rem; padding: 2rem; z-index:1; }
+    .container {
+      display: flex;
+      gap: 2rem;
+      padding: 2rem;
+      z-index: 1;
+    }
 
     .lyrics-box {
       width: 400px;
@@ -78,43 +83,68 @@
       color: #39ff14;
       text-shadow: 0 0 4px #39ff14, 0 0 8px #39ff14, 1px 1px 2px #000;
     }
+
     .active-line {
       display: block !important;
       opacity: 1 !important;
       transform: translateY(0) !important;
       animation: flicker 1.5s infinite;
     }
+
     @keyframes flicker {
-      0%,100%{ text-shadow:0 0 4px #0f0; }
-      50%{ text-shadow:0 0 2px #0f0, 0 0 10px #0f0; }
+      0%,100% { text-shadow: 0 0 4px #0f0; }
+      50% { text-shadow: 0 0 2px #0f0, 0 0 10px #0f0; }
     }
 
-    .metadata { display:flex; flex-direction:column; align-items:center; }
+    .metadata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .cover {
-      width:300px; height:300px; object-fit:cover; border-radius:12px;
-      background:#111; box-shadow:0 0 20px 10px red;
-    }
-    .title, .artist {
-      text-align:center; font-family:'Creepster', cursive;
-      -webkit-text-stroke:1px black;
-    }
-    .title {
-      margin-top:0.5rem;
-      font-size:clamp(1.5rem,5vw,2.4rem);
-      color:#ff4d4d;
-    }
-    .artist {
-      font-size:1.4rem; color:#0f0; margin-bottom:1rem;
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #111;
+      box-shadow: 0 0 20px 10px red;
     }
 
-    audio { width:300px; border-radius:6px; box-shadow:none; }
-    .audio-error { color:red; margin-top:0.5rem; }
+    .title, .artist {
+      text-align: center;
+      font-family: 'Creepster', cursive;
+      -webkit-text-stroke: 1px black;
+    }
+
+    .title {
+      margin-top: 0.5rem;
+      font-size: clamp(1.5rem, 5vw, 2.4rem);
+      color: #ff4d4d;
+    }
+
+    .artist {
+      font-size: 1.4rem;
+      color: #0f0;
+      margin-bottom: 1rem;
+    }
+
+    audio {
+      width: 300px;
+      border-radius: 6px;
+      box-shadow: none;
+    }
+
+    .audio-error {
+      color: red;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div class="fog"></div>
-  <img src="https://freesvg.org/storage/display/93124/bat.svg" class="bat-fly" alt="Bat">
-  <img src="https://freesvg.org/storage/display/93124/bat.svg" class="bat-fly second" alt="Bat">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bat_icon_black.svg" class="bat-fly" alt="Bat">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Bat_icon_black.svg" class="bat-fly second" alt="Bat">
 
   <div class="container">
     <div class="lyrics-box" id="lyricsBox">Loading lyrics…</div>
@@ -129,7 +159,96 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
-    // Existing CSV parsing and lyrics playback code unchanged
+    const csvURL = '/.netlify/functions/fetchSheet';
+
+    function convertCoverArtUrl(url) {
+      if (!url) return '';
+      if (url.includes('drive.google.com')) {
+        const match = url.match(/\/d\/([-\w]{25,})/);
+        return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : '';
+      }
+      if (url.includes('dropbox.com')) {
+        return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
+      }
+      return url;
+    }
+
+    function convertDropboxAudio(url) {
+      return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
+    }
+
+    let intervalRef = null;
+
+    Papa.parse(csvURL, {
+      download: true,
+      header: true,
+      complete: (res) => {
+        const data = res.data.filter(r => r['Song title'] && r['Lyrics']);
+        if (data.length === 0) return alert('No lyric rows found.');
+
+        const last = data[data.length - 1];
+        const songTitle = last['Song title']?.trim();
+        const artistName = last['Artist name']?.trim();
+        const lyrics = last['Lyrics']?.trim();
+        const coverUrl = convertCoverArtUrl(last['Cover art']?.trim());
+        const audioUrl = convertDropboxAudio(last['Direct download link']?.trim());
+
+        document.getElementById('songTitle').textContent = songTitle || 'Unknown Title';
+        document.getElementById('artistName').textContent = artistName || 'Unknown Artist';
+        document.getElementById('coverArt').src = coverUrl;
+        document.getElementById('audioPlayer').src = audioUrl;
+
+        const lines = lyrics.split('\n').map(l => l.trim()).filter(Boolean);
+        const box = document.getElementById('lyricsBox');
+        box.innerHTML = '';
+        lines.forEach(line => {
+          const div = document.createElement('div');
+          div.textContent = line;
+          div.className = 'lyrics-line';
+          box.appendChild(div);
+        });
+
+        const allLines = box.querySelectorAll('.lyrics-line');
+        let i = 0;
+
+        function updateLyrics() {
+          allLines.forEach((el, idx) => {
+            el.classList.remove('active-line');
+            el.style.display = 'none';
+          });
+
+          const start = Math.max(0, i - 2);
+          const end = Math.min(allLines.length, i + 3);
+          for (let j = start; j < end; j++) {
+            allLines[j].style.display = 'block';
+          }
+
+          if (allLines[i]) {
+            allLines[i].classList.add('active-line');
+          }
+
+          i++;
+          if (i >= allLines.length) clearInterval(intervalRef);
+        }
+
+        const player = document.getElementById('audioPlayer');
+        player.addEventListener('play', () => {
+          clearInterval(intervalRef);
+          i = 0;
+          updateLyrics();
+          intervalRef = setInterval(updateLyrics, 4000);
+        });
+
+        player.addEventListener('pause', () => {
+          clearInterval(intervalRef);
+        });
+
+        document.getElementById('audioPlayer').onerror = () => {
+          document.getElementById('audioError').style.display = 'block';
+        };
+      },
+      error: (err) => alert('CSV load failed: ' + err.message)
+    });
   </script>
 </body>
 </html>
