@@ -6,7 +6,10 @@ export async function handler(event, context) {
     statusCode: 200,
     headers: {
       'Content-Type': 'text/csv',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
     },
     body: text
   };
