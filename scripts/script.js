@@ -119,10 +119,18 @@ Papa.parse(csvURL, {
   download: true,
   header: true,
   complete: (res) => {
-    const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
-    if (songs.length === 0) return;
+    let songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
 
-    songs.forEach((row) => {
+    songs.forEach(row => {
+      // Auto-fill image link if missing and AI music link is Suno
+      if ((!row['Image'] || row['Image'].trim() === '') && row['AI music link']?.includes('suno.com/song/')) {
+        const match = row['AI music link'].match(/suno\\.com\\/song\\/([\\w-]{36})/);
+        if (match) {
+          const id = match[1];
+          row['Image'] = `https://cdn2.suno.ai/image_large_${id}.jpeg`;
+        }
+      }
+
       const entry = document.createElement('div');
       entry.className = 'playlist-entry';
       entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
@@ -130,7 +138,8 @@ Papa.parse(csvURL, {
       playlistEntries.appendChild(entry);
     });
 
-    loadTrack(songs[songs.length - 1]);
+    // Load the last song by default
+    if (songs.length > 0) loadTrack(songs[songs.length - 1]);
   }
 });
 
