@@ -1,6 +1,4 @@
-const fetch = require('node-fetch');
-
-exports.handler = async (event) => {
+export async function handler(event) {
   const { link } = event.queryStringParameters;
 
   if (!link || !link.startsWith('https://suno.com/s/')) {
@@ -11,18 +9,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Follow redirect manually
-    const res = await fetch(link, {
+    const response = await fetch(link, {
       method: 'GET',
-      redirect: 'manual',
+      redirect: 'manual'
     });
 
-    const location = res.headers.get('location');
+    const location = response.headers.get('location');
 
     if (!location || !location.includes('/song/')) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ error: 'Could not resolve song UUID from short link.' }),
+        body: JSON.stringify({ error: 'Could not resolve song UUID from redirect.' }),
       };
     }
 
@@ -30,7 +27,7 @@ exports.handler = async (event) => {
     if (!uuidMatch) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'UUID not found in redirect.' }),
+        body: JSON.stringify({ error: 'UUID not found in redirected location.' }),
       };
     }
 
@@ -39,12 +36,15 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ uuid, imageUrl }),
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to resolve Suno link.', details: err.message }),
+      body: JSON.stringify({ error: 'Server error.', details: error.message }),
     };
   }
-};
+}
