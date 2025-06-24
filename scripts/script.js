@@ -1,4 +1,3 @@
-<script src="scripts/script.js"></script>
 
 const csvURL = '/.netlify/functions/fetchSheet';
 const audio = document.getElementById('audioPlayer');
