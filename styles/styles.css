@@ -1,5 +1,6 @@
 /* styles.css */
 * { box-sizing: border-box; }
+<link rel="stylesheet" href="styles/styles.css">
 
 body {
   margin: 0;
