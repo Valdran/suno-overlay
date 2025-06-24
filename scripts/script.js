@@ -1,4 +1,3 @@
-
 const csvURL = '/.netlify/functions/fetchSheet';
 const audio = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playButton');
@@ -125,7 +124,7 @@ Papa.parse(csvURL, {
     songs.forEach(row => {
       // Auto-fill image link if missing and AI music link is Suno
       if ((!row['Image'] || row['Image'].trim() === '') && row['AI music link']?.includes('suno.com/song/')) {
-        const match = row['AI music link'].match(/suno\\.com\\/song\\/([\\w-]{36})/);
+        const match = row['AI music link'].match(/suno\.com\/song\/([\w-]{36})/);
         if (match) {
           const id = match[1];
           row['Image'] = `https://cdn2.suno.ai/image_large_${id}.jpeg`;
@@ -147,7 +146,7 @@ Papa.parse(csvURL, {
 function loadTrack(row) {
   document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
   document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
-  document.getElementById('coverArt').src = convertCoverArtUrl(row['Cover art'] || '');
+  document.getElementById('coverArt').src = convertCoverArtUrl(row['Image'] || row['Cover art'] || '');
   audio.src = convertDropboxAudio(row['Direct download link'] || '');
 
   parsedLyrics = parseLyrics(row['Lyrics'] || '');
