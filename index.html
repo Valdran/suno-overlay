@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spooky Audio Player</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Carrois+Gothic+SC&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
   <div class="container">
@@ -29,14 +33,20 @@
         </div>
       </div>
     </div>
+
     <div class="metadata">
       <img id="coverArt" class="cover" src="" alt="Cover Art">
       <div class="title" id="songTitle">Loading title…</div>
       <div class="artist" id="artistName">Loading artist…</div>
     </div>
   </div>
+
   <audio id="audioPlayer"></audio>
+
+  <!-- CSV Parser -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js"></script>
+
+  <!-- Main JS -->
+  <script src="scripts/script.js"></script>
 </body>
 </html>
