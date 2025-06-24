@@ -119,18 +119,10 @@ Papa.parse(csvURL, {
   download: true,
   header: true,
   complete: (res) => {
-    let songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
+    const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
+    if (songs.length === 0) return;
 
-    songs.forEach(row => {
-      // Auto-fill image link if missing and AI music link is Suno
-      if ((!row['Image'] || row['Image'].trim() === '') && row['AI music link']?.includes('suno.com/song/')) {
-        const match = row['AI music link'].match(/suno\.com\/song\/([\w-]{36})/);
-        if (match) {
-          const id = match[1];
-          row['Image'] = `https://cdn2.suno.ai/image_large_${id}.jpeg`;
-        }
-      }
-
+    songs.forEach((row) => {
       const entry = document.createElement('div');
       entry.className = 'playlist-entry';
       entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
@@ -138,15 +130,13 @@ Papa.parse(csvURL, {
       playlistEntries.appendChild(entry);
     });
 
-    // Load the last song by default
-    if (songs.length > 0) loadTrack(songs[songs.length - 1]);
+    loadTrack(songs[songs.length - 1]);
   }
 });
 
 function loadTrack(row) {
   document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
   document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
-  document.getElementById('coverArt').src = convertCoverArtUrl(row['Image'] || row['Cover art'] || '');
   audio.src = convertDropboxAudio(row['Direct download link'] || '');
 
   parsedLyrics = parseLyrics(row['Lyrics'] || '');
@@ -154,6 +144,29 @@ function loadTrack(row) {
 
   audio.pause();
   playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
+
+  const coverArt = document.getElementById('coverArt');
+  const aiLink = row['AI music link'] || '';
+  const imageCell = row['Image'];
+
+  if (imageCell && !aiLink.includes('/s/')) {
+    coverArt.src = convertCoverArtUrl(imageCell);
+  } else if (aiLink.includes('/s/')) {
+    fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.imageUrl) {
+          coverArt.src = data.imageUrl;
+        } else {
+          coverArt.src = ''; // fallback or placeholder
+        }
+      })
+      .catch(() => {
+        coverArt.src = ''; // fallback
+      });
+  } else {
+    coverArt.src = ''; // no image fallback
+  }
 }
 
 audio.onplay = () => {
