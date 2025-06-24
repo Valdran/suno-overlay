@@ -1,0 +1,236 @@
+/* styles.css */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: black;
+  font-family: 'Carrois Gothic SC', sans-serif;
+  color: #ff1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lyrics-box {
+  width: 400px;
+  height: 300px;
+  overflow: hidden;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid black;
+  font-family: 'Rubik', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+.lyrics-inner {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 1rem;
+}
+
+.lyric-line {
+  opacity: 0.1;
+  transition: all 0.4s ease;
+  margin: 4px 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.lyric-line.medium { font-size: 1.5rem; }
+.lyric-line.large { font-size: 1.8rem; }
+
+.lyric-line.active {
+  color: #ff4d4d;
+  opacity: 1;
+  font-weight: bold;
+  animation: glow 1s infinite;
+  text-shadow: 0 0 10px red;
+}
+
+@keyframes glow {
+  0% { text-shadow: 0 0 8px red; }
+  50% { text-shadow: 0 0 20px red; }
+  100% { text-shadow: 0 0 8px red; }
+}
+
+.player-wrapper {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.custom-player {
+  display: flex;
+  align-items: center;
+  background: black;
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 5px #00ff00;
+  border-radius: 8px;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.play-button {
+  width: 32px;
+  height: 32px;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
+  background-size: contain;
+  filter: drop-shadow(0 0 4px #00ff00);
+  cursor: pointer;
+}
+
+.playlist-button {
+  width: 24px;
+  height: 24px;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
+  background-size: contain;
+  filter: drop-shadow(0 0 4px #00ff00);
+  cursor: pointer;
+}
+
+.progress {
+  flex-grow: 1;
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: red;
+  border-radius: 4px;
+  width: 0%;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px red; }
+  50% { box-shadow: 0 0 15px red; }
+  100% { box-shadow: 0 0 5px red; }
+}
+
+.time {
+  font-size: 0.8rem;
+  min-width: 45px;
+  text-align: center;
+}
+
+.playlist-panel {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  background: black;
+  border: 2px solid #111;
+  padding: 0.5rem;
+  display: none;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  animation: fadein 0.3s ease-out forwards;
+  z-index: 3;
+}
+
+.playlist-panel.visible {
+  display: flex;
+}
+
+.playlist-panel.fadeout {
+  animation: fadeout 0.3s ease-in forwards;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+.playlist-title {
+  background: #0f0;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.playlist-entry {
+  color: #ff1a1a;
+  padding: 0.2rem;
+  cursor: pointer;
+  text-shadow: 0 0 3px #ff1a1a;
+}
+
+.playlist-entry:hover {
+  background: #111;
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.cover {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #111;
+  box-shadow: 0 0 20px 10px red;
+}
+
+.title, .artist {
+  font-family: 'Creepster', cursive;
+  -webkit-text-stroke: 1px black;
+  text-align: center;
+}
+
+.title {
+  color: #ff4d4d;
+  font-size: 2.2rem;
+  margin-top: 1rem;
+}
+
+.artist {
+  color: #0f0;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
