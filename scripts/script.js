@@ -27,6 +27,15 @@ if (skinSelector) {
   });
 }
 
+const skins = ["styles/styles", "styles/skin-retro", "styles/skin-angel", "styles/skin-haunted", "styles/skin-metal", "styles/skin-steel", "styles/skin-storytellerz"];
+let currentSkinIndex = 0;
+
+document.getElementById("toggleSkin").addEventListener("click", () => {
+  currentSkinIndex = (currentSkinIndex + 1) % skins.length;
+  const link = document.getElementById("theme-link");
+  link.href = `${skins[currentSkinIndex]}.css`;
+});
+
 // Utilities
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
