@@ -11,30 +11,26 @@ const togglePlaylist = document.getElementById('togglePlaylist');
 const playlistPanel = document.getElementById('playlistPanel');
 const playlistEntries = document.getElementById('playlistEntries');
 
-// Skin Switcher
-const skinSelector = document.getElementById('skinSelect');
-
-function changeSkin(skinPath) {
-  const link = document.getElementById("theme-link");
-  if (link) {
-    link.href = `${skinPath}.css`;
-  }
-}
-
-if (skinSelector) {
-  skinSelector.addEventListener('change', function () {
-    changeSkin(this.value);
-  });
-}
-
-const skins = ["styles/styles", "styles/skin-retro", "styles/skin-angel", "styles/skin-haunted", "styles/skin-metal", "styles/skin-steel", "styles/skin-storytellerz"];
+// Skin Switcher (Button Only)
+const skins = [
+  "styles/styles",
+  "styles/skin-retro",
+  "styles/skin-angel",
+  "styles/skin-haunted",
+  "styles/skin-metal",
+  "styles/skin-steel",
+  "styles/skin-storytellerz"
+];
 let currentSkinIndex = 0;
 
-document.getElementById("toggleSkin").addEventListener("click", () => {
-  currentSkinIndex = (currentSkinIndex + 1) % skins.length;
-  const link = document.getElementById("theme-link");
-  link.href = `${skins[currentSkinIndex]}.css`;
-});
+const skinButton = document.getElementById("toggleSkin");
+if (skinButton) {
+  skinButton.addEventListener("click", () => {
+    currentSkinIndex = (currentSkinIndex + 1) % skins.length;
+    const link = document.getElementById("theme-link");
+    link.href = `${skins[currentSkinIndex]}.css`;
+  });
+}
 
 // Utilities
 function formatTime(sec) {
@@ -80,7 +76,7 @@ togglePlaylist.addEventListener('click', () => {
 function convertCoverArtUrl(url) {
   if (!url) return '';
   if (url.includes('drive.google.com')) {
-    const match = url.match(/\/d\/([-\w]{25,})/);
+    const match = url.match(/\/d\/([\-\w]{25,})/);
     return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : '';
   }
   if (url.includes('dropbox.com')) {
@@ -183,4 +179,29 @@ function loadTrack(row) {
   const imageCell = row['Image'];
 
   if (imageCell && !aiLink.includes('/s/')) {
-    coverArt.src = conv
+    coverArt.src = convertCoverArtUrl(imageCell);
+  } else if (aiLink.includes('/s/')) {
+    fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.imageUrl) {
+          coverArt.src = data.imageUrl;
+        } else {
+          coverArt.src = '';
+        }
+      })
+      .catch(() => {
+        coverArt.src = '';
+      });
+  } else {
+    coverArt.src = '';
+  }
+}
+
+audio.onplay = () => {
+  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
+};
+
+audio.onpause = () => {
+  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
+};
