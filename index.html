@@ -6,12 +6,28 @@
   <title>Spooky Audio Player</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet">
 
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="styles/styles.css">
+  <!-- Dynamic CSS Link -->
+  <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
+  <!-- Skin Switcher UI -->
+  <div style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
+    <label for="skinSelect" style="color: white; font-family: sans-serif;">Skin:</label>
+    <select id="skinSelect">
+      <option value="styles/styles">Default</option>
+      <option value="styles/skin-retro">Retro</option>
+      <option value="styles/skin-angel">Angel</option>
+      <option value="styles/skin-haunted">Haunted</option>
+      <option value="styles/skin-metal">Metal</option>
+      <option value="styles/skin-steel">Steel</option>
+      <option value="styles/skin-neon">Neon</option>
+      <option value="styles/skin-storytellerz">Haunted</option>
+    </select>
+  </div>
+
+  <!-- Main Player Container -->
   <div class="container">
     <div class="left-section">
       <div class="lyrics-box" id="lyricsBox">
@@ -46,7 +62,7 @@
   <!-- CSV Parser -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- Main JS -->
+  <!-- Main Script -->
   <script src="scripts/script.js"></script>
 </body>
 </html>
