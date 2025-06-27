@@ -1,0 +1,68 @@
+/* skin-retro.css — overrides for retro vaporwave skin */
+
+body {
+  background: linear-gradient(to right, #2d004d, #660066);
+  color: #ff80ff;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.lyrics-box {
+  background: rgba(255, 128, 255, 0.1);
+  border-color: #ff80ff;
+}
+
+.lyric-line {
+  color: #ffb3ff;
+}
+
+.lyric-line.active {
+  color: #fff;
+  text-shadow: 0 0 15px #ff66ff, 0 0 30px #cc00cc;
+}
+
+.custom-player {
+  background: #1a001a;
+  border-color: #00ffff;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+.play-button {
+  filter: drop-shadow(0 0 6px #00ffff);
+}
+
+.playlist-button {
+  filter: drop-shadow(0 0 6px #00ffff);
+}
+
+.progress-bar {
+  background: #00ffff;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+.playlist-panel {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: #333;
+}
+
+.playlist-entry {
+  color: #ff80ff;
+  text-shadow: 0 0 4px #ff80ff;
+}
+
+.playlist-entry:hover {
+  background: #330033;
+}
+
+.cover {
+  box-shadow: 0 0 30px 10px #cc00cc;
+}
+
+.title {
+  color: #ff66ff;
+  text-shadow: 0 0 5px #ff66ff;
+}
+
+.artist {
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+}
