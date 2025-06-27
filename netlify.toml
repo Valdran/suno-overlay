@@ -4,9 +4,7 @@
 
 [dev]
   functions = "netlify/functions"
+  framework = "#static"
 
 [functions]
   directory = "netlify/functions"
-
-[dev]
-  framework = "#static"
