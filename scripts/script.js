@@ -1,3 +1,4 @@
+// Audio Player Core
 const csvURL = '/.netlify/functions/fetchSheet';
 const audio = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playButton');
@@ -10,12 +11,30 @@ const togglePlaylist = document.getElementById('togglePlaylist');
 const playlistPanel = document.getElementById('playlistPanel');
 const playlistEntries = document.getElementById('playlistEntries');
 
+// Skin Switcher
+const skinSelector = document.getElementById('skinSelect');
+
+function changeSkin(skinPath) {
+  const link = document.getElementById("theme-link");
+  if (link) {
+    link.href = `${skinPath}.css`;
+  }
+}
+
+if (skinSelector) {
+  skinSelector.addEventListener('change', function () {
+    changeSkin(this.value);
+  });
+}
+
+// Utilities
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60).toString().padStart(2, '0');
   return `${m}:${s}`;
 }
 
+// Player Controls
 playBtn.addEventListener('click', () => {
   audio.paused ? audio.play() : audio.pause();
 });
@@ -35,6 +54,7 @@ progressBar.addEventListener('click', (e) => {
   audio.currentTime = percent * audio.duration;
 });
 
+// Playlist toggle
 togglePlaylist.addEventListener('click', () => {
   if (playlistPanel.classList.contains('visible')) {
     playlistPanel.classList.remove('visible');
@@ -47,6 +67,7 @@ togglePlaylist.addEventListener('click', () => {
   }
 });
 
+// URL Helpers
 function convertCoverArtUrl(url) {
   if (!url) return '';
   if (url.includes('drive.google.com')) {
@@ -63,6 +84,7 @@ function convertDropboxAudio(url) {
   return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
 }
 
+// Lyrics Handling
 let parsedLyrics = [];
 let hasTimestamps = false;
 
@@ -115,6 +137,7 @@ function updateLyricsBox(currentTime) {
   }
 }
 
+// CSV Fetching
 Papa.parse(csvURL, {
   download: true,
   header: true,
@@ -134,6 +157,7 @@ Papa.parse(csvURL, {
   }
 });
 
+// Track Loader
 function loadTrack(row) {
   document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
   document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
@@ -150,29 +174,4 @@ function loadTrack(row) {
   const imageCell = row['Image'];
 
   if (imageCell && !aiLink.includes('/s/')) {
-    coverArt.src = convertCoverArtUrl(imageCell);
-  } else if (aiLink.includes('/s/')) {
-    fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.imageUrl) {
-          coverArt.src = data.imageUrl;
-        } else {
-          coverArt.src = ''; // fallback or placeholder
-        }
-      })
-      .catch(() => {
-        coverArt.src = ''; // fallback
-      });
-  } else {
-    coverArt.src = ''; // no image fallback
-  }
-}
-
-audio.onplay = () => {
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
-};
-
-audio.onpause = () => {
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
-};
+    coverArt.src = conv
