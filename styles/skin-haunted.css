@@ -1,1 +1,148 @@
+/* skin-haunted.css */
+body {
+  background: linear-gradient(135deg, #0d0000, #2a0000);
+  color: #ff3333;
+  font-family: 'Creepster', cursive;
+}
+
+.container {
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.lyrics-box {
+  background: rgba(30, 0, 0, 0.6);
+  border: 1px solid #330000;
+  color: #ff4d4d;
+  box-shadow: 0 0 20px 3px #ff1a1a;
+  font-family: 'Rubik', sans-serif;
+}
+
+.lyric-line.active {
+  color: #ff1a1a;
+  opacity: 1;
+  font-weight: 900;
+  text-shadow:
+    0 0 10px #ff0000,
+    0 0 20px #ff3333,
+    0 0 30px #ff6666;
+  animation: flickerHaunted 1.2s infinite;
+}
+
+@keyframes flickerHaunted {
+  0%, 100% {
+    text-shadow:
+      0 0 10px #ff0000,
+      0 0 20px #ff3333,
+      0 0 30px #ff6666;
+  }
+  50% {
+    text-shadow:
+      0 0 5px #ff0000,
+      0 0 10px #ff3300,
+      0 0 15px #ff6600;
+  }
+}
+
+.custom-player {
+  background: #1a0000;
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+  color: #ff4d4d;
+  font-family: 'Creepster', cursive;
+}
+
+.play-button, .playlist-button, .skin-button {
+  filter: drop-shadow(0 0 6px #ff0000);
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.play-button:hover, .playlist-button:hover, .skin-button:hover {
+  filter: drop-shadow(0 0 15px #ff3300);
+}
+
+.play-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff0000/play--v1.png');
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+}
+
+.playlist-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff0000/menu.png');
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+}
+
+.skin-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff0000/easel.png');
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+}
+
+/* Haunted cover art frame */
+.cover {
+  border-radius: 20px;
+  border: 6px solid #7f0000;
+  box-shadow:
+    0 0 30px 15px #990000,
+    inset 0 0 20px 3px #660000;
+  background: radial-gradient(circle at center, #330000, #7f0000);
+  transition: box-shadow 0.3s ease;
+}
+
+.cover:hover {
+  box-shadow:
+    0 0 40px 25px #ff0000,
+    inset 0 0 30px 5px #cc0000;
+}
+
+.title, .artist {
+  color: #ff1a1a;
+  -webkit-text-stroke: 1.2px black;
+  font-weight: 900;
+  text-shadow:
+    0 0 10px #ff0000,
+    0 0 20px #cc0000;
+  font-family: 'Creepster', cursive;
+}
+
+.title {
+  font-size: 2.6rem;
+  margin-top: 1rem;
+}
+
+.artist {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Progress bar & Time styling */
+.progress {
+  background: #330000;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  background: #ff0000;
+  animation: pulseHaunted 1.2s ease-in-out infinite;
+}
+
+@keyframes pulseHaunted {
+  0%, 100% {
+    box-shadow: 0 0 8px #ff0000;
+  }
+  50% {
+    box-shadow: 0 0 20px #ff3333;
+  }
+}
+
+.time {
+  color: #ff1a1a;
+  font-weight: 700;
+  font-family: 'Creepster', cursive;
+}
 
