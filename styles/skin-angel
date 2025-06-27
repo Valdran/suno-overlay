@@ -1,1 +1,131 @@
+/* skin-angel.css */
+body {
+  background: linear-gradient(135deg, #e6f0ff, #ffffff);
+  color: #3a3a3a;
+  font-family: 'Carrois Gothic SC', sans-serif;
+}
+
+.container {
+  /* keep your spacing */
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.lyrics-box {
+  background: rgba(240, 248, 255, 0.7); /* light sky blue */
+  border: 1px solid #a3c0f7;
+  color: #2a2a2a;
+  box-shadow: 0 0 15px 3px #cce0ff;
+}
+
+.lyric-line.active {
+  color: #1a3eff;
+  opacity: 1;
+  font-weight: 700;
+  text-shadow:
+    0 0 8px #6fa8ff,
+    0 0 20px #a4c2f4;
+  animation: glowAngel 1.5s ease-in-out infinite;
+}
+
+@keyframes glowAngel {
+  0%, 100% {
+    text-shadow: 0 0 8px #6fa8ff, 0 0 20px #a4c2f4;
+  }
+  50% {
+    text-shadow: 0 0 16px #8ab4ff, 0 0 30px #c3dbff;
+  }
+}
+
+.custom-player {
+  background: #f5faff;
+  border: 1px solid #a3c0f7;
+  box-shadow: 0 0 10px #7eaaff;
+  color: #1a3eff;
+}
+
+.play-button, .playlist-button, .skin-button {
+  filter: drop-shadow(0 0 5px #7eaaff);
+  cursor: pointer;
+}
+
+.play-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/007fff/play--v1.png');
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+}
+
+.playlist-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/007fff/menu.png');
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+}
+
+.skin-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/007fff/easel.png');
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+}
+
+/* Cover Art Angelic Frame */
+.cover {
+  border-radius: 20px;
+  border: 5px solid #cce0ff;
+  box-shadow:
+    0 0 20px 10px #a3c0f7,
+    inset 0 0 20px 2px #dbe9ff;
+  background: radial-gradient(circle at center, #f0f7ff, #a3c0f7);
+  transition: box-shadow 0.3s ease;
+}
+
+.cover:hover {
+  box-shadow:
+    0 0 30px 15px #7eaaff,
+    inset 0 0 25px 5px #cde0ff;
+}
+
+.title, .artist {
+  color: #2a4db7;
+  -webkit-text-stroke: 0.8px #aec8ff;
+  font-weight: 700;
+  text-shadow: 0 0 10px #accbff;
+}
+
+.title {
+  font-size: 2.4rem;
+  margin-top: 1rem;
+}
+
+.artist {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+/* Progress bar & Time styling */
+.progress {
+  background: #d9e6ff;
+}
+
+.progress-bar {
+  background: #3a65f9;
+  animation: pulseAngel 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseAngel {
+  0%, 100% {
+    box-shadow: 0 0 5px #3a65f9;
+  }
+  50% {
+    box-shadow: 0 0 20px #668eff;
+  }
+}
+
+.time {
+  color: #2a4db7;
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+}
 
