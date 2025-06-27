@@ -1,1 +1,315 @@
+/* skin-storytellerz.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+body {
+  margin: 0;
+  background: 
+    linear-gradient(135deg, #0a1e3f 0%, #0a1e3f 40%, #1f1f1f 80%),
+    radial-gradient(circle at top right, #d4af37, transparent 70%);
+  background-blend-mode: screen, normal;
+  font-family: 'Poppins', sans-serif;
+  color: #d4af37;
+  user-select: none;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Wave pattern overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background: url('https://i.imgur.com/XgKLGJE.png') repeat-x;
+  background-size: 300px 100px;
+  opacity: 0.12;
+  animation: waveShift 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes waveShift {
+  from { background-position-x: 0; }
+  to { background-position-x: 3000px; }
+}
+
+.container {
+  padding: 2rem;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+/* Lyrics Box */
+.lyrics-box {
+  background: rgba(15, 15, 20, 0.85);
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 20px 3px #d4af37;
+  color: #f7e68d;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  padding: 1rem;
+  width: 420px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+
+/* Microphone icon top right */
+.lyrics-box::after {
+  content: url('https://img.icons8.com/ios-filled/24/d4af37/microphone.png');
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0.3;
+  pointer-events: none;
+  filter: drop-shadow(0 0 1px #d4af37);
+}
+
+.lyric-line {
+  opacity: 0.3;
+  margin: 4px 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  transition: all 0.4s ease;
+  color: #f7e68d;
+}
+
+.lyric-line.medium { font-size: 1.6rem; }
+.lyric-line.large { font-size: 1.9rem; }
+
+.lyric-line.active {
+  opacity: 1;
+  font-weight: 700;
+  color: #fff3b0;
+  text-shadow:
+    0 0 8px #d4af37,
+    0 0 20px #ffd700;
+  animation: glowGold 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowGold {
+  0%, 100% {
+    text-shadow:
+      0 0 8px #d4af37,
+      0 0 20px #ffd700;
+  }
+  50% {
+    text-shadow:
+      0 0 15px #fff8b5,
+      0 0 30px #ffec4d;
+  }
+}
+
+/* Player */
+.custom-player {
+  background: #1a1a1a;
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 15px #d4af37;
+  color: #fff3b0;
+  border-radius: 14px;
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Icons with gold glow */
+.play-button, .playlist-button, .skin-button {
+  filter: drop-shadow(0 0 6px #d4af37);
+  cursor: pointer;
+  transition: filter 0.3s ease;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border-radius: 5px;
+}
+
+.play-button:hover, .playlist-button:hover, .skin-button:hover {
+  filter: drop-shadow(0 0 18px #fff07a);
+}
+
+.play-button {
+  width: 34px;
+  height: 34px;
+  background-image: url('https://img.icons8.com/ios-filled/50/d4af37/play--v1.png');
+}
+
+.playlist-button {
+  width: 26px;
+  height: 26px;
+  background-image: url('https://img.icons8.com/ios-filled/50/d4af37/menu.png');
+}
+
+.skin-button {
+  width: 26px;
+  height: 26px;
+  background-image: url('https://img.icons8.com/ios-filled/50/d4af37/easel.png');
+}
+
+/* Progress bar & Time */
+.progress {
+  flex-grow: 1;
+  height: 8px;
+  background: #111111;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: inset 0 0 8px #d4af37;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37 0%, #fff07a 100%);
+  border-radius: 6px;
+  width: 0%;
+  animation: pulseGold 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGold {
+  0% {
+    box-shadow: 0 0 8px #d4af37;
+  }
+  100% {
+    box-shadow: 0 0 25px #fff07a;
+  }
+}
+
+.time {
+  color: #fff3b0;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  min-width: 55px;
+  text-align: center;
+  user-select: none;
+}
+
+/* Playlist panel */
+.playlist-panel {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  background: rgba(26, 26, 26, 0.9);
+  border: 2px solid #d4af37;
+  padding: 0.5rem;
+  display: none;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  animation: fadein 0.3s ease-out forwards;
+  z-index: 3;
+  scrollbar-width: thin;
+  scrollbar-color: #d4af37 #1a1a1a;
+}
+
+.playlist-panel.visible {
+  display: flex;
+}
+
+.playlist-panel.fadeout {
+  animation: fadeout 0.3s ease-in forwards;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+.playlist-title {
+  background: #d4af37;
+  color: #1a1a1a;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.2rem;
+  margin-bottom: 0.3rem;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 6px;
+}
+
+.playlist-entry {
+  color: #fff3b0;
+  padding: 0.3rem 0.4rem;
+  cursor: pointer;
+  text-shadow: 0 0 2px #d4af37;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+.playlist-entry:hover {
+  background: #2b2b2b;
+}
+
+/* Metadata (cover art, title, artist) */
+.metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.cover {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 5px solid #d4af37;
+  box-shadow:
+    0 0 40px 15px #fff07a,
+    inset 0 0 20px 5px #d4af37;
+  background: #1a1a1a;
+  transition: box-shadow 0.3s ease;
+  position: relative;
+}
+
+/* Music note icon bottom left on cover */
+.cover::before {
+  content: url('https://img.icons8.com/ios-filled/36/d4af37/musical-notes.png');
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0.25;
+  pointer-events: none;
+  filter: drop-shadow(0 0 2px #d4af37);
+}
+
+.cover:hover {
+  box-shadow:
+    0 0 60px 25px #fff07a,
+    inset 0 0 30px 8px #fff07a;
+}
+
+.title, .artist {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  text-align: center;
+  color: #fff3b0;
+  text-shadow: 0 0 6px #d4af37;
+  margin: 0.6rem 0;
+}
+
+.title {
+  font-size: 2.8rem;
+}
+
+.artist {
+  font-size: 1.7rem;
+}
 
