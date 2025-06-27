@@ -234,3 +234,12 @@ body {
   font-size: 1.4rem;
   margin-bottom: 1rem;
 }
+
+.skin-button {
+  width: 24px;
+  height: 24px;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center;
+  background-size: contain;
+  filter: drop-shadow(0 0 4px #00ff00);
+  cursor: pointer;
+}
