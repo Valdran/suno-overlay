@@ -242,4 +242,8 @@ body {
   background-size: contain;
   filter: drop-shadow(0 0 4px #00ff00);
   cursor: pointer;
+  .skin-button {
+  background-color: lime;
+  border: 1px solid red;
+}
 }
