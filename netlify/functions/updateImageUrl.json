@@ -1,0 +1,81 @@
+import { google } from 'googleapis';
+
+const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+const sheetId = process.env.SHEET_ID;
+
+export async function handler(event) {
+  try {
+    if (event.httpMethod !== 'POST') {
+      return {
+        statusCode: 405,
+        body: JSON.stringify({ error: 'Method not allowed' }),
+      };
+    }
+
+    const body = JSON.parse(event.body);
+    const { shortlink, imageUrl } = body;
+
+    if (!shortlink || !imageUrl) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing shortlink or imageUrl in request body' }),
+      };
+    }
+
+    // Authorize JWT client
+    const auth = new google.auth.JWT(
+      clientEmail,
+      null,
+      privateKey,
+      ['https://www.googleapis.com/auth/spreadsheets']
+    );
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    // Read the sheet to find the row with matching shortlink
+    const getResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: sheetId,
+      range: 'Sheet1!A:E'  // Adjust range to cover columns and rows where shortlink might be
+    });
+
+    const rows = getResponse.data.values || [];
+
+    // Find the row index for the matching shortlink (assume shortlink is in column "AI music link" which is col C = index 2)
+    let rowIndex = -1;
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i][2] === shortlink) {
+        rowIndex = i + 1; // +1 because Sheets are 1-indexed for API updates
+        break;
+      }
+    }
+
+    if (rowIndex === -1) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: 'Shortlink not found in sheet' }),
+      };
+    }
+
+    // Update the Image column (D = index 3) with the imageUrl
+    const updateResponse = await sheets.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: `Sheet1!D${rowIndex}`,
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [[imageUrl]]
+      }
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Image URL updated successfully', updatedRange: updateResponse.data.updatedRange }),
+    };
+
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
+  }
+}
