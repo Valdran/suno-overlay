@@ -7,28 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentTime = document.getElementById('currentTime');
   const duration = document.getElementById('duration');
   const lyricsInner = document.getElementById('lyricsInner');
-  const playlistToggleButton = document.getElementById('playlistToggleButton'); // ✅ Match actual ID
+  const playlistToggleButton = document.getElementById('togglePlaylist');
   const playlistPanel = document.getElementById('playlistPanel');
   const playlistEntries = document.getElementById('playlistEntries');
   const skinButton = document.getElementById("toggleSkin");
   const themeLink = document.getElementById('theme-link');
 
-  // ✅ Playlist toggle (fixed)
-  if (playlistToggleButton) {
-    playlistToggleButton.addEventListener('click', () => {
-      if (playlistPanel.classList.contains('visible')) {
-        playlistPanel.classList.remove('visible');
-        playlistPanel.classList.add('fadeout');
-        setTimeout(() => playlistPanel.style.display = 'none', 300);
-      } else {
-        playlistPanel.classList.remove('fadeout');
-        playlistPanel.style.display = 'flex';
-        playlistPanel.classList.add('visible');
-      }
-    });
-  }
-
-  // ✅ Skin button toggle (no select required)
+  // Skins
   const skins = [
     "styles/styles",
     "styles/skin-retro",
@@ -47,10 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  // Playlist toggle button
-  if (togglePlaylist) {
-    togglePlaylist.addEventListener('click', () => {
+  // Playlist toggle
+  if (playlistToggleButton) {
+    playlistToggleButton.addEventListener('click', () => {
       if (playlistPanel.classList.contains('visible')) {
         playlistPanel.classList.remove('visible');
         playlistPanel.classList.add('fadeout');
@@ -70,20 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${m}:${s}`;
   }
 
-  // Play/Pause button
+  // Play/pause control
   playBtn.addEventListener('click', () => {
     audio.paused ? audio.play() : audio.pause();
   });
 
-  audio.onplay = () => {
-    playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
-  };
-
-  audio.onpause = () => {
-    playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
-  };
-
-  // Progress bar update
   audio.ontimeupdate = () => {
     const percent = (audio.currentTime / audio.duration) * 100;
     progressFill.style.width = percent + '%';
@@ -99,7 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.currentTime = percent * audio.duration;
   });
 
-  // Cover art helper
+  audio.onplay = () => {
+    playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
+  };
+
+  audio.onpause = () => {
+    playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
+  };
+
+  // Utilities
   function convertCoverArtUrl(url) {
     if (!url) return '';
     if (url.includes('drive.google.com')) {
@@ -116,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
   }
 
-  // Lyrics parsing
+  // Lyrics Handling
   let parsedLyrics = [];
   let hasTimestamps = false;
 
@@ -169,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Load songs from CSV
+  // Load CSV
   Papa.parse(csvURL, {
     download: true,
     header: true,
@@ -185,11 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
         playlistEntries.appendChild(entry);
       });
 
-      loadTrack(songs[songs.length - 1]); // Load last song by default
+      loadTrack(songs[songs.length - 1]);
     }
   });
 
-  // Track loader
   function loadTrack(row) {
     document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
     document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
@@ -211,7 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
       fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
         .then(res => res.json())
         .then(data => {
-          coverArt.src = data.imageUrl || '';
+          if (data.imageUrl) {
+            coverArt.src = data.imageUrl;
+          } else {
+            coverArt.src = '';
+          }
         })
         .catch(() => {
           coverArt.src = '';
