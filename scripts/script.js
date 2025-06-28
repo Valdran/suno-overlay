@@ -1,4 +1,4 @@
-const csvURL = '/.netlify/functions/fetchSheet';
+// Core DOM elements
 const audio = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playButton');
 const progressBar = document.getElementById('progressBar');
@@ -6,54 +6,27 @@ const progressFill = document.getElementById('progressFill');
 const currentTime = document.getElementById('currentTime');
 const duration = document.getElementById('duration');
 const lyricsInner = document.getElementById('lyricsInner');
-const togglePlaylist = document.getElementById('togglePlaylist');
 const playlistPanel = document.getElementById('playlistPanel');
 const playlistEntries = document.getElementById('playlistEntries');
+const playlistToggleButton = document.getElementById('playlistToggleButton');
 
-// Skin Switcher
-const skins = [
-  "styles/styles",
-  "styles/skin-retro",
-  "styles/skin-angel",
-  "styles/skin-haunted",
-  "styles/skin-metal",
-  "styles/skin-steel",
-  "styles/skin-storytellerz"
-];
-let currentSkinIndex = 0;
-const skinButton = document.getElementById("toggleSkin");
-if (skinButton) {
-  skinButton.addEventListener("click", () => {
-    currentSkinIndex = (currentSkinIndex + 1) % skins.length;
-    document.getElementById("theme-link").href = `${skins[currentSkinIndex]}.css`;
-  });
-}
+// CSV URL
+const csvURL = '/.netlify/functions/fetchSheet';
 
-// Toggle playlist
-togglePlaylist.addEventListener('click', () => {
-  if (playlistPanel.classList.contains('visible')) {
-    playlistPanel.classList.remove('visible');
-    playlistPanel.classList.add('fadeout');
-    setTimeout(() => playlistPanel.style.display = 'none', 300);
-  } else {
-    playlistPanel.classList.remove('fadeout');
-    playlistPanel.style.display = 'flex';
-    playlistPanel.classList.add('visible');
-  }
-});
-
-// Time format helper
-function formatTime(sec) {
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-// Audio control
+// Play/Pause Toggle
 playBtn.addEventListener('click', () => {
   audio.paused ? audio.play() : audio.pause();
 });
 
+audio.onplay = () => {
+  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
+};
+
+audio.onpause = () => {
+  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
+};
+
+// Progress Bar
 audio.ontimeupdate = () => {
   const percent = (audio.currentTime / audio.duration) * 100;
   progressFill.style.width = percent + '%';
@@ -64,18 +37,95 @@ audio.ontimeupdate = () => {
 
 progressBar.addEventListener('click', (e) => {
   const rect = progressBar.getBoundingClientRect();
-  const percent = (e.clientX - rect.left) / rect.width;
+  const x = e.clientX - rect.left;
+  const percent = x / rect.width;
   audio.currentTime = percent * audio.duration;
 });
 
-audio.onplay = () => {
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/000000/pause--v1.png")';
-};
-audio.onpause = () => {
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/000000/play--v1.png")';
-};
+// Format Time Helper
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
 
-// Utilities
+// Toggle Playlist Panel
+playlistToggleButton.addEventListener('click', () => {
+  if (playlistPanel.classList.contains('visible')) {
+    playlistPanel.classList.remove('visible');
+    playlistPanel.classList.add('fadeout');
+    setTimeout(() => playlistPanel.style.display = 'none', 300);
+  } else {
+    playlistPanel.style.display = 'flex';
+    playlistPanel.classList.remove('fadeout');
+    playlistPanel.classList.add('visible');
+  }
+});
+
+// Skin Dropdown
+const easelIcon = document.getElementById('easelIcon');
+const skinSelect = document.getElementById('skinSelect');
+const themeLink = document.getElementById('theme-link');
+
+easelIcon.addEventListener('click', () => {
+  skinSelect.style.display = skinSelect.style.display === 'block' ? 'none' : 'block';
+});
+
+skinSelect.addEventListener('change', () => {
+  themeLink.href = `${skinSelect.value}.css`;
+  skinSelect.style.display = 'none';
+});
+
+// CSV Parse & Playlist
+Papa.parse(csvURL, {
+  download: true,
+  header: true,
+  complete: (res) => {
+    const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
+    if (songs.length === 0) return;
+
+    songs.forEach((row) => {
+      const entry = document.createElement('div');
+      entry.className = 'playlist-entry';
+      entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
+      entry.addEventListener('click', () => loadTrack(row));
+      playlistEntries.appendChild(entry);
+    });
+
+    loadTrack(songs[songs.length - 1]); // Load the last song by default
+  }
+});
+
+// Load Track
+function loadTrack(row) {
+  document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
+  document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
+  audio.src = convertDropboxAudio(row['Direct download link'] || '');
+
+  parsedLyrics = parseLyrics(row['Lyrics'] || '');
+  updateLyricsBox(0);
+  audio.pause();
+
+  const coverArt = document.getElementById('coverArt');
+  const aiLink = row['AI music link'] || '';
+  const imageCell = row['Image'];
+
+  if (imageCell && !aiLink.includes('/s/')) {
+    coverArt.src = convertCoverArtUrl(imageCell);
+  } else if (aiLink.includes('/s/')) {
+    fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
+      .then(res => res.json())
+      .then(data => {
+        coverArt.src = data.imageUrl || '';
+      }).catch(() => {
+        coverArt.src = '';
+      });
+  } else {
+    coverArt.src = '';
+  }
+}
+
+// Helpers
 function convertCoverArtUrl(url) {
   if (!url) return '';
   if (url.includes('drive.google.com')) {
@@ -92,12 +142,13 @@ function convertDropboxAudio(url) {
   return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
 }
 
-// Parse lyrics
+// Lyrics Parsing
 let parsedLyrics = [];
 let hasTimestamps = false;
 
 function parseLyrics(raw) {
-  const lines = raw.split('\n').map(line => {
+  const lines = raw.split('\n');
+  const parsed = lines.map((line) => {
     const match = line.match(/\[(\d+)\.(\d+)]\s*(.+)/);
     if (match) {
       const time = parseInt(match[1]) + parseInt(match[2]) / 100;
@@ -106,93 +157,32 @@ function parseLyrics(raw) {
       return { time: null, text: line.trim() };
     }
   }).filter(l => l.text);
-  hasTimestamps = parsedLyrics.some(l => l.time !== null);
-  return lines;
+  hasTimestamps = parsed.some(l => l.time !== null);
+  return parsed;
 }
 
-// Update lyrics on screen
 function updateLyricsBox(currentTime) {
   if (!hasTimestamps) return;
 
-  let activeIndex = parsedLyrics.findIndex((l, i) =>
+  const activeIndex = parsedLyrics.findIndex((l, i) =>
     currentTime >= l.time && (!parsedLyrics[i + 1] || currentTime < parsedLyrics[i + 1].time)
   );
-  if (activeIndex === -1) activeIndex = 0;
-
-  const linesToShow = 7;
-  const half = Math.floor(linesToShow / 2);
-  const elements = [];
-
-  for (let i = activeIndex - half; i <= activeIndex + half; i++) {
-    const div = document.createElement('div');
-    if (i < 0 || i >= parsedLyrics.length) {
-      div.className = 'lyric-line placeholder';
-      div.textContent = '';
-    } else {
-      div.className = `lyric-line line-${i - activeIndex + 4}`;
-      div.textContent = parsedLyrics[i].text;
-
-      if (i === activeIndex) {
-        div.classList.add('line-4');
-        if (parsedLyrics[i].text.length > 60) {
-          div.classList.add('shrink');
-        }
-      }
-    }
-    elements.push(div);
-  }
 
   lyricsInner.innerHTML = '';
-  elements.forEach(el => lyricsInner.appendChild(el));
-}
+  for (let i = -3; i <= 3; i++) {
+    const idx = activeIndex + i;
+    const div = document.createElement('div');
+    div.classList.add('lyric-line');
 
-// Load track from CSV row
-function loadTrack(row) {
-  document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
-  document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
-  audio.src = convertDropboxAudio(row['Direct download link'] || '');
+    if (idx >= 0 && idx < parsedLyrics.length) {
+      div.textContent = parsedLyrics[idx].text;
+    } else {
+      div.innerHTML = '&nbsp;';
+    }
 
-  parsedLyrics = parseLyrics(row['Lyrics'] || '');
-  updateLyricsBox(0);
-  audio.pause();
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/000000/play--v1.png")';
+    if (i === 0) div.classList.add('active');
+    else div.style.opacity = `${25 + (3 - Math.abs(i)) * 10}%`;
 
-  const coverArt = document.getElementById('coverArt');
-  const aiLink = row['AI music link'] || '';
-  const imageCell = row['Image'];
-
-  if (imageCell && !aiLink.includes('/s/')) {
-    coverArt.src = convertCoverArtUrl(imageCell);
-  } else if (aiLink.includes('/s/')) {
-    fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
-      .then(res => res.json())
-      .then(data => {
-        coverArt.src = data.imageUrl || '';
-      })
-      .catch(() => {
-        coverArt.src = '';
-      });
-  } else {
-    coverArt.src = '';
+    lyricsInner.appendChild(div);
   }
 }
-
-// Fetch CSV and populate playlist
-Papa.parse(csvURL, {
-  download: true,
-  header: true,
-  complete: (res) => {
-    const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
-    if (!songs.length) return;
-
-    songs.forEach(row => {
-      const entry = document.createElement('div');
-      entry.className = 'playlist-entry';
-      entry.textContent = `${row['Song title']} – ${row['Artist name']}`;
-      entry.addEventListener('click', () => loadTrack(row));
-      playlistEntries.appendChild(entry);
-    });
-
-    loadTrack(songs[songs.length - 1]);
-  }
-});
