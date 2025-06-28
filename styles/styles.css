@@ -5,7 +5,7 @@
 
 body {
   margin: 0;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.25); /* 25% black */
   font-family: 'Rubik', sans-serif;
   color: black;
   display: flex;
@@ -15,7 +15,7 @@ body {
   overflow: hidden;
 }
 
-/* Container Layout */
+/* Layout Containers */
 .container {
   display: flex;
   flex-direction: row;
@@ -24,7 +24,6 @@ body {
   align-items: flex-start;
 }
 
-/* Left Section Layout */
 .left-section {
   display: flex;
   flex-direction: column;
@@ -36,16 +35,14 @@ body {
 .lyrics-box {
   width: 400px;
   height: 300px;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.75);
+  padding: 0;
+  background: rgba(0, 0, 0, 0.25);
   border: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  font-family: 'Rubik', sans-serif;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  color: black;
 }
 
 .lyrics-inner {
@@ -54,43 +51,46 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  padding: 0;
 }
 
+/* 7 Lines, always shown, fade and scale progressively */
 .lyric-line {
-  transition: all 0.5s ease;
+  width: 100%;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  font-size: 1.2rem;
   color: white;
   text-shadow: 1px 1px 2px black;
-  opacity: 0.25;
-  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: 'Rubik', sans-serif;
+  line-height: 1.2;
 }
 
 .lyric-line.line-1 { opacity: 0.25; transform: scale(1); }
 .lyric-line.line-2 { opacity: 0.35; transform: scale(1); }
 .lyric-line.line-3 { opacity: 0.45; transform: scale(1); }
-.lyric-line.line-4 { opacity: 0.5; transform: scale(1); }
+.lyric-line.line-4 { opacity: 0.5;  transform: scale(1); }
 .lyric-line.line-5 { opacity: 0.45; transform: scale(1); }
 .lyric-line.line-6 { opacity: 0.35; transform: scale(1); }
 .lyric-line.line-7 { opacity: 0.25; transform: scale(1); }
 
 .lyric-line.active {
   opacity: 1 !important;
-  color: black;
-  text-shadow: none;
+  color: white !important;
   font-weight: bold;
   transform: scale(1.5);
+  text-shadow: 2px 2px 2px black;
 }
 
 .lyric-line.active.shrink {
-  font-size: 0.9rem;
   transform: scale(1.2);
+  font-size: 0.9rem;
 }
 
-/* Player Section */
+/* Audio Player */
 .player-wrapper {
   width: 400px;
   display: flex;
@@ -113,7 +113,6 @@ body {
   z-index: 2;
 }
 
-/* Buttons */
 .play-button {
   width: 32px;
   height: 32px;
@@ -152,7 +151,6 @@ body {
   width: 0%;
 }
 
-/* Time Display */
 .time {
   font-size: 0.8rem;
   min-width: 45px;
@@ -214,7 +212,7 @@ body {
   background: #ddd;
 }
 
-/* Metadata Section */
+/* Cover Art + Metadata */
 .metadata {
   display: flex;
   flex-direction: column;
@@ -228,7 +226,7 @@ body {
   object-fit: cover;
   border-radius: 12px;
   background: #111;
-  border: 5px solid white;
+  border: 6px solid white;
   box-shadow: none;
 }
 
@@ -237,15 +235,10 @@ body {
   color: white;
   font-size: 2rem;
   text-align: center;
-  -webkit-text-stroke: 1px black;
+  -webkit-text-stroke: 1.5px black;
   margin: 0.5rem 0;
 }
 
 .artist {
   font-size: 1.2rem;
-}
-
-/* Skin Button (Removed) */
-.skin-button {
-  display: none;
 }
