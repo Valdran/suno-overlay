@@ -38,7 +38,7 @@ body {
 .lyrics-box {
   width: 400px;
   height: 300px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.75);
   padding: 1rem;
   position: relative;
   overflow: hidden;
@@ -80,7 +80,7 @@ body {
 .lyric-line.line-3 { opacity: 0.45; transform: scale(1); }
 .lyric-line.line-4 {
   opacity: 1;
-  transform: scale(1.5);
+  transform: scale(1.7);
   font-weight: bold;
 }
 .lyric-line.line-5 { opacity: 0.45; transform: scale(1); }
@@ -132,7 +132,7 @@ body {
 .custom-player {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.75);
   border: 2px solid white;
   border-radius: 8px;
   width: 100%;
@@ -238,7 +238,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.75);
   padding: 1rem;
   border-radius: 12px;
 }
