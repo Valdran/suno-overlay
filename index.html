@@ -40,7 +40,6 @@
           <div id="playlistEntries"></div>
         </div>
         <div class="custom-player">
-          <div class="playlist-button" id="togglePlaylist"></div>
           <div class="play-button" id="playButton"></div>
           <div class="time" id="currentTime">0:00</div>
           <div class="progress" id="progressBar">
@@ -59,6 +58,21 @@
   </div>
 
   <audio id="audioPlayer"></audio>
+
+  <!-- Playlist Toggle in Bottom Right -->
+<div id="playlistToggleButton" style="
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 24px;
+  height: 24px;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
+  background-size: contain;
+  filter: drop-shadow(0 0 4px #00ff00);
+  cursor: pointer;
+  z-index: 1000;">
+</div>
+
 
   <!-- CSV Parser -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
