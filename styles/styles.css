@@ -3,9 +3,9 @@
 
 body {
   margin: 0;
-  background: black;
-  font-family: 'Carrois Gothic SC', sans-serif;
-  color: #ff1a1a;
+  background: transparent;
+  font-family: 'Rubik', sans-serif;
+  color: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +33,7 @@ body {
   height: 300px;
   overflow: hidden;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.75);
   border: 1px solid black;
   font-family: 'Rubik', sans-serif;
   display: flex;
@@ -41,6 +41,7 @@ body {
   justify-content: center;
   position: relative;
   text-align: left;
+  color: black;
 }
 
 .lyrics-inner {
@@ -55,28 +56,30 @@ body {
 }
 
 .lyric-line {
-  opacity: 0.1;
+  opacity: 0.25;
   transition: all 0.4s ease;
   margin: 4px 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.4;
+  color: black;
+  text-shadow: 1px 1px 2px white;
 }
 
-.lyric-line.medium { font-size: 1.5rem; }
-.lyric-line.large { font-size: 1.8rem; }
+.lyric-line.medium { font-size: 1.2rem; }
+.lyric-line.large { font-size: 1.5rem; }
 
 .lyric-line.active {
-  color: #ff4d4d;
   opacity: 1;
   font-weight: bold;
-  animation: glow 1s infinite;
-  text-shadow: 0 0 10px red;
+  animation: pulse-grow 1s infinite;
+  font-size: 2.25rem;
+  color: black;
+  text-shadow: 2px 2px 0 white;
 }
 
-@keyframes glow {
-  0% { text-shadow: 0 0 8px red; }
-  50% { text-shadow: 0 0 20px red; }
-  100% { text-shadow: 0 0 8px red; }
+@keyframes pulse-grow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.5); }
 }
 
 .player-wrapper {
@@ -90,9 +93,9 @@ body {
 .custom-player {
   display: flex;
   align-items: center;
-  background: black;
-  border: 1px solid #00ff00;
-  box-shadow: 0 0 5px #00ff00;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid white;
+  box-shadow: 0 0 5px white;
   border-radius: 8px;
   width: 100%;
   padding: 0.5rem 1rem;
@@ -104,25 +107,26 @@ body {
 .play-button {
   width: 32px;
   height: 32px;
-  background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
+  background: url('https://img.icons8.com/ios-filled/50/000000/play--v1.png') no-repeat center;
   background-size: contain;
-  filter: drop-shadow(0 0 4px #00ff00);
   cursor: pointer;
 }
 
 .playlist-button {
   width: 24px;
   height: 24px;
-  background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
+  background: url('https://img.icons8.com/ios-filled/50/000000/menu.png') no-repeat center;
   background-size: contain;
-  filter: drop-shadow(0 0 4px #00ff00);
   cursor: pointer;
+  position: absolute;
+  bottom: -40px;
+  right: 0;
 }
 
 .progress {
   flex-grow: 1;
   height: 8px;
-  background: #333;
+  background: #ccc;
   border-radius: 4px;
   cursor: pointer;
   position: relative;
@@ -130,29 +134,24 @@ body {
 
 .progress-bar {
   height: 100%;
-  background: red;
+  background: black;
   border-radius: 4px;
   width: 0%;
-  animation: pulse 1.2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 5px red; }
-  50% { box-shadow: 0 0 15px red; }
-  100% { box-shadow: 0 0 5px red; }
 }
 
 .time {
   font-size: 0.8rem;
   min-width: 45px;
   text-align: center;
+  color: black;
+  text-shadow: 1px 1px 2px white;
 }
 
 .playlist-panel {
   position: absolute;
   bottom: 100%;
   width: 100%;
-  background: black;
+  background: rgba(255,255,255,0.9);
   border: 2px solid #111;
   padding: 0.5rem;
   display: none;
@@ -182,8 +181,8 @@ body {
 }
 
 .playlist-title {
-  background: #0f0;
-  color: black;
+  background: black;
+  color: white;
   font-weight: bold;
   text-align: center;
   padding: 0.2rem;
@@ -191,14 +190,14 @@ body {
 }
 
 .playlist-entry {
-  color: #ff1a1a;
+  color: black;
   padding: 0.2rem;
   cursor: pointer;
-  text-shadow: 0 0 3px #ff1a1a;
+  text-shadow: 1px 1px 2px white;
 }
 
 .playlist-entry:hover {
-  background: #111;
+  background: #eee;
 }
 
 .metadata {
@@ -213,24 +212,31 @@ body {
   height: 300px;
   object-fit: cover;
   border-radius: 12px;
-  background: #111;
-  box-shadow: 0 0 20px 10px red;
+  background: #fff;
+  border: 6px solid white;
 }
 
 .title, .artist {
-  font-family: 'Creepster', cursive;
-  -webkit-text-stroke: 1px black;
+  font-family: 'Rubik', sans-serif;
+  color: white;
+  text-shadow: 2px 2px 0 black;
   text-align: center;
 }
 
 .title {
-  color: #ff4d4d;
   font-size: 2.2rem;
   margin-top: 1rem;
 }
 
 .artist {
-  color: #0f0;
   font-size: 1.4rem;
   margin-bottom: 1rem;
+}
+
+.skin-button {
+  width: 24px;
+  height: 24px;
+  background: url('https://img.icons8.com/ios-filled/50/000000/easel.png') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
 }
