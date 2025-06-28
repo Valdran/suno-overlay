@@ -12,20 +12,21 @@
   <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <!-- Skin Switcher UI -->
-  <div style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
-    <label for="skinSelect" style="color: white; font-family: sans-serif;">Skin:</label>
-    <select id="skinSelect">
-      <option value="styles/styles">Default</option>
-      <option value="styles/skin-retro">Retro</option>
-      <option value="styles/skin-angel">Angel</option>
-      <option value="styles/skin-haunted">Haunted</option>
-      <option value="styles/skin-metal">Metal</option>
-      <option value="styles/skin-steel">Steel</option>
-      <option value="styles/skin-neon">Neon</option>
-      <option value="styles/skin-storytellerz">Haunted</option>
-    </select>
-  </div>
+ <!-- Skin Switcher UI -->
+<div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
+  <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
+  <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
+    <option value="styles/styles">Default</option>
+    <option value="styles/skin-retro">Retro</option>
+    <option value="styles/skin-angel">Angel</option>
+    <option value="styles/skin-haunted">Haunted</option>
+    <option value="styles/skin-metal">Metal</option>
+    <option value="styles/skin-steel">Steel</option>
+    <option value="styles/skin-neon">Neon</option>
+    <option value="styles/skin-storytellerz">Storytellerz</option>
+  </select>
+</div>
+
 
   <!-- Main Player Container -->
   <div class="container">
