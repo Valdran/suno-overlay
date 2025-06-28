@@ -7,19 +7,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentTime = document.getElementById('currentTime');
   const duration = document.getElementById('duration');
   const lyricsInner = document.getElementById('lyricsInner');
-  const togglePlaylist = document.getElementById('togglePlaylist');
+  const playlistToggleButton = document.getElementById('playlistToggleButton'); // ✅ Match actual ID
   const playlistPanel = document.getElementById('playlistPanel');
   const playlistEntries = document.getElementById('playlistEntries');
-  const skinSelect = document.getElementById('skinSelect');
-  const themeLink = document.getElementById('theme-link');
   const skinButton = document.getElementById("toggleSkin");
+  const themeLink = document.getElementById('theme-link');
 
-  // Skin switcher via drop-down
-  skinSelect.addEventListener('change', () => {
-    themeLink.href = `${skinSelect.value}.css`;
-  });
+  // ✅ Playlist toggle (fixed)
+  if (playlistToggleButton) {
+    playlistToggleButton.addEventListener('click', () => {
+      if (playlistPanel.classList.contains('visible')) {
+        playlistPanel.classList.remove('visible');
+        playlistPanel.classList.add('fadeout');
+        setTimeout(() => playlistPanel.style.display = 'none', 300);
+      } else {
+        playlistPanel.classList.remove('fadeout');
+        playlistPanel.style.display = 'flex';
+        playlistPanel.classList.add('visible');
+      }
+    });
+  }
 
-  // Skin switcher via easel button
+  // ✅ Skin button toggle (no select required)
   const skins = [
     "styles/styles",
     "styles/skin-retro",
@@ -30,12 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     "styles/skin-storytellerz"
   ];
   let currentSkinIndex = 0;
+
   if (skinButton) {
     skinButton.addEventListener("click", () => {
       currentSkinIndex = (currentSkinIndex + 1) % skins.length;
       themeLink.href = `${skins[currentSkinIndex]}.css`;
     });
   }
+
 
   // Playlist toggle button
   if (togglePlaylist) {
