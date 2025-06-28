@@ -32,6 +32,25 @@ if (skinButton) {
   });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const easelIcon = document.getElementById('easelIcon');
+  const skinSelect = document.getElementById('skinSelect');
+
+  easelIcon.addEventListener('click', () => {
+    if (skinSelect.style.display === 'none') {
+      skinSelect.style.display = 'block';
+    } else {
+      skinSelect.style.display = 'none';
+    }
+  });
+
+  // Skin selection logic (you may already have this)
+  const themeLink = document.getElementById('theme-link');
+  skinSelect.addEventListener('change', () => {
+    themeLink.href = `${skinSelect.value}.css`;
+  });
+});
+
 // Utilities
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
