@@ -33,16 +33,22 @@ if (skinButton) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const easelIcon = document.getElementById('easelIcon');
-  const skinSelect = document.getElementById('skinSelect');
+  const togglePlaylistBtn = document.getElementById('playlistToggleButton');
+  const playlistPanel = document.getElementById('playlistPanel');
 
-  easelIcon.addEventListener('click', () => {
-    if (skinSelect.style.display === 'none') {
-      skinSelect.style.display = 'block';
+  togglePlaylistBtn.addEventListener('click', () => {
+    if (playlistPanel.classList.contains('visible')) {
+      playlistPanel.classList.remove('visible');
+      playlistPanel.classList.add('fadeout');
+      setTimeout(() => playlistPanel.style.display = 'none', 300);
     } else {
-      skinSelect.style.display = 'none';
+      playlistPanel.style.display = 'flex';
+      playlistPanel.classList.remove('fadeout');
+      playlistPanel.classList.add('visible');
     }
   });
+});
+
 
   // Skin selection logic (you may already have this)
   const themeLink = document.getElementById('theme-link');
