@@ -169,6 +169,7 @@ function updateLyricsBox(currentTime) {
   );
 
   lyricsInner.innerHTML = '';
+
   for (let i = -3; i <= 3; i++) {
     const idx = activeIndex + i;
     const div = document.createElement('div');
@@ -180,8 +181,21 @@ function updateLyricsBox(currentTime) {
       div.innerHTML = '&nbsp;';
     }
 
-    if (i === 0) div.classList.add('active');
-    else div.style.opacity = `${25 + (3 - Math.abs(i)) * 10}%`;
+    if (i === 0) {
+      div.classList.add('active');
+    }
+
+    // opacity levels based on distance from center (active line)
+    const opacityLevels = {
+      '-3': 0.25,
+      '-2': 0.35,
+      '-1': 0.45,
+       '0': 1,
+       '1': 0.45,
+       '2': 0.35,
+       '3': 0.25
+    };
+    div.style.opacity = opacityLevels[i.toString()];
 
     lyricsInner.appendChild(div);
   }
