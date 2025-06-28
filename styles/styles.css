@@ -1,11 +1,11 @@
-/* styles.css */
+/* General Reset */
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
   background: transparent;
   font-family: 'Rubik', sans-serif;
-  color: black;
+  color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,6 +13,7 @@ body {
   overflow: hidden;
 }
 
+/* Layout */
 .container {
   display: flex;
   flex-direction: row;
@@ -28,22 +29,24 @@ body {
   gap: 1rem;
 }
 
+/* Lyrics Box */
 .lyrics-box {
   width: 400px;
   height: 300px;
   overflow: hidden;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.75);
-  border: 1px solid black;
-  font-family: 'Rubik', sans-serif;
+  border: 2px solid white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  text-align: left;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
   color: black;
 }
 
+/* Lyrics Inner Container */
 .lyrics-inner {
   position: absolute;
   top: 50%;
@@ -51,37 +54,50 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 0 1rem;
+  align-items: center;
+  pointer-events: none;
 }
 
+/* Each line */
 .lyric-line {
-  opacity: 0.25;
-  transition: all 0.4s ease;
-  margin: 4px 0;
+  transition: all 0.5s ease;
   font-size: 1rem;
-  line-height: 1.4;
-  color: black;
-  text-shadow: 1px 1px 2px white;
+  color: white;
+  text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+  opacity: 0.25;
+  transform: scale(1);
 }
 
-.lyric-line.medium { font-size: 1.2rem; }
-.lyric-line.large { font-size: 1.5rem; }
+/* Opacity levels for 7 lines */
+.lyric-line:nth-child(1),
+.lyric-line:nth-last-child(1) {
+  opacity: 0.25;
+}
+.lyric-line:nth-child(2),
+.lyric-line:nth-last-child(2) {
+  opacity: 0.35;
+}
+.lyric-line:nth-child(3),
+.lyric-line:nth-last-child(3) {
+  opacity: 0.45;
+}
+.lyric-line:nth-child(4) {
+  opacity: 0.5;
+}
 
+/* Active line in center */
 .lyric-line.active {
-  opacity: 1;
-  font-weight: bold;
-  animation: pulse-grow 1s infinite;
-  font-size: 2.25rem;
   color: black;
-  text-shadow: 2px 2px 0 white;
+  font-weight: bold;
+  transform: scale(1.5);
+  transition: transform 0.4s ease-out;
 }
 
-@keyframes pulse-grow {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.5); }
-}
-
+/* Media Player */
 .player-wrapper {
   width: 400px;
   display: flex;
@@ -93,36 +109,36 @@ body {
 .custom-player {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.75);
-  border: 1px solid white;
-  box-shadow: 0 0 5px white;
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid white;
   border-radius: 8px;
   width: 100%;
   padding: 0.5rem 1rem;
   gap: 1rem;
-  position: relative;
   z-index: 2;
 }
 
+/* Play Button – black icon */
 .play-button {
   width: 32px;
   height: 32px;
   background: url('https://img.icons8.com/ios-filled/50/000000/play--v1.png') no-repeat center;
   background-size: contain;
+  filter: drop-shadow(0 0 2px #000);
   cursor: pointer;
 }
 
+/* Playlist Button */
 .playlist-button {
   width: 24px;
   height: 24px;
   background: url('https://img.icons8.com/ios-filled/50/000000/menu.png') no-repeat center;
   background-size: contain;
+  filter: drop-shadow(0 0 2px #000);
   cursor: pointer;
-  position: absolute;
-  bottom: -40px;
-  right: 0;
 }
 
+/* Progress Bar */
 .progress {
   flex-grow: 1;
   height: 8px;
@@ -142,42 +158,26 @@ body {
 .time {
   font-size: 0.8rem;
   min-width: 45px;
-  text-align: center;
   color: black;
-  text-shadow: 1px 1px 2px white;
 }
 
+/* Playlist Panel */
 .playlist-panel {
   position: absolute;
   bottom: 100%;
   width: 100%;
-  background: rgba(255,255,255,0.9);
-  border: 2px solid #111;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #aaa;
   padding: 0.5rem;
   display: none;
   flex-direction: column;
   max-height: 200px;
   overflow-y: auto;
-  animation: fadein 0.3s ease-out forwards;
   z-index: 3;
 }
 
 .playlist-panel.visible {
   display: flex;
-}
-
-.playlist-panel.fadeout {
-  animation: fadeout 0.3s ease-in forwards;
-}
-
-@keyframes fadein {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeout {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(10px); }
 }
 
 .playlist-title {
@@ -193,18 +193,17 @@ body {
   color: black;
   padding: 0.2rem;
   cursor: pointer;
-  text-shadow: 1px 1px 2px white;
 }
 
 .playlist-entry:hover {
   background: #eee;
 }
 
+/* Metadata and Cover */
 .metadata {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 }
 
 .cover {
@@ -213,14 +212,19 @@ body {
   object-fit: cover;
   border-radius: 12px;
   background: #fff;
-  border: 6px solid white;
+  border: 5px solid white;
 }
 
 .title, .artist {
   font-family: 'Rubik', sans-serif;
   color: white;
-  text-shadow: 2px 2px 0 black;
+  font-weight: bold;
   text-align: center;
+  text-shadow:
+    -2px -2px 0 black,
+     2px -2px 0 black,
+    -2px  2px 0 black,
+     2px  2px 0 black;
 }
 
 .title {
@@ -231,12 +235,4 @@ body {
 .artist {
   font-size: 1.4rem;
   margin-bottom: 1rem;
-}
-
-.skin-button {
-  width: 24px;
-  height: 24px;
-  background: url('https://img.icons8.com/ios-filled/50/000000/easel.png') no-repeat center;
-  background-size: contain;
-  cursor: pointer;
 }
