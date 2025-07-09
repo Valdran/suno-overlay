@@ -90,19 +90,17 @@ body {
 .lyric-line.line-6 { opacity: 0.35; transform: scale(1); }
 .lyric-line.line-7 { opacity: 0.25; transform: scale(1); }
 
-/* Shrink long active lines */
 .lyric-line.line-4.shrink {
   transform: scale(1.4);
 }
 
-/* Placeholder for padding */
 .lyric-line.placeholder {
   color: transparent;
   text-shadow: none;
   pointer-events: none;
 }
 
-/* Lyrics fade edges */
+/* Lyrics fade */
 .lyrics-box::before,
 .lyrics-box::after {
   content: "";
@@ -145,7 +143,7 @@ body {
   z-index: 2;
 }
 
-/* Play button (neon green) */
+/* Neon green play button */
 .play-button {
   width: 32px;
   height: 32px;
@@ -236,18 +234,13 @@ body {
   background: #111;
 }
 
-/* Metadata (cover, title, artist) */
+/* Metadata container */
 .metadata {
   width: 300px;
-  height: 426px; /* aligns with cover + 2 lines of text + spacing */
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(0, 0, 0, 0.75);
   padding: 0;
-  border-radius: 12px;
-  box-sizing: border-box;
 }
 
 /* Cover Art */
@@ -261,10 +254,24 @@ body {
   border-top: 5px solid white;
   border-left: 5px solid white;
   border-right: 5px solid white;
-  border-bottom: 5px solid white;
+  border-bottom: 0;
 }
 
-/* Song title above artist name */
+/* Text container under the cover */
+.metadata-text {
+  height: 126px; /* 426px total - 300px cover */
+  width: 300px;
+  background: rgba(0, 0, 0, 0.75);
+  border-bottom: 5px solid white;
+  border-left: 5px solid white;
+  border-right: 5px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Fonts and layout */
 .title, .artist {
   font-family: 'Bebas Neue', sans-serif;
   text-align: center;
@@ -284,11 +291,10 @@ body {
   box-sizing: border-box;
 }
 
-/* Title: bigger (top) — Artist: smaller (bottom) */
 .title {
-  font-size: 2.4rem;
+  font-size: 2.8rem;
 }
 
 .artist {
-  font-size: 1.2rem;
+  font-size: 2.4rem;
 }
