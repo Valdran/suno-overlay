@@ -26,7 +26,7 @@ body {
   align-items: flex-start;
 }
 
-/* Left section for lyrics and player */
+/* Left section */
 .left-section {
   display: flex;
   flex-direction: column;
@@ -71,7 +71,7 @@ body {
   );
 }
 
-/* Lyrics inner container */
+/* Lyrics inner */
 .lyrics-inner {
   position: relative;
   z-index: 2;
@@ -84,7 +84,7 @@ body {
   font-family: 'Bebas Neue', sans-serif;
 }
 
-/* Individual lyric lines */
+/* Lyric lines */
 .lyric-line {
   text-align: center;
   color: white;
@@ -95,27 +95,15 @@ body {
   opacity: 0.25;
 }
 
-/* Lyric line focus */
-.lyric-line.line-1,
-.lyric-line.line-2,
-.lyric-line.line-3,
-.lyric-line.line-5,
-.lyric-line.line-6,
-.lyric-line.line-7 {
-  opacity: 0.25;
-  transform: scale(1);
-}
-
 .lyric-line.line-4 {
   position: relative;
   opacity: 0.85;
   transform: scale(1.8);
   font-weight: bold;
-  color: white;
-  animation: pulseHighlight 2s infinite;
   font-size: 32px;
   line-height: 128px;
   height: 128px;
+  animation: pulseHighlight 2s infinite;
 }
 
 .lyric-line.line-4::before {
@@ -131,8 +119,12 @@ body {
 }
 
 @keyframes pulseHighlight {
-  0%, 100% { text-shadow: 0 0 10px white, 1px 1px 0 black; }
-  50% { text-shadow: 0 0 20px white, 1px 1px 0 black; }
+  0%, 100% {
+    text-shadow: 0 0 10px white, 1px 1px 0 black;
+  }
+  50% {
+    text-shadow: 0 0 20px white, 1px 1px 0 black;
+  }
 }
 
 /* Player wrapper */
@@ -142,8 +134,6 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  border: 2px solid white;
-  border-radius: 8px;
 }
 
 /* Custom audio player */
@@ -160,26 +150,35 @@ body {
   z-index: 2;
 }
 
-/* Play button (white icon with black outline) */
-.play-button {
+/* Icons: Play, Pause, Playlist, Easel */
+.play-button,
+.pause-button,
+.playlist-button,
+.canvas-button {
   width: 32px;
   height: 32px;
-  background: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png') no-repeat center;
   background-size: contain;
-  border: 2px solid black;
-  border-radius: 6px;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 2px black);
   cursor: pointer;
 }
 
-/* Playlist toggle (white icon with black outline) */
+/* Use white icons */
+.play-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png');
+}
+
+.pause-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png');
+}
+
 .playlist-button {
-  width: 24px;
-  height: 24px;
-  background: url('https://img.icons8.com/ios-filled/50/ffffff/menu.png') no-repeat center;
-  background-size: contain;
-  border: 2px solid black;
-  border-radius: 6px;
-  cursor: pointer;
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/menu.png');
+}
+
+.canvas-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/canvas.png');
 }
 
 /* Time text */
@@ -208,7 +207,7 @@ body {
   width: 0%;
 }
 
-/* Playlist panel */
+/* Playlist */
 .playlist-panel {
   position: absolute;
   bottom: 100%;
@@ -226,10 +225,6 @@ body {
 
 .playlist-panel.visible {
   display: flex;
-}
-
-.playlist-panel.fadeout {
-  animation: fadeout 0.3s ease-in forwards;
 }
 
 @keyframes fadein {
@@ -253,7 +248,7 @@ body {
   background: #111;
 }
 
-/* Metadata block (now only wraps title + artist, not the cover) */
+/* Metadata block as card */
 .metadata {
   display: flex;
   flex-direction: column;
@@ -261,12 +256,14 @@ body {
   width: 400px;
   background: rgba(0, 0, 0, 0.75);
   padding: 1rem;
-  border-radius: 12px;
+  border-radius: 16px;
   justify-content: center;
-  margin-top: 1rem;
+  border: 2px solid white;
+  height: 528px; /* 300px cover + space for text + padding */
+  box-sizing: border-box;
 }
 
-/* Cover Art (not wrapped by black background anymore) */
+/* Cover */
 .cover {
   width: 300px;
   height: 300px;
@@ -275,7 +272,6 @@ body {
   border-radius: 12px;
   background: #111;
   border: 5px solid white;
-  margin-bottom: 1rem;
 }
 
 /* Title and artist */
