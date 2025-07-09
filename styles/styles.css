@@ -48,7 +48,6 @@ body {
   border-radius: 16px;
 }
 
-/* Lyrics gradient overlay */
 .lyrics-box::after {
   content: '';
   position: absolute;
@@ -71,7 +70,7 @@ body {
   );
 }
 
-/* Lyrics inner */
+/* Lyrics content */
 .lyrics-inner {
   position: relative;
   z-index: 2;
@@ -81,7 +80,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
 }
 
 /* Lyric lines */
@@ -136,7 +134,7 @@ body {
   position: relative;
 }
 
-/* Custom audio player */
+/* Custom player */
 .custom-player {
   display: flex;
   align-items: center;
@@ -150,7 +148,7 @@ body {
   z-index: 2;
 }
 
-/* Icons: Play, Pause, Playlist, Easel */
+/* Buttons */
 .play-button,
 .pause-button,
 .playlist-button,
@@ -164,7 +162,6 @@ body {
   cursor: pointer;
 }
 
-/* Use white icons */
 .play-button {
   background-image: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png');
 }
@@ -181,7 +178,7 @@ body {
   background-image: url('https://img.icons8.com/ios-filled/50/ffffff/canvas.png');
 }
 
-/* Time text */
+/* Time and bar */
 .time {
   font-size: 0.8rem;
   min-width: 45px;
@@ -190,7 +187,6 @@ body {
   text-shadow: 1px 1px 2px black;
 }
 
-/* Progress bar */
 .progress {
   flex-grow: 1;
   height: 8px;
@@ -248,22 +244,21 @@ body {
   background: #111;
 }
 
-/* Metadata block as card */
+/* Metadata: Playing Card */
 .metadata {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 400px;
   background: rgba(0, 0, 0, 0.75);
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 16px;
-  justify-content: center;
   border: 2px solid white;
-  height: 528px; /* 300px cover + space for text + padding */
-  box-sizing: border-box;
+  box-shadow: -4px -4px 12px rgba(0, 0, 0, 0.5), 4px 4px 12px rgba(255, 255, 255, 0.1);
+  gap: 0.3rem;
 }
 
-/* Cover */
+/* Cover Art */
 .cover {
   width: 300px;
   height: 300px;
@@ -274,15 +269,13 @@ body {
   border: 5px solid white;
 }
 
-/* Title and artist */
+/* Title & Artist */
 .title, .artist {
   font-family: 'Bebas Neue', cursive;
   text-align: center;
   color: white;
   text-shadow: 1px 1px 3px black;
   -webkit-text-stroke: 0.5px black;
-  margin: 0.5rem 0 0 0;
-  padding: 0;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
