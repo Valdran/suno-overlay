@@ -71,7 +71,6 @@ body {
   );
 }
 
-
 /* Lyrics inner container */
 .lyrics-inner {
   position: relative;
@@ -115,8 +114,8 @@ body {
   color: white;
   animation: pulseHighlight 2s infinite;
   font-size: 32px;
-  line-height: 128px; /* match the bar height */
-  height: 128px;       /* ensure the container is tall enough */
+  line-height: 128px;
+  height: 128px;
 }
 
 .lyric-line.line-4::before {
@@ -125,8 +124,8 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 128px; /* 4x font size */
-  background: rgba(0.50, 0.75, 0.85, 0.95); /* 95% opacity */
+  height: 128px;
+  background: rgba(0, 0, 0, 0.95);
   z-index: -1;
   border-radius: 8px;
 }
@@ -143,6 +142,8 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
+  border: 2px solid white;
+  border-radius: 8px;
 }
 
 /* Custom audio player */
@@ -150,7 +151,7 @@ body {
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.75);
-  border: 2px solid #00ff00;
+  border: 2px solid white;
   border-radius: 8px;
   width: 100%;
   padding: 0.5rem 1rem;
@@ -159,23 +160,25 @@ body {
   z-index: 2;
 }
 
-/* Play button (neon green) */
+/* Play button (white icon with black outline) */
 .play-button {
   width: 32px;
   height: 32px;
-  background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
+  background: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png') no-repeat center;
   background-size: contain;
-  filter: drop-shadow(0 0 4px #00ff00);
+  border: 2px solid black;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-/* Playlist toggle */
+/* Playlist toggle (white icon with black outline) */
 .playlist-button {
   width: 24px;
   height: 24px;
-  background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
+  background: url('https://img.icons8.com/ios-filled/50/ffffff/menu.png') no-repeat center;
   background-size: contain;
-  filter: drop-shadow(0 0 4px #00ff00);
+  border: 2px solid black;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -250,7 +253,7 @@ body {
   background: #111;
 }
 
-/* Metadata block */
+/* Metadata block (now only wraps title + artist, not the cover) */
 .metadata {
   display: flex;
   flex-direction: column;
@@ -260,9 +263,10 @@ body {
   padding: 1rem;
   border-radius: 12px;
   justify-content: center;
+  margin-top: 1rem;
 }
 
-/* Cover Art */
+/* Cover Art (not wrapped by black background anymore) */
 .cover {
   width: 300px;
   height: 300px;
@@ -271,6 +275,7 @@ body {
   border-radius: 12px;
   background: #111;
   border: 5px solid white;
+  margin-bottom: 1rem;
 }
 
 /* Title and artist */
