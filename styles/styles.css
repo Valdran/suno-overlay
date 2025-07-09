@@ -113,17 +113,32 @@ body {
   color: white;
   animation: pulseHighlight 2s infinite;
   text-shadow:
-    -1px -1px 0 black,
-     1px -1px 0 black,
-    -1px  1px 0 black,
-     1px  1px 0 black,
-     0 0 10px white;
+    -2px -2px 0 black,
+     2px -2px 0 black,
+    -2px  2px 0 black,
+     2px  2px 0 black,
+     0 0 12px white;
 }
 
 @keyframes pulseHighlight {
-  0%, 100% { text-shadow: 0 0 10px white, 1px 1px 0 black; }
-  50% { text-shadow: 0 0 20px white, 1px 1px 0 black; }
+  0%, 100% {
+    text-shadow:
+      -2px -2px 0 black,
+       2px -2px 0 black,
+      -2px  2px 0 black,
+       2px  2px 0 black,
+       0 0 12px white;
+  }
+  50% {
+    text-shadow:
+      -2px -2px 0 black,
+       2px -2px 0 black,
+      -2px  2px 0 black,
+       2px  2px 0 black,
+       0 0 24px white;
+  }
 }
+
 
 /* Player wrapper */
 .player-wrapper {
