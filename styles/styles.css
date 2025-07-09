@@ -45,6 +45,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 16px;
 }
 
 /* Lyrics inner container */
@@ -80,9 +81,9 @@ body {
 
 .lyric-line.line-4 {
   opacity: 1;
-  transform: scale(1.7);
+  transform: scale(2.2);
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .lyric-line.line-5 { opacity: 0.45; transform: scale(1); }
@@ -91,7 +92,7 @@ body {
 
 /* Shrink long active lines */
 .lyric-line.line-4.shrink {
-  transform: scale(1.2);
+  transform: scale(1.4);
 }
 
 /* Placeholder for padding */
@@ -114,11 +115,11 @@ body {
 }
 .lyrics-box::before {
   top: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(to bottom, black, transparent);
 }
 .lyrics-box::after {
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(to top, black, transparent);
 }
 
 /* Player wrapper */
@@ -144,13 +145,13 @@ body {
   z-index: 2;
 }
 
-/* Play button (black) */
+/* Play button (neon green) */
 .play-button {
   width: 32px;
   height: 32px;
-  background: url('https://img.icons8.com/ios-filled/50/000000/play--v1.png') no-repeat center;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
   background-size: contain;
-  filter: drop-shadow(0 0 2px black);
+  filter: drop-shadow(0 0 4px #00ff00);
   cursor: pointer;
 }
 
@@ -158,9 +159,9 @@ body {
 .playlist-button {
   width: 24px;
   height: 24px;
-  background: url('https://img.icons8.com/ios-filled/50/000000/menu.png') no-repeat center;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
   background-size: contain;
-  filter: drop-shadow(0 0 2px black);
+  filter: drop-shadow(0 0 4px #00ff00);
   cursor: pointer;
 }
 
@@ -235,7 +236,7 @@ body {
   background: #111;
 }
 
-/* Metadata (cover, title, artist) */
+/* Metadata (cover, artist, title) */
 .metadata {
   width: 300px;
   min-height: 420px;
@@ -244,8 +245,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   background: rgba(0, 0, 0, 0.75);
-  padding: 1rem;
+  padding: 0;
   border-radius: 12px;
   box-sizing: border-box;
 }
@@ -256,19 +258,22 @@ body {
   height: 300px;
   object-fit: cover;
   object-position: center;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
   background: #111;
-  border: 5px solid white;
+  border-top: 5px solid white;
+  border-left: 5px solid white;
+  border-right: 5px solid white;
+  border-bottom: none;
 }
 
-/* Title and artist */
+/* Artist above title */
 .title, .artist {
   font-family: 'Bebas Neue', sans-serif;
   text-align: center;
   color: white;
   text-shadow: 1px 1px 3px black;
   -webkit-text-stroke: 0.5px black;
-  margin: 0.5rem 0;
+  margin: 0.2rem 0;
   word-break: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -277,9 +282,12 @@ body {
   -webkit-line-clamp: 2;
   line-height: 1.1;
   letter-spacing: -0.5px;
+  padding: 0 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Artist bigger than title */
+/* Swap sizes: artist larger than title */
 .artist {
   font-size: 2.2rem;
 }
