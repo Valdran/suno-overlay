@@ -269,6 +269,7 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  padding: 0.3rem 0.5rem;
 }
 
 /* Fonts and layout */
@@ -278,22 +279,24 @@ body {
   color: white;
   text-shadow: 1px 1px 3px black;
   -webkit-text-stroke: 0.5px black;
-  margin: 0;
+  margin: 0.2rem 0;
   line-height: 1.1;
-  padding: 0 0.5rem;
   width: 100%;
   box-sizing: border-box;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Song title now larger */
+/* Song title: up to 2 lines */
 .title {
   font-size: 2.4rem;
+  -webkit-line-clamp: 2;
 }
 
-/* Artist name now smaller */
+/* Artist name: up to 2 lines */
 .artist {
   font-size: 1.4rem;
+  -webkit-line-clamp: 2;
 }
