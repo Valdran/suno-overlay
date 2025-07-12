@@ -12,21 +12,12 @@ html, body {
 .center-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* aligns top */
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
   padding: 0 1rem;
-}
-
-.center-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
-  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 /* Main layout container */
@@ -36,7 +27,7 @@ html, body {
   gap: 2rem;
   position: relative;
   z-index: 2;
-  flex-wrap: wrap;  /* allow wrapping */
+  flex-wrap: wrap;  /* allow wrapping on smaller screens */
   max-width: 100%;
   width: auto;
   margin: 0 auto;
@@ -78,13 +69,12 @@ body.theme-skin-angel {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  overflow-x: hidden;
   pointer-events: none;
   z-index: 0;
 }
 
 .feather {
-  position: absolute;
+  position: absolute; /* changed from fixed */
   top: -10%;
   width: 32px;
   height: 32px;
@@ -129,6 +119,9 @@ body.theme-skin-angel {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  max-width: 45vw;  /* Added */
+  min-width: 280px; /* Added */
+  box-sizing: border-box; /* Added */
 }
 
 /* Lyrics box */
@@ -343,6 +336,9 @@ body.theme-skin-angel {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  max-width: 45vw;   /* Added */
+  min-width: 280px;  /* Added */
+  box-sizing: border-box; /* Added */
 }
 
 /* Art cover */
@@ -397,10 +393,4 @@ body.theme-skin-angel {
   font-size: 1.4rem;
   -webkit-line-clamp: 1;
   line-height: 1.1;
-}
-
-.left-section, .metadata {
-  max-width: 45vw;   /* lets them shrink on smaller screens */
-  min-width: 280px;  /* keeps them usable and not too narrow */
-  box-sizing: border-box;
 }
