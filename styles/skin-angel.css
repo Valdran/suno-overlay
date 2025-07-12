@@ -7,7 +7,8 @@
 
 /* Body with fallen angel background */
 body {
-  background: transparent;
+  background: url('https://dl.dropboxusercontent.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png?rlkey=nrnly5jnjhsv8i6vgf0mjsi4d') no-repeat center center fixed;
+  background-size: cover;
   font-family: 'Bebas Neue', sans-serif;
   color: white;
   display: flex;
@@ -15,8 +16,8 @@ body {
   align-items: center;
   height: 100vh;
   overflow: hidden;
-  position: relative;
 }
+
 
 body::before {
   content: '';
