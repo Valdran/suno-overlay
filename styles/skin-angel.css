@@ -2,6 +2,9 @@ html, body {
   overflow-x: hidden; /* ← prevents horizontal scroll */
  }
 
+.container {
+  overflow-x: hidden;
+}
 
 /* Box model */
 * {
