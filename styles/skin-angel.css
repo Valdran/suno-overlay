@@ -20,18 +20,18 @@ body {
 
 body::before {
   content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 160%;
-  height: 160%;
-  background: url('https://cdn.pixabay.com/photo/2023/09/21/18/29/ai-generated-8709882_1280.jpg') no-repeat center;
+  position: fixed; /* ← important for full viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('https://cdn.pixabay.com/photo/2023/09/21/18/29/ai-generated-8709882_1280.jpg') no-repeat center center;
   background-size: cover;
   opacity: 0.5;
-  transform: translate(-50%, -50%);
-  z-index: 0;
+  z-index: -1; /* must be behind everything else */
   pointer-events: none;
 }
+
 
 /* Main layout */
 .container {
