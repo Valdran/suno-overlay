@@ -25,7 +25,7 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('https://www.dropbox.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png?rlkey=nrnly5jnjhsv8i6vgf0mjsi4d&st=r5ggv89s&dl=0') no-repeat center center;
+  background: url('https://www.dropbox.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png) no-repeat center center;
   background-size: cover;
   opacity: 0.4;
   z-index: -1;
