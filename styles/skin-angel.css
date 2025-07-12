@@ -56,16 +56,14 @@ body.theme-skin-angel {
   font-family: 'Bebas Neue', sans-serif;
   color: white;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding-top: 2rem;
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
 }
-
 /* Floating feathers */
 .feather-container {
   position: absolute;
