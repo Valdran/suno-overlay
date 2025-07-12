@@ -5,7 +5,7 @@
   padding: 0;
 }
 
-/* Body with fallen angel background */
+/* Body with angelic background */
 body {
   background: url('https://dl.dropboxusercontent.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png?rlkey=nrnly5jnjhsv8i6vgf0mjsi4d') no-repeat center center fixed;
   background-size: cover;
@@ -13,36 +13,17 @@ body {
   color: white;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
+  padding-top: 2rem;
   overflow: hidden;
 }
 
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('https://dl.dropboxusercontent.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png) no-repeat center center;
-  background-size: cover;
-  opacity: 0.4;
-  z-index: -1;
-  pointer-events: none;
-}
-
-
-/* Main layout */
+/* Main container */
 .container {
   display: flex;
   flex-direction: row;
-  padding: 2rem;
   gap: 2rem;
-  align-items: flex-start;
-  position: relative;
-  z-index: 1;
 }
 
 /* Left section */
@@ -53,25 +34,27 @@ body::before {
   gap: 1rem;
 }
 
-/* Lyrics Box */
+/* Lyrics box */
 .lyrics-box {
   width: 400px;
   height: 300px;
-  background: rgba(0, 0, 0, 0.6);
+  background: transparent;
   padding: 1rem;
-  border-radius: 16px;
+  position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  border-radius: 16px;
 }
 
 .lyrics-box::after {
   content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   border-radius: 16px;
   z-index: 1;
@@ -87,7 +70,7 @@ body::before {
   );
 }
 
-/* Lyrics inner container */
+/* Lyrics content */
 .lyrics-inner {
   position: relative;
   z-index: 2;
@@ -104,10 +87,10 @@ body::before {
   text-align: center;
   color: white;
   text-shadow: 1px 1px 2px black;
+  transition: all 0.3s ease;
   font-size: 1.35rem;
   line-height: 1.3;
   opacity: 0.25;
-  transition: all 0.3s ease;
 }
 
 .lyric-line.line-4 {
@@ -124,8 +107,10 @@ body::before {
 .lyric-line.line-4::before {
   content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 128px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 128px;
   background: rgba(0, 0, 0, 0.95);
   z-index: -1;
   border-radius: 8px;
@@ -136,7 +121,7 @@ body::before {
   50% { text-shadow: 0 0 20px white, 1px 1px 0 black; }
 }
 
-/* Player */
+/* Player wrapper */
 .player-wrapper {
   width: 400px;
   display: flex;
@@ -145,19 +130,21 @@ body::before {
   position: relative;
 }
 
+/* Custom player */
 .custom-player {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.75);
   border: 2px solid white;
   border-radius: 8px;
   width: 100%;
   padding: 0.5rem 1rem;
   gap: 1rem;
+  position: relative;
   z-index: 2;
 }
 
-/* Controls */
+/* Buttons */
 .play-button,
 .pause-button,
 .playlist-button,
@@ -167,10 +154,8 @@ body::before {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: drop-shadow(0 0 4px white);
+  filter: drop-shadow(0 0 2px black);
   cursor: pointer;
-  background-color: transparent;
-  border: none;
 }
 
 .play-button {
@@ -189,7 +174,7 @@ body::before {
   background-image: url('https://img.icons8.com/ios-filled/50/ffffff/canvas.png');
 }
 
-/* Time and progress bar */
+/* Time and bar */
 .time {
   font-size: 0.8rem;
   min-width: 45px;
@@ -201,10 +186,10 @@ body::before {
 .progress {
   flex-grow: 1;
   height: 8px;
-  background: #ccc;
+  background: #444;
   border-radius: 4px;
-  position: relative;
   cursor: pointer;
+  position: relative;
 }
 
 .progress-bar {
@@ -214,7 +199,7 @@ body::before {
   width: 0%;
 }
 
-/* Playlist panel */
+/* Playlist */
 .playlist-panel {
   position: absolute;
   bottom: 100%;
@@ -226,11 +211,22 @@ body::before {
   flex-direction: column;
   max-height: 200px;
   overflow-y: auto;
+  animation: fadein 0.3s ease-out forwards;
   z-index: 3;
 }
 
 .playlist-panel.visible {
   display: flex;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
 }
 
 .playlist-entry {
@@ -244,16 +240,16 @@ body::before {
   background: #111;
 }
 
-/* Metadata & Art Cover */
+/* Metadata container */
 .metadata {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  position: relative;
-  z-index: 1;
+  margin-top: 0.5rem;
 }
 
+/* Art cover */
 .cover {
   width: 300px;
   height: 300px;
@@ -264,22 +260,22 @@ body::before {
   border: 5px solid white;
 }
 
-/* Metadata Card */
+/* Metadata card wrapping title + artist */
 .metadata-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.75);
   padding: 0.5rem 1rem;
   border-radius: 16px;
   border: 2px solid white;
-  box-shadow: 8px -8px 12px rgba(255, 255, 255, 0.1);
+  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.6), -2px -2px 8px rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
   max-width: 300px;
-  margin-top: 0.5rem;
+  margin-top: -4px;
 }
 
-/* Title and Artist */
+/* Title and artist */
 .title, .artist {
   font-family: 'Bebas Neue', cursive;
   text-align: center;
