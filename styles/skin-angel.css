@@ -9,14 +9,15 @@ html, body {
 
 /* Wrapper to center UI safely */
 .center-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* aligns top */
+  max-width: 100%;
   width: 100%;
-  max-width: 100vw;
   overflow-x: hidden;
   padding: 0 1rem;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 /* Main layout container */
