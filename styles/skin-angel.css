@@ -1,14 +1,17 @@
 /* Prevent UI shifting */
 html, body {
-  overflow-x: hidden;
   margin: 0;
   padding: 0;
-  position: relative;
+  overflow-x: hidden;
   width: 100%;
 }
 
 .container {
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  position: relative;
+  z-index: 2; /* Always above feathers */
 }
 
 /* Box model */
@@ -309,8 +312,6 @@ body.theme-skin-angel {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
-  z-index: 2;
 }
 
 /* Art cover */
