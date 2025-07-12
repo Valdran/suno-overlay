@@ -12,77 +12,83 @@
   <!-- Dynamic CSS Link -->
   <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 </head>
-<body>
- <!-- Skin Switcher UI -->
-<div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
-  <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
-  <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
-    <option value="styles/styles">Default</option>
-    <option value="styles/skin-retro">Retro</option>
-    <option value="styles/skin-angel">Angel</option>
-    <option value="styles/skin-haunted">Haunted</option>
-    <option value="styles/skin-metal">Metal</option>
-    <option value="styles/skin-steel">Steel</option>
-    <option value="styles/skin-neon">Neon</option>
-    <option value="styles/skin-storytellerz">Storytellerz</option>
-  </select>
-</div>
+<body class="theme-skin-angel">
 
-<div class="feather-container">
-  <div class="feather f1"></div>
-  <div class="feather f2"></div>
-  <div class="feather f3"></div>
-  <div class="feather f4"></div>
-  <div class="feather f5"></div>
-</div>
-  
-  <!-- Main Player Container -->
-  <div class="container">
-    <div class="left-section">
-      <div class="lyrics-box" id="lyricsBox">
-        <div class="lyrics-inner" id="lyricsInner">Loading lyrics…</div>
-      </div>
-      <div class="player-wrapper">
-        <div class="playlist-panel" id="playlistPanel">
-          <div class="playlist-title">PLAYLIST</div>
-          <div id="playlistEntries"></div>
+  <!-- Skin Switcher UI -->
+  <div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
+    <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
+    <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
+      <option value="styles/styles">Default</option>
+      <option value="styles/skin-retro">Retro</option>
+      <option value="styles/skin-angel">Angel</option>
+      <option value="styles/skin-haunted">Haunted</option>
+      <option value="styles/skin-metal">Metal</option>
+      <option value="styles/skin-steel">Steel</option>
+      <option value="styles/skin-neon">Neon</option>
+      <option value="styles/skin-storytellerz">Storytellerz</option>
+    </select>
+  </div>
+
+  <!-- Floating Feathers -->
+  <div class="feather-container">
+    <div class="feather f1"></div>
+    <div class="feather f2"></div>
+    <div class="feather f3"></div>
+    <div class="feather f4"></div>
+    <div class="feather f5"></div>
+  </div>
+
+  <!-- Wrapper to center the UI and prevent shifting -->
+  <div class="center-wrapper">
+    <div class="container">
+      <div class="left-section">
+        <div class="lyrics-box" id="lyricsBox">
+          <div class="lyrics-inner" id="lyricsInner">Loading lyrics…</div>
         </div>
-        <div class="custom-player">
-          <div class="play-button" id="playButton"></div>
-          <div class="time" id="currentTime">0:00</div>
-          <div class="progress" id="progressBar">
-            <div class="progress-bar" id="progressFill"></div>
+
+        <div class="player-wrapper">
+          <div class="playlist-panel" id="playlistPanel">
+            <div class="playlist-title">PLAYLIST</div>
+            <div id="playlistEntries"></div>
           </div>
-          <div class="time" id="duration">0:00</div>
+
+          <div class="custom-player">
+            <div class="play-button" id="playButton"></div>
+            <div class="time" id="currentTime">0:00</div>
+            <div class="progress" id="progressBar">
+              <div class="progress-bar" id="progressFill"></div>
+            </div>
+            <div class="time" id="duration">0:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metadata">
+        <img id="coverArt" class="cover" src="" alt="Cover Art" />
+        <div class="metadata-card">
+          <div class="title" id="songTitle">Loading title…</div>
+          <div class="artist" id="artistName">Loading artist…</div>
         </div>
       </div>
     </div>
-
- <div class="metadata">
-  <img id="coverArt" class="cover" src="" alt="Cover Art">
-
-  <div class="metadata-card">
-    <div class="title" id="songTitle">Loading title…</div>
-    <div class="artist" id="artistName">Loading artist…</div>
   </div>
-</div>
 
+  <!-- Playlist Toggle Button (bottom-right corner) -->
+  <div id="playlistToggleButton" style="
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 24px;
+    height: 24px;
+    background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
+    background-size: contain;
+    filter: drop-shadow(0 0 4px #00ff00);
+    cursor: pointer;
+    z-index: 1000;">
+  </div>
+
+  <!-- Audio Element -->
   <audio id="audioPlayer"></audio>
-
-  <!-- Playlist Toggle in Bottom Right -->
-<div id="playlistToggleButton" style="
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  width: 24px;
-  height: 24px;
-  background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
-  background-size: contain;
-  filter: drop-shadow(0 0 4px #00ff00);
-  cursor: pointer;
-  z-index: 1000;">
-</div>
-
 
   <!-- CSV Parser -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
