@@ -4,11 +4,23 @@ html, body {
   padding: 0;
   overflow-x: hidden;
   width: 100%;
-  max-width: 100vw; /* FIX: Prevent horizontal scroll */
-  box-sizing: border-box; /* Ensure consistent box model */
-  contain: layout; /* FIX: Prevent transformed children from causing layout shift */
+  max-width: 100vw;
+  box-sizing: border-box;
+  contain: layout;
 }
 
+/* Wrapper to center UI safely */
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  padding: 0 1rem;
+}
+
+/* Main layout container */
 .container {
   display: flex;
   flex-direction: row;
@@ -16,14 +28,13 @@ html, body {
   position: relative;
   z-index: 2;
   flex-wrap: nowrap;
-  width: auto; /* Allow it to shrink to content */
+  width: auto;
   max-width: 100%;
-  margin: 0 auto; /* ✅ CENTER horizontally */
 }
 
 .container > * {
   flex-shrink: 1;
-  min-width: 0; /* FIX: Prevent overflow from flex children */
+  min-width: 0;
 }
 
 /* Box model */
@@ -40,10 +51,10 @@ body.theme-skin-angel {
   font-family: 'Bebas Neue', sans-serif;
   color: white;
   display: flex;
-  justify-content: center;  /* ✅ Center horizontally */
-  align-items: center;      /* ✅ Center vertically */
+  justify-content: center;
+  align-items: flex-start;
   height: 100vh;
-  padding-top: 0;           /* ✅ Remove if vertical centering is needed */
+  padding-top: 2rem;
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
@@ -56,13 +67,12 @@ body.theme-skin-angel {
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden; /* FIX: clip feather overflow */
+  overflow: hidden;
   overflow-x: hidden;
   pointer-events: none;
   z-index: 0;
 }
 
-/* Feather base style */
 .feather {
   position: fixed;
   top: -10%;
@@ -147,7 +157,6 @@ body.theme-skin-angel {
   );
 }
 
-/* Lyrics content */
 .lyrics-inner {
   position: relative;
   z-index: 2;
@@ -337,7 +346,7 @@ body.theme-skin-angel {
   border: 5px solid white;
 }
 
-/* Metadata card wrapping title + artist */
+/* Metadata card */
 .metadata-card {
   background: rgba(0, 0, 0, 0.75);
   padding: 0.5rem 1rem;
