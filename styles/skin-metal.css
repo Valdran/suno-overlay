@@ -1,9 +1,9 @@
-/* Body with metal background */
+/* Body with METAL background */
 body.theme-skin-metal {
-  background: url('https://dl.dropboxusercontent.com/scl/fi/7l32zh3q41e3tuvb2s2m5/metal-bg.jpg?rlkey=9v3sx0ddf8r8fzq6qnb0g8fvp') no-repeat center center fixed;
+  background: url('https://dl.dropboxusercontent.com/scl/fi/v9txx1pov6qu0owv11h4w/metal-bg-texture.jpg?rlkey=metalbg') no-repeat center center fixed;
   background-size: cover;
   font-family: 'Metal Mania', cursive;
-  color: #f2f2f2;
+  color: #eaeaea;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,71 +15,17 @@ body.theme-skin-metal {
   position: relative;
 }
 
-/* Metallic floating effect — chains or sparks */
-.feather-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
+/* Floating METAL sparks or skulls */
 .feather {
-  position: absolute;
-  top: -10%;
-  width: 32px;
-  height: 32px;
-  background: url('https://cdn-icons-png.flaticon.com/512/168/168832.png') no-repeat center;
+  background: url('https://cdn-icons-png.flaticon.com/512/5289/5289068.png') no-repeat center;
   background-size: contain;
-  opacity: 0.3;
-  pointer-events: none;
-  z-index: 0;
-  animation: featherDrift 10s linear infinite;
-  transform: translateX(-50%);
+  opacity: 0.4;
 }
 
-.feather.f1 { left: 15%; animation-delay: 0s; }
-.feather.f2 { left: 35%; animation-delay: 2s; }
-.feather.f3 { left: 55%; animation-delay: 4s; }
-.feather.f4 { left: 75%; animation-delay: 1s; }
-.feather.f5 { left: 90%; animation-delay: 3s; }
-
-@keyframes featherDrift {
-  0% {
-    transform: translateX(-50%) translateY(0) rotate(0deg);
-    opacity: 0.4;
-  }
-  50% {
-    transform: translateX(-50%) translateY(60vh) rotate(180deg);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateX(-50%) translateY(110vh) rotate(360deg);
-    opacity: 0.1;
-  }
-}
-
-/* Lyrics box overlay */
-.lyrics-box::after {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.4) 20%,
-    rgba(0, 0, 0, 0.75) 40%,
-    rgba(0, 0, 0, 0.95) 50%,
-    rgba(0, 0, 0, 0.75) 60%,
-    rgba(0, 0, 0, 0.4) 80%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-}
-
-/* Highlighted lyric line */
+/* Highlighted lyric line with red glow */
 .lyric-line.line-4 {
   color: #ff3333;
-  text-shadow: 0 0 10px #000000, 2px 2px 4px #ff0000;
+  text-shadow: 0 0 10px black, 0 0 20px #ff3333;
 }
 
 .lyric-line.line-4::before {
@@ -87,13 +33,13 @@ body.theme-skin-metal {
   border: 1px solid #ff3333;
 }
 
-/* Player */
+/* Player bar with red accent */
 .custom-player {
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(20, 20, 20, 0.9);
   border: 2px solid #ff3333;
 }
 
-/* Buttons with metal textures */
+/* Buttons with metal icons */
 .play-button {
   background-image: url('https://img.icons8.com/ios-filled/50/ff3333/play--v1.png');
 }
@@ -107,7 +53,7 @@ body.theme-skin-metal {
   background-image: url('https://img.icons8.com/ios-filled/50/ff3333/canvas.png');
 }
 
-/* Progress bar */
+/* Time and progress bar */
 .progress {
   background: #222;
 }
@@ -115,29 +61,22 @@ body.theme-skin-metal {
   background: #ff3333;
 }
 
-/* Playlist */
+/* Playlist styling */
 .playlist-panel {
   background: rgba(10, 10, 10, 0.95);
   border: 2px solid #ff3333;
 }
 
-/* Metadata */
+/* Metadata panel */
 .metadata-card {
   background: rgba(30, 30, 30, 0.85);
   border: 2px solid #ff3333;
   box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.6), -2px -2px 8px rgba(255, 51, 51, 0.15);
 }
 
-/* Title and artist */
+/* Title and artist fonts */
 .title, .artist {
   color: #fff;
   text-shadow: 2px 2px 3px black;
   -webkit-text-stroke: 0.75px black;
-}
-
-.title {
-  font-size: 2.8rem;
-}
-.artist {
-  font-size: 1.5rem;
 }
