@@ -2,21 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Spooky Audio Player</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
   <!-- Dynamic CSS Link -->
-  <link id="theme-link" rel="stylesheet" href="styles/styles.css">
+  <link id="theme-link" rel="stylesheet" href="styles/styles.css" />
 </head>
 <body class="theme-skin-angel">
 
   <!-- Skin Switcher UI -->
   <div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
-    <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
+    <div id="easelIcon" style="
+      width: 24px; 
+      height: 24px; 
+      background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; 
+      background-size: contain; 
+      filter: drop-shadow(0 0 4px #00ff00); 
+      cursor: pointer;
+    "></div>
     <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
       <option value="styles/styles">Default</option>
       <option value="styles/skin-retro">Retro</option>
@@ -41,21 +48,22 @@
   <!-- Wrapper to center the UI and prevent shifting -->
   <div class="center-wrapper">
     <div class="container">
+      <!-- Left section with lyrics and player -->
       <div class="left-section">
         <div class="lyrics-box" id="lyricsBox">
           <div class="lyrics-inner" id="lyricsInner">Loading lyrics…</div>
         </div>
 
         <div class="player-wrapper">
-          <div class="playlist-panel" id="playlistPanel">
+          <div class="playlist-panel" id="playlistPanel" aria-label="Playlist" role="list">
             <div class="playlist-title">PLAYLIST</div>
             <div id="playlistEntries"></div>
           </div>
 
-          <div class="custom-player">
-            <div class="play-button" id="playButton"></div>
-            <div class="time" id="currentTime">0:00</div>
-            <div class="progress" id="progressBar">
+          <div class="custom-player" role="region" aria-label="Audio Player Controls">
+            <button class="play-button" id="playButton" aria-label="Play"></button>
+            <div class="time" id="currentTime" aria-live="polite">0:00</div>
+            <div class="progress" id="progressBar" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Playback Progress">
               <div class="progress-bar" id="progressFill"></div>
             </div>
             <div class="time" id="duration">0:00</div>
@@ -63,7 +71,8 @@
         </div>
       </div>
 
-      <div class="metadata">
+      <!-- Metadata section with cover art and info -->
+      <div class="metadata" role="complementary">
         <img id="coverArt" class="cover" src="" alt="Cover Art" />
         <div class="metadata-card">
           <div class="title" id="songTitle">Loading title…</div>
@@ -74,18 +83,21 @@
   </div>
 
   <!-- Playlist Toggle Button (bottom-right corner) -->
-  <div id="playlistToggleButton" style="
+  <button id="playlistToggleButton" aria-label="Toggle Playlist" style="
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
     background-size: contain;
     filter: drop-shadow(0 0 4px #00ff00);
     cursor: pointer;
-    z-index: 1000;">
-  </div>
+    z-index: 1000;
+    border: none;
+    background-color: transparent;
+  ">
+  </button>
 
   <!-- Audio Element -->
   <audio id="audioPlayer"></audio>
