@@ -1,9 +1,60 @@
-/* Body with METAL background */
+/* --- POSITIONING AND LAYOUT (UNCHANGED FROM ANGEL THEME) --- */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.center-wrapper {
+  max-width: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.container > * {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- METAL VISUAL THEME STARTS HERE --- */
+
 body.theme-skin-metal {
-  background: url('https://dl.dropboxusercontent.com/scl/fi/v9txx1pov6qu0owv11h4w/metal-bg-texture.jpg?rlkey=metalbg') no-repeat center center fixed;
+  background: url('https://images.unsplash.com/photo-1607189200593-1c9b157a2644?fit=crop&w=1600&q=80') no-repeat center center fixed;
   background-size: cover;
-  font-family: 'Metal Mania', cursive;
-  color: #eaeaea;
+  font-family: 'Orbitron', 'Bebas Neue', sans-serif;
+  color: #f0f0f0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,68 +66,121 @@ body.theme-skin-metal {
   position: relative;
 }
 
-/* Floating METAL sparks or skulls */
+/* Replace feathers with sparks */
+.feather-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .feather {
-  background: url('https://cdn-icons-png.flaticon.com/512/5289/5289068.png') no-repeat center;
+  position: absolute;
+  top: -10%;
+  width: 32px;
+  height: 32px;
+  background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
   background-size: contain;
   opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+  animation: featherDrift 12s linear infinite;
+  transform: translateX(-50%);
 }
 
-/* Highlighted lyric line with red glow */
+.feather.f1 { left: 10%; animation-delay: 0s; }
+.feather.f2 { left: 25%; animation-delay: 2s; }
+.feather.f3 { left: 50%; animation-delay: 4s; }
+.feather.f4 { left: 75%; animation-delay: 1s; }
+.feather.f5 { left: 90%; animation-delay: 3s; }
+
+@keyframes featherDrift {
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(-50%) translateY(25vh) translateX(-20px) rotate(45deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(50vh) translateX(20px) rotate(180deg);
+  }
+  75% {
+    transform: translateX(-50%) translateY(75vh) translateX(-10px) rotate(270deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(110vh) translateX(0px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Lyrics box overlay */
 .lyric-line.line-4 {
-  color: #ff3333;
-  text-shadow: 0 0 10px black, 0 0 20px #ff3333;
+  color: #ff3c3c;
+  text-shadow: 0 0 10px #ff3c3c, 1px 1px 3px black;
 }
-
 .lyric-line.line-4::before {
-  background: rgba(0, 0, 0, 0.85);
-  border: 1px solid #ff3333;
+  background: rgba(10, 0, 0, 0.9);
+  border: 1px solid #ff3c3c;
 }
 
-/* Player bar with red accent */
+/* Player appearance */
 .custom-player {
-  background: rgba(20, 20, 20, 0.9);
-  border: 2px solid #ff3333;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #ff3c3c;
 }
 
-/* Buttons with metal icons */
+/* Button icons with red tone */
 .play-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff3333/play--v1.png');
+  background-image: url('https://img.icons8.com/ios-filled/50/ff3c3c/play--v1.png');
 }
 .pause-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff3333/pause--v1.png');
+  background-image: url('https://img.icons8.com/ios-filled/50/ff3c3c/pause--v1.png');
 }
 .playlist-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff3333/menu.png');
+  background-image: url('https://img.icons8.com/ios-filled/50/ff3c3c/menu.png');
 }
 .canvas-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff3333/canvas.png');
+  background-image: url('https://img.icons8.com/ios-filled/50/ff3c3c/canvas.png');
 }
 
-/* Time and progress bar */
+/* Progress bar colors */
 .progress {
   background: #222;
 }
 .progress-bar {
-  background: #ff3333;
+  background: #ff3c3c;
 }
 
-/* Playlist styling */
+/* Playlist appearance */
 .playlist-panel {
-  background: rgba(10, 10, 10, 0.95);
-  border: 2px solid #ff3333;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #ff3c3c;
+}
+.playlist-entry:hover {
+  background: #2b0000;
 }
 
-/* Metadata panel */
+/* Album art */
+.cover {
+  border: 5px solid #ff3c3c;
+  background: #111;
+}
+
+/* Metadata card */
 .metadata-card {
-  background: rgba(30, 30, 30, 0.85);
-  border: 2px solid #ff3333;
-  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.6), -2px -2px 8px rgba(255, 51, 51, 0.15);
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #ff3c3c;
+  box-shadow: 0 0 20px rgba(255, 60, 60, 0.4);
 }
 
-/* Title and artist fonts */
+/* Titles */
 .title, .artist {
   color: #fff;
-  text-shadow: 2px 2px 3px black;
-  -webkit-text-stroke: 0.75px black;
+  text-shadow: 2px 2px 4px #000;
+  -webkit-text-stroke: 0.5px #000;
 }
