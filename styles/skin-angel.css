@@ -1,110 +1,164 @@
-/* RESET & SCROLL FIX */
+/* Prevent UI shifting */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: scroll; /* keep vertical scrollbar always */
+  width: 100%;
+}
+
+/* Wrapper to center UI safely */
+.center-wrapper {
+  max-width: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Main layout container */
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;  /* allow wrapping on smaller screens */
+  max-width: 100%;
+  width: auto;
+  margin: 0 auto;
+}
+
+.container > * {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/* Box model */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  font-family: 'Bebas Neue', sans-serif;
-  background-color: black;
-}
-
-/* WRAPPER */
-.center-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 1rem;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-/* CONTAINER */
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-/* BODY THEME (ANGEL) */
+/* Body with angelic background */
 body.theme-skin-angel {
   background: url('https://dl.dropboxusercontent.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png?rlkey=nrnly5jnjhsv8i6vgf0mjsi4d') no-repeat center center fixed;
   background-size: cover;
   color: white;
+  font-family: 'Bebas Neue', sans-serif;
+  width: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2rem;
   position: relative;
 }
 
-/* FEATHERS */
+/* Floating feathers */
 .feather-container {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
 }
 
 .feather {
-  position: absolute;
+  position: absolute; /* changed from fixed */
+  top: -10%;
   width: 32px;
   height: 32px;
   background: url('https://cdn-icons-png.flaticon.com/512/2100/2100054.png') no-repeat center;
   background-size: contain;
   opacity: 0.6;
   pointer-events: none;
+  z-index: 0;
   animation: featherDrift 12s linear infinite;
   transform: translateX(-50%);
 }
 
+.feather.f1 { left: 10%; animation-delay: 0s; }
+.feather.f2 { left: 25%; animation-delay: 2s; }
+.feather.f3 { left: 50%; animation-delay: 4s; }
+.feather.f4 { left: 75%; animation-delay: 1s; }
+.feather.f5 { left: 90%; animation-delay: 3s; }
+
 @keyframes featherDrift {
-  0% { transform: translateX(-50%) translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateX(-50%) translateY(100vh) rotate(360deg); opacity: 0; }
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(-50%) translateY(25vh) translateX(-20px) rotate(45deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(50vh) translateX(20px) rotate(180deg);
+  }
+  75% {
+    transform: translateX(-50%) translateY(75vh) translateX(-10px) rotate(270deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(110vh) translateX(0px) rotate(360deg);
+    opacity: 0;
+  }
 }
 
-/* PANEL SECTIONS */
-.left-section,
-.metadata {
-  flex: 1 1 300px;
-  max-width: 600px;
-  min-width: 280px;
+/* Left section */
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 45%;  /* Added */
+  min-width: 280px; /* Added */
+  box-sizing: border-box; /* Added */
 }
 
-/* LYRICS */
+/* Lyrics box */
 .lyrics-box {
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
   height: 300px;
+  background: transparent;
   padding: 1rem;
   position: relative;
-  background: transparent;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 16px;
-  overflow: hidden;
 }
 
 .lyrics-box::after {
   content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.25) 80%, rgba(0,0,0,0) 100%);
-  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   border-radius: 16px;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.25) 20%,
+    rgba(0, 0, 0, 0.5) 35%,
+    rgba(0, 0, 0, 0.95) 50%,
+    rgba(0, 0, 0, 0.5) 65%,
+    rgba(0, 0, 0, 0.25) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .lyrics-inner {
@@ -118,31 +172,56 @@ body.theme-skin-angel {
   justify-content: center;
 }
 
+/* Lyric lines */
 .lyric-line {
   text-align: center;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  transition: all 0.3s ease;
   font-size: 1.35rem;
   line-height: 1.3;
-  color: white;
   opacity: 0.25;
-  transition: all 0.3s ease;
-  text-shadow: 1px 1px 2px black;
 }
 
-.lyric-line.active {
-  opacity: 1;
+.lyric-line.line-4 {
+  position: relative;
+  opacity: 0.85;
+  transform: scale(1.8);
   font-weight: bold;
-  transform: scale(1.1);
+  font-size: 32px;
+  line-height: 128px;
+  height: 128px;
+  animation: pulseHighlight 2s infinite;
 }
 
-/* PLAYER */
-.player-wrapper {
+.lyric-line.line-4::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 400px;
+  height: 128px;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: -1;
+  border-radius: 8px;
+}
+
+@keyframes pulseHighlight {
+  0%, 100% { text-shadow: 0 0 10px white, 1px 1px 0 black; }
+  50% { text-shadow: 0 0 20px white, 1px 1px 0 black; }
+}
+
+/* Player wrapper */
+.player-wrapper {
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
+/* Custom player */
 .custom-player {
   display: flex;
   align-items: center;
@@ -152,10 +231,15 @@ body.theme-skin-angel {
   width: 100%;
   padding: 0.5rem 1rem;
   gap: 1rem;
+  position: relative;
+  z-index: 2;
 }
 
-/* PLAYER ICONS */
-.play-button {
+/* Buttons */
+.play-button,
+.pause-button,
+.playlist-button,
+.canvas-button {
   width: 32px;
   height: 32px;
   background-size: contain;
@@ -165,7 +249,23 @@ body.theme-skin-angel {
   cursor: pointer;
 }
 
-/* TIME DISPLAY */
+.play-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png');
+}
+
+.pause-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png');
+}
+
+.playlist-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/menu.png');
+}
+
+.canvas-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/canvas.png');
+}
+
+/* Time and bar */
 .time {
   font-size: 0.8rem;
   min-width: 45px;
@@ -174,7 +274,6 @@ body.theme-skin-angel {
   text-shadow: 1px 1px 2px black;
 }
 
-/* PROGRESS BAR */
 .progress {
   flex-grow: 1;
   height: 8px;
@@ -191,52 +290,19 @@ body.theme-skin-angel {
   width: 0%;
 }
 
-/* METADATA */
-.cover {
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
-  background: #111;
-  border: 5px solid white;
-}
-
-.metadata-card {
-  background: rgba(0, 0, 0, 0.75);
-  padding: 0.5rem 1rem;
-  border-radius: 16px;
-  border: 2px solid white;
-  text-align: center;
-  max-width: 300px;
-  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.6);
-}
-
-.title, .artist {
-  color: white;
-  text-shadow: 1px 1px 3px black;
-  font-family: 'Bebas Neue', cursive;
-}
-
-.title {
-  font-size: 2.6rem;
-}
-
-.artist {
-  font-size: 1.4rem;
-}
-
-/* PLAYLIST PANEL */
+/* Playlist */
 .playlist-panel {
   position: absolute;
   bottom: 100%;
   width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
   background: rgba(0, 0, 0, 0.9);
   border: 2px solid #111;
   padding: 0.5rem;
   display: none;
   flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  animation: fadein 0.3s ease-out forwards;
   z-index: 3;
 }
 
@@ -244,13 +310,88 @@ body.theme-skin-angel {
   display: flex;
 }
 
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
 .playlist-entry {
   color: white;
-  padding: 0.25rem;
-  cursor: pointer;
   text-shadow: 1px 1px 2px black;
+  padding: 0.2rem;
+  cursor: pointer;
 }
 
 .playlist-entry:hover {
   background: #111;
+}
+
+/* Metadata container */
+.metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 45%;   /* Added */
+  min-width: 280px;  /* Added */
+  box-sizing: border-box; /* Added */
+}
+
+/* Art cover */
+.cover {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  background: #111;
+  border: 5px solid white;
+}
+
+/* Metadata card */
+.metadata-card {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  border: 2px solid white;
+  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.6), -2px -2px 8px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  max-width: 300px;
+  margin-top: -4px;
+}
+
+/* Title and artist */
+.title, .artist {
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+  -webkit-text-stroke: 0.5px black;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 0.25rem;
+}
+
+.title {
+  font-size: 2.6rem;
+  -webkit-line-clamp: 2;
+  line-height: 1.1;
+}
+
+.artist {
+  font-size: 1.4rem;
+  -webkit-line-clamp: 1;
+  line-height: 1.1;
 }
