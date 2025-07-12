@@ -1,131 +1,317 @@
-/* skin-angel.css */
-body {
-  background: linear-gradient(135deg, #e6f0ff, #ffffff);
-  color: #3a3a3a;
-  font-family: 'Carrois Gothic SC', sans-serif;
+/* Box model */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+/* Body styling with angel wings background */
+body {
+  background: transparent;
+  font-family: 'Bebas Neue', sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  height: 130%;
+  background: url('https://cdn.pixabay.com/photo/2016/04/01/09/11/wings-1296516_1280.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.08;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main container */
 .container {
-  /* keep your spacing */
+  display: flex;
+  flex-direction: row;
   padding: 2rem;
+  gap: 2rem;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left section */
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
 }
 
+/* Lyrics box */
 .lyrics-box {
-  background: rgba(240, 248, 255, 0.7); /* light sky blue */
-  border: 1px solid #a3c0f7;
-  color: #2a2a2a;
-  box-shadow: 0 0 15px 3px #cce0ff;
+  width: 400px;
+  height: 300px;
+  background: transparent;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
 }
 
-.lyric-line.active {
-  color: #1a3eff;
-  opacity: 1;
-  font-weight: 700;
-  text-shadow:
-    0 0 8px #6fa8ff,
-    0 0 20px #a4c2f4;
-  animation: glowAngel 1.5s ease-in-out infinite;
+.lyrics-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: 16px;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0.3) 35%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.3) 65%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
-@keyframes glowAngel {
-  0%, 100% {
-    text-shadow: 0 0 8px #6fa8ff, 0 0 20px #a4c2f4;
-  }
-  50% {
-    text-shadow: 0 0 16px #8ab4ff, 0 0 30px #c3dbff;
-  }
+/* Lyrics content */
+.lyrics-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* Lyric lines */
+.lyric-line {
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  transition: all 0.3s ease;
+  font-size: 1.35rem;
+  line-height: 1.3;
+  opacity: 0.25;
+}
+
+.lyric-line.line-4 {
+  position: relative;
+  opacity: 0.85;
+  transform: scale(1.8);
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 128px;
+  height: 128px;
+  animation: pulseHighlight 2s infinite;
+}
+
+.lyric-line.line-4::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 128px;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: -1;
+  border-radius: 12px;
+}
+
+@keyframes pulseHighlight {
+  0%, 100% { text-shadow: 0 0 10px white, 1px 1px 0 black; }
+  50% { text-shadow: 0 0 20px white, 1px 1px 0 black; }
+}
+
+/* Player wrapper */
+.player-wrapper {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Custom player */
 .custom-player {
-  background: #f5faff;
-  border: 1px solid #a3c0f7;
-  box-shadow: 0 0 10px #7eaaff;
-  color: #1a3eff;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid white;
+  border-radius: 8px;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
 }
 
-.play-button, .playlist-button, .skin-button {
-  filter: drop-shadow(0 0 5px #7eaaff);
-  cursor: pointer;
-}
-
-.play-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/007fff/play--v1.png');
+/* Buttons */
+.play-button,
+.pause-button,
+.playlist-button,
+.canvas-button {
   width: 32px;
   height: 32px;
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 3px white);
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.play-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png');
+}
+
+.pause-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png');
 }
 
 .playlist-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/007fff/menu.png');
-  width: 24px;
-  height: 24px;
-  background-size: contain;
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/menu.png');
 }
 
-.skin-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/007fff/easel.png');
-  width: 24px;
-  height: 24px;
-  background-size: contain;
+.canvas-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/canvas.png');
 }
 
-/* Cover Art Angelic Frame */
-.cover {
-  border-radius: 20px;
-  border: 5px solid #cce0ff;
-  box-shadow:
-    0 0 20px 10px #a3c0f7,
-    inset 0 0 20px 2px #dbe9ff;
-  background: radial-gradient(circle at center, #f0f7ff, #a3c0f7);
-  transition: box-shadow 0.3s ease;
+/* Time & Progress bar */
+.time {
+  font-size: 0.8rem;
+  min-width: 45px;
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 2px black;
 }
 
-.cover:hover {
-  box-shadow:
-    0 0 30px 15px #7eaaff,
-    inset 0 0 25px 5px #cde0ff;
-}
-
-.title, .artist {
-  color: #2a4db7;
-  -webkit-text-stroke: 0.8px #aec8ff;
-  font-weight: 700;
-  text-shadow: 0 0 10px #accbff;
-}
-
-.title {
-  font-size: 2.4rem;
-  margin-top: 1rem;
-}
-
-.artist {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-}
-
-/* Progress bar & Time styling */
 .progress {
-  background: #d9e6ff;
+  flex-grow: 1;
+  height: 8px;
+  background: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
 }
 
 .progress-bar {
-  background: #3a65f9;
-  animation: pulseAngel 1.5s ease-in-out infinite;
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  width: 0%;
 }
 
-@keyframes pulseAngel {
-  0%, 100% {
-    box-shadow: 0 0 5px #3a65f9;
-  }
-  50% {
-    box-shadow: 0 0 20px #668eff;
-  }
+/* Playlist */
+.playlist-panel {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #eee;
+  padding: 0.5rem;
+  display: none;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  animation: fadein 0.3s ease-out forwards;
+  z-index: 3;
 }
 
-.time {
-  color: #2a4db7;
-  font-weight: 600;
-  font-family: 'Orbitron', sans-serif;
+.playlist-panel.visible {
+  display: flex;
 }
 
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.playlist-entry {
+  color: black;
+  text-shadow: none;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+
+.playlist-entry:hover {
+  background: #eee;
+}
+
+/* Metadata area */
+.metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Cover art */
+.cover {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  background: #fff;
+  border: 4px solid white;
+}
+
+/* Metadata card (wraps title + artist) */
+.metadata-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  border: 2px solid white;
+  box-shadow: 8px -8px 12px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 300px;
+  margin-top: 0.5rem;
+}
+
+/* Title and artist */
+.title, .artist {
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+  -webkit-text-stroke: 0.5px black;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 0.25rem;
+}
+
+.title {
+  font-size: 2.6rem;
+  -webkit-line-clamp: 2;
+  line-height: 1.1;
+}
+
+.artist {
+  font-size: 1.4rem;
+  -webkit-line-clamp: 1;
+  line-height: 1.1;
+}
