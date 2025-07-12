@@ -9,13 +9,18 @@ const lyricsInner = document.getElementById('lyricsInner');
 const playlistPanel = document.getElementById('playlistPanel');
 const playlistEntries = document.getElementById('playlistEntries');
 const playlistToggleButton = document.getElementById('playlistToggleButton');
+const skinSelect = document.getElementById('skinSelect');
+const themeLink = document.getElementById('theme-link');
+const easelIcon = document.getElementById('easelIcon');
+const body = document.body;
 
-// CSV URL
-const csvURL = '/.netlify/functions/fetchSheet';
+let parsedLyrics = [];
+let hasTimestamps = false;
 
-// Play/Pause Toggle
+///// PLAY/PAUSE TOGGLE /////
 playBtn.addEventListener('click', () => {
-  audio.paused ? audio.play() : audio.pause();
+  if (audio.paused) audio.play();
+  else audio.pause();
 });
 
 audio.onplay = () => {
@@ -26,9 +31,9 @@ audio.onpause = () => {
   playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
 };
 
-// Progress Bar
+///// PROGRESS BAR UPDATE /////
 audio.ontimeupdate = () => {
-  const percent = (audio.currentTime / audio.duration) * 100;
+  const percent = (audio.currentTime / audio.duration) * 100 || 0;
   progressFill.style.width = percent + '%';
   currentTime.textContent = formatTime(audio.currentTime);
   duration.textContent = formatTime(audio.duration || 0);
@@ -42,14 +47,14 @@ progressBar.addEventListener('click', (e) => {
   audio.currentTime = percent * audio.duration;
 });
 
-// Format Time Helper
+///// FORMAT TIME HELPER /////
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60).toString().padStart(2, '0');
   return `${m}:${s}`;
 }
 
-// Toggle Playlist Panel
+///// PLAYLIST TOGGLE /////
 playlistToggleButton.addEventListener('click', () => {
   if (playlistPanel.classList.contains('visible')) {
     playlistPanel.classList.remove('visible');
@@ -62,28 +67,48 @@ playlistToggleButton.addEventListener('click', () => {
   }
 });
 
-// Skin Dropdown
-const easelIcon = document.getElementById('easelIcon');
-const skinSelect = document.getElementById('skinSelect');
-const themeLink = document.getElementById('theme-link');
-
+///// SKIN DROPDOWN TOGGLE /////
 easelIcon.addEventListener('click', () => {
   skinSelect.style.display = skinSelect.style.display === 'block' ? 'none' : 'block';
 });
 
+///// SKIN SWITCHER /////
 skinSelect.addEventListener('change', () => {
   themeLink.href = `${skinSelect.value}.css`;
   skinSelect.style.display = 'none';
+  // Update body class for skin
+  updateBodySkinClass(skinSelect.value);
+
+  // Trigger feather animation if Angel skin
+  if (skinSelect.value.includes('skin-angel')) {
+    startFeathers();
+  } else {
+    stopFeathers();
+  }
 });
 
-// CSV Parse & Playlist
-Papa.parse(csvURL, {
+// Initialize skin class on load
+function updateBodySkinClass(cssPath) {
+  const skinNameMatch = cssPath.match(/skin-\w+/);
+  // Clear all theme skin classes
+  body.className = '';
+  if (skinNameMatch) {
+    body.classList.add(`theme-${skinNameMatch[0]}`);
+  } else {
+    // default or no skin
+    body.classList.remove(...body.classList);
+  }
+}
+
+// Load CSV songs and populate playlist
+Papa.parse('/.netlify/functions/fetchSheet', {
   download: true,
   header: true,
   complete: (res) => {
     const songs = res.data.filter(r => r['Song title'] && r['Lyrics']);
     if (songs.length === 0) return;
 
+    playlistEntries.innerHTML = '';
     songs.forEach((row) => {
       const entry = document.createElement('div');
       entry.className = 'playlist-entry';
@@ -92,11 +117,11 @@ Papa.parse(csvURL, {
       playlistEntries.appendChild(entry);
     });
 
-    loadTrack(songs[songs.length - 1]); // Load the last song by default
+    loadTrack(songs[songs.length - 1]); // Load last song by default
   }
 });
 
-// Load Track
+// Load track function
 function loadTrack(row) {
   document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
   document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
@@ -115,17 +140,14 @@ function loadTrack(row) {
   } else if (aiLink.includes('/s/')) {
     fetch(`/.netlify/functions/sunoImage?link=${encodeURIComponent(aiLink)}`)
       .then(res => res.json())
-      .then(data => {
-        coverArt.src = data.imageUrl || '';
-      }).catch(() => {
-        coverArt.src = '';
-      });
+      .then(data => { coverArt.src = data.imageUrl || ''; })
+      .catch(() => { coverArt.src = ''; });
   } else {
     coverArt.src = '';
   }
 }
 
-// Helpers
+// Helpers for URLs
 function convertCoverArtUrl(url) {
   if (!url) return '';
   if (url.includes('drive.google.com')) {
@@ -142,13 +164,10 @@ function convertDropboxAudio(url) {
   return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
 }
 
-// Lyrics Parsing
-let parsedLyrics = [];
-let hasTimestamps = false;
-
+// Lyrics parsing
 function parseLyrics(raw) {
   const lines = raw.split('\n');
-  const parsed = lines.map((line) => {
+  const parsed = lines.map(line => {
     const match = line.match(/\[(\d+)\.(\d+)]\s*(.+)/);
     if (match) {
       const time = parseInt(match[1]) + parseInt(match[2]) / 100;
@@ -181,22 +200,84 @@ function updateLyricsBox(currentTime) {
       div.innerHTML = '&nbsp;';
     }
 
-    if (i === 0) {
-      div.classList.add('active');
-    }
+    if (i === 0) div.classList.add('active');
 
-    // opacity levels based on distance from center (active line)
-    const opacityLevels = {
-      '-3': 0.25,
-      '-2': 0.35,
-      '-1': 0.45,
-       '0': 1,
-       '1': 0.45,
-       '2': 0.35,
-       '3': 0.25
-    };
+    // Opacity based on distance from center
+    const opacityLevels = { '-3': 0.25, '-2': 0.35, '-1': 0.45, '0': 1, '1': 0.45, '2': 0.35, '3': 0.25 };
     div.style.opacity = opacityLevels[i.toString()];
-
     lyricsInner.appendChild(div);
   }
 }
+
+///// FEATHER ANIMATION FOR ANGEL THEME /////
+
+let featherInterval;
+const featherCount = 15;
+const featherImages = [
+  // URLs or base64 images of white feather PNGs with transparency
+  'https://cdn-icons-png.flaticon.com/512/616/616408.png', // example feather icon 1
+  'https://cdn-icons-png.flaticon.com/512/616/616407.png', // example feather icon 2
+];
+
+// Create and animate feathers only for Angel theme
+function startFeathers() {
+  stopFeathers(); // Clear any existing
+  for (let i = 0; i < featherCount; i++) {
+    createFeather();
+  }
+  featherInterval = setInterval(() => {
+    createFeather();
+  }, 1000);
+}
+
+function stopFeathers() {
+  clearInterval(featherInterval);
+  const existingFeathers = document.querySelectorAll('.angel-feather');
+  existingFeathers.forEach(f => f.remove());
+}
+
+function createFeather() {
+  const feather = document.createElement('div');
+  feather.className = 'angel-feather';
+  feather.style.setProperty('--dur', `${5 + Math.random() * 10}s`);
+  feather.style.width = `${20 + Math.random() * 25}px`;
+  feather.style.height = 'auto';
+
+  // Random feather image
+  const imgUrl = featherImages[Math.floor(Math.random() * featherImages.length)];
+  feather.style.backgroundImage = `url(${imgUrl})`;
+
+  // Start position: random X across screen bottom (just off screen vertically)
+  const startX = Math.random() * window.innerWidth;
+  const startY = window.innerHeight + 50;
+  feather.style.left = `${startX}px`;
+  feather.style.top = `${startY}px`;
+
+  // Animate upward and sideways
+  document.body.appendChild(feather);
+
+  const duration = parseFloat(feather.style.getPropertyValue('--dur'));
+  const endX = startX + (Math.random() * 200 - 100); // sway left/right
+  const endY = -100; // top offscreen
+
+  // Trigger animation frame for smooth CSS transition
+  requestAnimationFrame(() => {
+    feather.style.transition = `transform ${duration}s linear, opacity ${duration}s linear`;
+    feather.style.transform = `translate(${endX - startX}px, ${endY - startY}px) rotate(${Math.random() * 360}deg)`;
+    feather.style.opacity = '0';
+  });
+
+  // Remove after animation
+  setTimeout(() => {
+    feather.remove();
+  }, duration * 1000);
+}
+
+// Initialize: Detect initial skin and start feathers if needed
+window.addEventListener('load', () => {
+  updateBodySkinClass(skinSelect.value);
+  if (skinSelect.value.includes('skin-angel')) startFeathers();
+});
+
+// Optional: Remove feathers on page unload
+window.addEventListener('beforeunload', () => stopFeathers());
