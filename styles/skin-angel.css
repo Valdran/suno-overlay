@@ -20,15 +20,15 @@ body {
 
 body::before {
   content: '';
-  position: fixed; /* ← important for full viewport */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background: url('https://cdn.pixabay.com/photo/2023/09/21/18/29/ai-generated-8709882_1280.jpg') no-repeat center center;
   background-size: cover;
-  opacity: 0.5;
-  z-index: -1; /* must be behind everything else */
+  opacity: 0.4;
+  z-index: -1;
   pointer-events: none;
 }
 
