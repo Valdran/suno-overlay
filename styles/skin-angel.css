@@ -3,8 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: scroll; /* keep vertical scrollbar always */
   width: 100%;
+  height: 100%;
 }
 
 /* Wrapper to center UI safely */
@@ -24,13 +24,15 @@ html, body {
 .container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 2rem;
   position: relative;
   z-index: 2;
-  flex-wrap: wrap;  /* allow wrapping on smaller screens */
-  max-width: 100%;
-  width: auto;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 .container > * {
@@ -49,16 +51,16 @@ html, body {
 body.theme-skin-angel {
   background: url('https://dl.dropboxusercontent.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png?rlkey=nrnly5jnjhsv8i6vgf0mjsi4d') no-repeat center center fixed;
   background-size: cover;
-  color: white;
   font-family: 'Bebas Neue', sans-serif;
-  width: 100%;
-  min-height: 100dvh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  color: white;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   padding-top: 2rem;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
   position: relative;
 }
 
