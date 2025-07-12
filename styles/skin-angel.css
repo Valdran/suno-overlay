@@ -20,6 +20,16 @@ html, body {
   padding: 0 1rem;
 }
 
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  padding: 0 1rem;
+}
+
 /* Main layout container */
 .container {
   display: flex;
@@ -28,8 +38,9 @@ html, body {
   position: relative;
   z-index: 2;
   flex-wrap: nowrap;
-  width: auto;
   max-width: 100%;
+  width: auto;
+  margin: 0 auto;
 }
 
 .container > * {
