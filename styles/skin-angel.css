@@ -14,9 +14,11 @@ html, body {
   flex-direction: row;
   gap: 2rem;
   position: relative;
-  z-index: 2; /* Always above feathers */
+  z-index: 2;
   flex-wrap: nowrap;
-  width: 100%;
+  width: auto; /* Allow it to shrink to content */
+  max-width: 100%;
+  margin: 0 auto; /* ✅ CENTER horizontally */
 }
 
 .container > * {
@@ -38,10 +40,10 @@ body.theme-skin-angel {
   font-family: 'Bebas Neue', sans-serif;
   color: white;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: center;  /* ✅ Center horizontally */
+  align-items: center;      /* ✅ Center vertically */
   height: 100vh;
-  padding-top: 2rem;
+  padding-top: 0;           /* ✅ Remove if vertical centering is needed */
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
