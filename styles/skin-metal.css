@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'AdhesiveNRSeven';
+  src: url('https://dl.dropboxusercontent.com/scl/fi/4lspd35ucp822z1gpr1aw/Seven-Regular.woff2?rlkey=b0nhhji3ur9gl7v8iz2cjtukn&raw=1') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* Base layout preserved from Angel theme */
 html, body {
   margin: 0;
@@ -365,7 +372,8 @@ body.theme-skin-metal #metalBackground {
 }
 
 .title, .artist {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'AdhesiveNRSeven', sans-serif;
+  font-weight: 400;
   text-align: center;
   color: white;
   text-shadow: 1px 1px 3px black;
