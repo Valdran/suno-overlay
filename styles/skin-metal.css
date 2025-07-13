@@ -1,70 +1,28 @@
-/* Base layout preserved from Angel theme */
+/* Base layout */
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   height: 100%;
 }
 
-.center-wrapper {
-  max-width: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 2rem;
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding: 0 1rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 3rem;
-}
-
-.container > * {
-  flex-shrink: 1;
-  min-width: 0;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Metal Theme Background + Font */
 body.theme-skin-metal {
   background: black;
   font-family: 'Bebas Neue', sans-serif;
   color: white;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 3rem;
   width: 100%;
   min-height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  position: relative;
+  overflow: hidden;
 }
 
 /* 🔥 Animated video background */
-body.theme-skin-metal #metalBackground {
+body.theme-skin-metal #metalBgVideo {
   position: fixed;
   top: 0;
   left: 0;
@@ -76,7 +34,7 @@ body.theme-skin-metal #metalBackground {
   z-index: -1;
 }
 
-/* 🔥 Replace floating feathers with skulls */
+/* 🔥 Skull animation replacing feathers */
 .feather-container {
   position: absolute;
   top: 0;
@@ -96,10 +54,9 @@ body.theme-skin-metal #metalBackground {
   background: url('https://www.dropbox.com/scl/fi/1oosmbm4mazu0675xuvik/FierySkull.png?rlkey=ifflp888h7v31swe7bfp1xf5i&raw=1') no-repeat center;
   background-size: contain;
   opacity: 0.6;
-  pointer-events: none;
-  z-index: 0;
   animation: featherDrift 12s linear infinite;
   transform: translateX(-50%);
+  z-index: 0;
 }
 
 .feather.f1 { left: 10%; animation-delay: 0s; }
@@ -109,25 +66,14 @@ body.theme-skin-metal #metalBackground {
 .feather.f5 { left: 90%; animation-delay: 3s; }
 
 @keyframes featherDrift {
-  0% { transform: translateX(-50%) translateY(0) rotate(0deg); opacity: 1; }
-  25% { transform: translateX(-50%) translateY(25vh) translateX(-20px) rotate(45deg); }
-  50% { transform: translateX(-50%) translateY(50vh) translateX(20px) rotate(180deg); }
-  75% { transform: translateX(-50%) translateY(75vh) translateX(-10px) rotate(270deg); }
-  100% { transform: translateX(-50%) translateY(110vh) translateX(0px) rotate(360deg); opacity: 0; }
+  0%   { transform: translateX(-50%) translateY(0) rotate(0deg); opacity: 1; }
+  25%  { transform: translateX(-50%) translateY(25vh) translateX(-20px) rotate(45deg); }
+  50%  { transform: translateX(-50%) translateY(50vh) translateX(20px) rotate(180deg); }
+  75%  { transform: translateX(-50%) translateY(75vh) translateX(-10px) rotate(270deg); }
+  100% { transform: translateX(-50%) translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
-/* Left Section */
-.left-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  max-width: 45%;
-  min-width: 280px;
-  box-sizing: border-box;
-}
-
-/* Lyrics box */
+/* Lyrics box and scrolling effect */
 .lyrics-box {
   width: 400px;
   height: 300px;
@@ -164,7 +110,6 @@ body.theme-skin-metal #metalBackground {
 }
 
 .lyrics-inner {
-  position: relative;
   z-index: 2;
   width: 100%;
   height: 100%;
@@ -184,41 +129,19 @@ body.theme-skin-metal #metalBackground {
   opacity: 0.25;
 }
 
-.lyric-line.line-4 {
-  position: relative;
-  opacity: 0.85;
-  transform: scale(1.8);
+.lyric-line.active {
+  opacity: 1;
+  font-size: 1.75rem;
   font-weight: bold;
-  font-size: 32px;
-  line-height: 128px;
-  height: 128px;
-  animation: pulseHighlight 2s infinite;
+  text-shadow: 0 0 8px #fff, 1px 1px 2px black;
 }
 
-.lyric-line.line-4::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 128px;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: -1;
-  border-radius: 8px;
-}
-
-@keyframes pulseHighlight {
-  0%, 100% { text-shadow: 0 0 10px white, 1px 1px 0 black; }
-  50% { text-shadow: 0 0 20px white, 1px 1px 0 black; }
-}
-
-/* Player */
+/* Player UI */
 .player-wrapper {
   width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   z-index: 2;
 }
 
@@ -231,37 +154,17 @@ body.theme-skin-metal #metalBackground {
   width: 100%;
   padding: 0.5rem 1rem;
   gap: 1rem;
-  position: relative;
-  z-index: 2;
-}
-
-.play-button,
-.pause-button,
-.playlist-button,
-.canvas-button {
-  width: 32px;
-  height: 32px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: drop-shadow(0 0 2px black);
-  cursor: pointer;
 }
 
 .play-button {
+  width: 32px;
+  height: 32px;
   background-image: url('https://img.icons8.com/ios-filled/50/ffffff/play--v1.png');
-}
-
-.pause-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png');
-}
-
-.playlist-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/menu.png');
-}
-
-.canvas-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/canvas.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  filter: drop-shadow(0 0 2px black);
 }
 
 .time {
@@ -300,22 +203,11 @@ body.theme-skin-metal #metalBackground {
   flex-direction: column;
   max-height: 200px;
   overflow-y: auto;
-  animation: fadein 0.3s ease-out forwards;
   z-index: 3;
 }
 
 .playlist-panel.visible {
   display: flex;
-}
-
-@keyframes fadein {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeout {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(10px); }
 }
 
 .playlist-entry {
@@ -329,7 +221,7 @@ body.theme-skin-metal #metalBackground {
   background: #111;
 }
 
-/* Metadata */
+/* Cover and Metadata */
 .metadata {
   display: flex;
   flex-direction: column;
@@ -337,14 +229,12 @@ body.theme-skin-metal #metalBackground {
   gap: 0.5rem;
   max-width: 45%;
   min-width: 280px;
-  box-sizing: border-box;
 }
 
 .cover {
   width: 300px;
   height: 300px;
   object-fit: cover;
-  object-position: center;
   border-radius: 12px;
   background: #111;
   border: 5px solid white;
@@ -359,34 +249,23 @@ body.theme-skin-metal #metalBackground {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
   max-width: 300px;
-  margin-top: -4px;
 }
 
 .title, .artist {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', sans-serif;
   text-align: center;
   color: white;
   text-shadow: 1px 1px 3px black;
   -webkit-text-stroke: 0.5px black;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  word-break: break-word;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  padding: 0 0.25rem;
 }
 
 .title {
   font-size: 2.6rem;
-  -webkit-line-clamp: 2;
   line-height: 1.1;
 }
 
 .artist {
   font-size: 1.4rem;
-  -webkit-line-clamp: 1;
   line-height: 1.1;
 }
