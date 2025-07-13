@@ -13,6 +13,7 @@ const skinSelect = document.getElementById('skinSelect');
 const themeLink = document.getElementById('theme-link');
 const easelIcon = document.getElementById('easelIcon');
 const body = document.body;
+const metalBgVideo = document.getElementById('metalBgVideo');
 
 let parsedLyrics = [];
 let hasTimestamps = false;
@@ -76,31 +77,35 @@ easelIcon.addEventListener('click', () => {
 skinSelect.addEventListener('change', () => {
   themeLink.href = `${skinSelect.value}.css`;
   skinSelect.style.display = 'none';
-  // Update body class for skin
   updateBodySkinClass(skinSelect.value);
+});
 
-  // Trigger feather animation if Angel skin
-  if (skinSelect.value.includes('skin-angel')) {
+function updateBodySkinClass(cssPath) {
+  const match = cssPath.match(/skin-\w+/);
+  const skinClass = match ? `theme-${match[0]}` : '';
+  body.className = skinClass;
+
+  // Control background video
+  if (skinClass === 'theme-skin-metal') {
+    if (metalBgVideo) metalBgVideo.style.display = 'block';
+  } else {
+    if (metalBgVideo) metalBgVideo.style.display = 'none';
+  }
+
+  // Control feathers
+  if (skinClass === 'theme-skin-angel') {
     startFeathers();
   } else {
     stopFeathers();
   }
-});
-
-// Initialize skin class on load
-function updateBodySkinClass(cssPath) {
-  const skinNameMatch = cssPath.match(/skin-\w+/);
-  // Clear all theme skin classes
-  body.className = '';
-  if (skinNameMatch) {
-    body.classList.add(`theme-${skinNameMatch[0]}`);
-  } else {
-    // default or no skin
-    body.classList.remove(...body.classList);
-  }
 }
 
-// Load CSV songs and populate playlist
+// On load: Set correct theme class and features
+window.addEventListener('load', () => {
+  updateBodySkinClass(skinSelect.value);
+});
+
+///// CSV LOADER FOR SONG DATA /////
 Papa.parse('/.netlify/functions/fetchSheet', {
   download: true,
   header: true,
@@ -117,11 +122,10 @@ Papa.parse('/.netlify/functions/fetchSheet', {
       playlistEntries.appendChild(entry);
     });
 
-    loadTrack(songs[songs.length - 1]); // Load last song by default
+    loadTrack(songs[songs.length - 1]); // Load last track
   }
 });
 
-// Load track function
 function loadTrack(row) {
   document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
   document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
@@ -147,7 +151,6 @@ function loadTrack(row) {
   }
 }
 
-// Helpers for URLs
 function convertCoverArtUrl(url) {
   if (!url) return '';
   if (url.includes('drive.google.com')) {
@@ -164,7 +167,7 @@ function convertDropboxAudio(url) {
   return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('&dl=0', '');
 }
 
-// Lyrics parsing
+///// LYRICS /////
 function parseLyrics(raw) {
   const lines = raw.split('\n');
   const parsed = lines.map(line => {
@@ -202,38 +205,29 @@ function updateLyricsBox(currentTime) {
 
     if (i === 0) div.classList.add('active');
 
-    // Opacity based on distance from center
     const opacityLevels = { '-3': 0.25, '-2': 0.35, '-1': 0.45, '0': 1, '1': 0.45, '2': 0.35, '3': 0.25 };
     div.style.opacity = opacityLevels[i.toString()];
     lyricsInner.appendChild(div);
   }
 }
 
-///// FEATHER ANIMATION FOR ANGEL THEME /////
-
+///// FEATHERS /////
 let featherInterval;
 const featherCount = 15;
 const featherImages = [
-  // URLs or base64 images of white feather PNGs with transparency
-  'https://cdn-icons-png.flaticon.com/512/616/616408.png', // example feather icon 1
-  'https://cdn-icons-png.flaticon.com/512/616/616407.png', // example feather icon 2
+  'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+  'https://cdn-icons-png.flaticon.com/512/616/616407.png',
 ];
 
-// Create and animate feathers only for Angel theme
 function startFeathers() {
-  stopFeathers(); // Clear any existing
-  for (let i = 0; i < featherCount; i++) {
-    createFeather();
-  }
-  featherInterval = setInterval(() => {
-    createFeather();
-  }, 1000);
+  stopFeathers();
+  for (let i = 0; i < featherCount; i++) createFeather();
+  featherInterval = setInterval(() => createFeather(), 1000);
 }
 
 function stopFeathers() {
   clearInterval(featherInterval);
-  const existingFeathers = document.querySelectorAll('.angel-feather');
-  existingFeathers.forEach(f => f.remove());
+  document.querySelectorAll('.angel-feather').forEach(el => el.remove());
 }
 
 function createFeather() {
@@ -242,42 +236,25 @@ function createFeather() {
   feather.style.setProperty('--dur', `${5 + Math.random() * 10}s`);
   feather.style.width = `${20 + Math.random() * 25}px`;
   feather.style.height = 'auto';
-
-  // Random feather image
   const imgUrl = featherImages[Math.floor(Math.random() * featherImages.length)];
   feather.style.backgroundImage = `url(${imgUrl})`;
 
-  // Start position: random X across screen bottom (just off screen vertically)
   const startX = Math.random() * window.innerWidth;
   const startY = window.innerHeight + 50;
   feather.style.left = `${startX}px`;
   feather.style.top = `${startY}px`;
 
-  // Animate upward and sideways
   document.body.appendChild(feather);
 
   const duration = parseFloat(feather.style.getPropertyValue('--dur'));
-  const endX = startX + (Math.random() * 200 - 100); // sway left/right
-  const endY = -100; // top offscreen
+  const endX = startX + (Math.random() * 200 - 100);
+  const endY = -100;
 
-  // Trigger animation frame for smooth CSS transition
   requestAnimationFrame(() => {
     feather.style.transition = `transform ${duration}s linear, opacity ${duration}s linear`;
     feather.style.transform = `translate(${endX - startX}px, ${endY - startY}px) rotate(${Math.random() * 360}deg)`;
     feather.style.opacity = '0';
   });
 
-  // Remove after animation
-  setTimeout(() => {
-    feather.remove();
-  }, duration * 1000);
+  setTimeout(() => feather.remove(), duration * 1000);
 }
-
-// Initialize: Detect initial skin and start feathers if needed
-window.addEventListener('load', () => {
-  updateBodySkinClass(skinSelect.value);
-  if (skinSelect.value.includes('skin-angel')) startFeathers();
-});
-
-// Optional: Remove feathers on page unload
-window.addEventListener('beforeunload', () => stopFeathers());
