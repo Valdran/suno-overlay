@@ -81,6 +81,7 @@ body.theme-skin-metal #metalBackground {
   opacity: 0.25; /* Adjust this to make it more/less visible */
   z-index: -1;
   pointer-events: none;
+  overflow: hidden;
 }
 
 /* 🔥 Replace floating feathers with skulls */
