@@ -373,11 +373,17 @@ body.theme-skin-metal #metalBackground {
 
 .title, .artist {
   font-family: 'AdhesiveNRSeven', sans-serif;
-  font-weight: 400;
-  text-align: center;
+  font-weight: 400; /* It's a regular font, keep this */
   color: white;
-  text-shadow: 1px 1px 3px black;
-  -webkit-text-stroke: 0.5px black;
+  text-align: center;
+  -webkit-text-stroke: 0.8px black; /* bold outline */
+  text-shadow:
+    1px 0 black,
+    0 1px black,
+    -1px 0 black,
+    0 -1px black; /* fake bold via multiple shadows */
+  font-size: 2.6rem;
+  line-height: 1.1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -388,13 +394,10 @@ body.theme-skin-metal #metalBackground {
 }
 
 .title {
-  font-size: 2.6rem;
   -webkit-line-clamp: 2;
-  line-height: 1.1;
 }
 
 .artist {
   font-size: 1.4rem;
   -webkit-line-clamp: 1;
-  line-height: 1.1;
 }
