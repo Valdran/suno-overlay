@@ -11,33 +11,8 @@
 
   <!-- Dynamic CSS Link -->
   <link id="theme-link" rel="stylesheet" href="styles/styles.css">
-
-  <!-- Show video only when metal skin is active -->
-  <style>
-    #metalBgVideo {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      opacity: 0.25;
-      pointer-events: none;
-      z-index: -1;
-    }
-    body.theme-skin-metal #metalBgVideo {
-      display: block;
-    }
-  </style>
 </head>
-
-<body class="theme-skin-metal">
-  <!-- Background video for metal skin -->
-  <video autoplay muted loop playsinline id="metalBgVideo">
-    <source src="https://www.dropbox.com/scl/fi/clvirypg8yjkvxqd35ivn/firewall.mov?rlkey=xnp3bs7567av2qvfs4osvhfuj&raw=1" type="video/mp4">
-  </video>
-
+<body>
   <!-- Skin Switcher UI -->
   <div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
     <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
@@ -46,14 +21,14 @@
       <option value="styles/skin-retro">Retro</option>
       <option value="styles/skin-angel">Angel</option>
       <option value="styles/skin-haunted">Haunted</option>
-      <option value="styles/skin-metal" selected>Metal</option>
+      <option value="styles/skin-metal">Metal</option>
       <option value="styles/skin-steel">Steel</option>
       <option value="styles/skin-neon">Neon</option>
       <option value="styles/skin-storytellerz">Storytellerz</option>
     </select>
   </div>
 
-  <!-- Floating Skulls (was feathers) -->
+  <!-- Floating Feathers / Skulls -->
   <div class="feather-container">
     <div class="feather f1"></div>
     <div class="feather f2"></div>
@@ -97,19 +72,8 @@
     </div>
   </div>
 
-  <!-- Playlist Toggle Button (bottom-right corner) -->
-  <div id="playlistToggleButton" style="
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    width: 24px;
-    height: 24px;
-    background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
-    background-size: contain;
-    filter: drop-shadow(0 0 4px #00ff00);
-    cursor: pointer;
-    z-index: 1000;">
-  </div>
+  <!-- Playlist Toggle Button -->
+  <div id="playlistToggleButton" style="position: fixed; bottom: 1rem; right: 1rem; width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer; z-index: 1000;"></div>
 
   <!-- Audio Element -->
   <audio id="audioPlayer"></audio>
