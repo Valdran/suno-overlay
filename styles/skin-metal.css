@@ -398,6 +398,25 @@ body.theme-skin-metal #metalBackground {
 }
 
 .artist {
+  font-family: 'AdhesiveNRSeven', sans-serif;
+  font-weight: 400;
+  color: white;
+  text-align: center;
+  -webkit-text-stroke: 0.8px black;
+  text-shadow:
+    1px 0 black,
+    0 1px black,
+    -1px 0 black,
+    0 -1px black;
   font-size: 1.4rem;
+  line-height: 1.1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 0.25rem;
+  text-transform: uppercase; /* <-- this line forces all caps */
   -webkit-line-clamp: 1;
 }
