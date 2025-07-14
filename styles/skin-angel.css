@@ -1,4 +1,6 @@
 /* ANGEL SKIN — Visuals only */
+@import url('https://fonts.googleapis.com/css2?family=Medieval+Sharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400&display=swap');
 
 #metalBgVideo {
   display: none; /* Hidden by default */
@@ -56,4 +58,46 @@ body.theme-skin-angel {
   50% { transform: translateX(-50%) translateY(50vh) translateX(20px) rotate(180deg); }
   75% { transform: translateX(-50%) translateY(75vh) translateX(-10px) rotate(270deg); }
   100% { transform: translateX(-50%) translateY(110vh) translateX(0px) rotate(360deg); opacity: 0; }
+}
+
+body.theme-skin-angel .title {
+  font-family: 'Medieval Sharp', cursive;
+  font-size: clamp(1.2rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  color: white;
+  text-shadow:
+    0 0 6px #ffffff,
+    0 0 12px #eeeeee,
+    0 0 18px #ccc;
+  white-space: normal;
+  word-break: break-word;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Artist */
+body.theme-skin-angel .artist {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 400;
+  font-size: clamp(0.9rem, 3vw, 1.4rem);
+  color: #ffffffcc;
+  text-shadow: 0 0 4px #dddddd;
+  white-space: normal;
+  word-break: break-word;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+body.theme-skin-default .title,
+body.theme-skin-default .artist {
+  white-space: normal;
+  word-break: break-word;
+  text-align: center;
+  max-width: 100%;
+  font-size: min(2.5vw, 2.2rem);
 }
