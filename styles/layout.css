@@ -303,6 +303,8 @@ html, body {
 
 .scale-wrapper > .title,
 .scale-wrapper > .artist {
+    color: rgba(0, 0, 0, 0.85); /* black at 85% opacity */
+  text-shadow: none; /* optional: remove existing white glows */
   display: inline-block;
   white-space: nowrap;
   transform-origin: left center;
