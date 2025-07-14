@@ -1,9 +1,9 @@
-/* ==== METAL SKIN CSS ==== */
+/* ==== METAL SKIN CSS (Updated) ==== */
 
 /* ==== Fonts ==== */
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
 
 /* ==== Body and Background ==== */
 body.theme-skin-metal {
@@ -21,14 +21,14 @@ body.theme-skin-metal {
   left: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: contain;  /* fit fully with possible black bars */
+  object-fit: contain;
   opacity: 0.3;
   z-index: -1;
   pointer-events: none;
   background: black;
 }
 
-/* ==== Falling Embers (feathers replacement) ==== */
+/* ==== Falling Embers ==== */
 .feather-container {
   position: fixed;
   top: 0;
@@ -45,7 +45,7 @@ body.theme-skin-metal {
   top: -5%;
   width: 24px;
   height: 24px;
-  background: url('https://cdn-icons-png.flaticon.com/512/483/483356.png') no-repeat center; /* small ember icon */
+  background: url('https://cdn-icons-png.flaticon.com/512/483/483356.png') no-repeat center;
   background-size: contain;
   opacity: 0.7;
   filter: drop-shadow(0 0 3px orange);
@@ -109,7 +109,7 @@ body.theme-skin-metal {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'UnifrakturCook', serif;
+  font-family: 'Roboto Slab', serif;
   color: #f44336;
   text-shadow: 0 0 6px #b71c1c;
   user-select: none;
@@ -156,7 +156,7 @@ body.theme-skin-metal {
   text-shadow: 0 0 4px #b71c1c;
   opacity: 0.25;
   transition: all 0.3s ease;
-  font-family: 'UnifrakturCook', serif;
+  font-family: 'Roboto Slab', serif;
 }
 
 .lyric-line.line-4 {
@@ -169,11 +169,6 @@ body.theme-skin-metal {
     0 0 30px #ff1744;
   animation: flickerGlow 3s infinite;
   user-select: text;
-}
-
-@keyframes flickerGlow {
-  0%, 100% { text-shadow: 0 0 10px #ff5722, 0 0 20px #ff3d00, 0 0 30px #ff1744; }
-  50% { text-shadow: 0 0 15px #ff8a50, 0 0 25px #ff6e40, 0 0 40px #ff3d00; }
 }
 
 /* ==== Player wrapper ==== */
@@ -273,6 +268,9 @@ body.theme-skin-metal {
   overflow-y: auto;
   animation: fadein 0.3s ease-out forwards;
   z-index: 30;
+  font-family: 'Orbitron', sans-serif;
+  color: #ff7a5c;
+  text-shadow: 0 0 3px #bf360c;
 }
 
 .playlist-panel.visible {
@@ -280,8 +278,6 @@ body.theme-skin-metal {
 }
 
 .playlist-entry {
-  color: #ff7a5c;
-  text-shadow: 0 0 3px #bf360c;
   padding: 0.2rem;
   cursor: pointer;
   user-select: none;
@@ -298,6 +294,8 @@ body.theme-skin-metal {
   align-items: center;
   gap: 1rem;
   user-select: none;
+  max-width: 320px;
+  width: 100%;
 }
 
 /* Art cover with rusty metal frame */
@@ -308,7 +306,6 @@ body.theme-skin-metal {
   object-position: center;
   background: #110000;
   border: 8px solid #660000;
-  border-image: url('https://i.imgur.com/u7NmZel.png') 30 round; /* Optional custom rusty frame image */
   box-shadow: 0 0 20px #cc3300 inset;
   border-radius: 12px;
   box-sizing: border-box;
@@ -321,18 +318,22 @@ body.theme-skin-metal {
   box-shadow: 0 0 10px #ff3300 inset;
   border-radius: 8px;
   padding: 1rem 2rem;
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   text-align: center;
   font-family: 'Metal Mania', cursive;
   color: #ff4d4d;
   user-select: text;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* Title style */
 .title {
-  font-size: 2.8rem;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
   line-height: 1.1;
   text-shadow:
     0 0 8px #ff3300,
@@ -340,15 +341,21 @@ body.theme-skin-metal {
     0 0 30px #ff5733;
   animation: flickerGlow 3s infinite;
   margin-bottom: 0.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* Artist style */
 .artist {
-  font-family: 'UnifrakturCook', serif;
-  font-weight: 700;
-  font-size: 1.4rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1rem, 3vw, 1.4rem);
   color: #ffa07a;
   text-shadow: 0 0 5px #cc3300;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* Flicker glow animation reused */
