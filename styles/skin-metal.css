@@ -333,14 +333,11 @@ body.theme-skin-metal {
   width: 320px;
   height: 320px;
   object-fit: cover;
-  object-position: center;
   background: #110000;
   border-radius: 12px;
-  box-sizing: border-box;
-  box-shadow: 0 0 20px #cc3300 inset;
   position: relative;
-  border: 12px solid transparent;
-  background-clip: padding-box;
+  overflow: hidden;
+  border: none;
 }
 
 /* Using a chain image as border */
