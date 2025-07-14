@@ -78,9 +78,8 @@ body.theme-skin-angel .metadata-card .title {
     0 0 6px #ffffff,
     0 0 12px #eeeeee,
     0 0 18px #ccc;
-  white-space: normal;
-  word-break: break-word;
   text-align: center;
+  /* Removed white-space and word-break */
 }
 
 body.theme-skin-angel .metadata-card .artist {
@@ -88,9 +87,8 @@ body.theme-skin-angel .metadata-card .artist {
   font-size: clamp(0.9rem, 3vw, 1.4rem);
   color: #ffffffcc;
   text-shadow: 0 0 4px #dddddd;
-  white-space: normal;
-  word-break: break-word;
   text-align: center;
+  /* Removed white-space and word-break */
 }
 
 body.theme-skin-angel .scale-wrapper {
@@ -104,11 +102,10 @@ body.theme-skin-angel .scale-wrapper {
 body.theme-skin-angel .scale-wrapper > .title,
 body.theme-skin-angel .scale-wrapper > .artist {
   display: inline-block;
-  white-space: nowrap;
+  white-space: nowrap;        /* Important for scaling */
   transform-origin: left center;
   text-align: center;
   max-width: 100%;
   font-size: 2.4rem;
-  transform: scale(1); /* default, overridden by JS if needed */
+  transform: scale(1);
 }
-
