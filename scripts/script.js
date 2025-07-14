@@ -242,29 +242,28 @@ function updateLyricsBox(currentTime) {
 ///// AUTO SCALE TEXT /////
 function autoScaleText(selector) {
   document.querySelectorAll(selector).forEach(el => {
-    const container = el.parentElement;
+    const parent = el.parentElement;
     el.style.transform = 'scale(1)';
     el.style.maxWidth = 'none';
 
-    const parentWidth = container.offsetWidth;
-    const scrollWidth = el.scrollWidth;
+    const parentWidth = parent.offsetWidth;
+    const textWidth = el.scrollWidth;
 
-    if (scrollWidth > parentWidth) {
-      const scale = parentWidth / scrollWidth;
+    if (textWidth > parentWidth) {
+      const scale = parentWidth / textWidth;
       el.style.transform = `scale(${scale})`;
     }
   });
 }
 
-function applyScaling() {
+function applyAllScaling() {
   autoScaleText('.scale-wrapper > .title');
   autoScaleText('.scale-wrapper > .artist');
 }
 
-// Apply on page load and resize
-window.addEventListener('load', applyScaling);
-window.addEventListener('resize', applyScaling);
-window.addEventListener('orientationchange', applyScaling);
+window.addEventListener('load', applyAllScaling);
+window.addEventListener('resize', applyAllScaling);
+window.addEventListener('orientationchange', applyAllScaling);
 
 ///// FEATHERS /////
 let featherInterval;
