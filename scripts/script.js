@@ -142,13 +142,20 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadTrack(row) {
-  document.getElementById('songTitle').textContent = row['Song title'] || 'Unknown Title';
-  document.getElementById('artistName').textContent = row['Artist name'] || 'Unknown Artist';
+  const songTitle = document.getElementById('songTitle');
+  const artistName = document.getElementById('artistName');
+
+  songTitle.textContent = row['Song title'] || 'Unknown Title';
+  artistName.textContent = row['Artist name'] || 'Unknown Artist';
   audio.src = convertDropboxAudio(row['Direct download link'] || '');
 
   parsedLyrics = parseLyrics(row['Lyrics'] || '');
   updateLyricsBox(0);
   audio.pause();
+
+  // Auto scale after text update
+  autoScaleText('.scale-wrapper .title');
+  autoScaleText('.scale-wrapper .artist');
 
   const coverArt = document.getElementById('coverArt');
   const aiLink = row['AI music link'] || '';
@@ -232,6 +239,7 @@ function updateLyricsBox(currentTime) {
   }
 }
 
+///// AUTO SCALE TEXT /////
 function autoScaleText(selector) {
   document.querySelectorAll(selector).forEach(el => {
     const parent = el.parentElement;
@@ -299,5 +307,3 @@ function createFeather() {
 
   setTimeout(() => feather.remove(), duration * 1000);
 }
-
-
