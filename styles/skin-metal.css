@@ -33,7 +33,7 @@ body:not(.metal) .metal-bg-video {
   opacity: 0.25;
 }
 
-body:not(.metal) .metal-bg-video {
+body:not(.theme-skin-metal) #metalBgVideo {
   display: none !important;
 }
 
