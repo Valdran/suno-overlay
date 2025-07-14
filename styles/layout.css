@@ -298,7 +298,8 @@ html, body {
   align-items: center;
   width: 100%;
   overflow: hidden;
-  padding: 0 0.25rem; /* slight padding inside scale wrapper to avoid cropping */
+  padding: 0;
+  max-width: 100%;
 }
 
 .scale-wrapper > .title,
@@ -307,7 +308,7 @@ html, body {
   white-space: nowrap;
   transform-origin: left center;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 100%;
-  /* font-size from skin or default */
-  /* transform scale handled by JS */
 }
