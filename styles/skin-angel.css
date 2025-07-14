@@ -60,10 +60,19 @@ body.theme-skin-angel {
   100% { transform: translateX(-50%) translateY(110vh) translateX(0px) rotate(360deg); opacity: 0; }
 }
 
-body.theme-skin-angel .title {
+body.theme-skin-angel .metadata-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffffffaa;
+  padding: 1rem 2rem;
+  border-radius: 16px;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+body.theme-skin-angel .metadata-card .title {
   font-family: 'Medieval Sharp', cursive;
   font-size: clamp(1.2rem, 4vw, 2.6rem);
-  line-height: 1.1;
   color: white;
   text-shadow:
     0 0 6px #ffffff,
@@ -72,16 +81,12 @@ body.theme-skin-angel .title {
   white-space: normal;
   word-break: break-word;
   text-align: center;
-  margin-bottom: 0.4rem;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
 }
 
-/* Artist */
-body.theme-skin-angel .artist {
+body.theme-skin-angel .metadata-card .artist {
   font-family: 'Cinzel Decorative', serif;
-  font-weight: 400;
   font-size: clamp(0.9rem, 3vw, 1.4rem);
   color: #ffffffcc;
   text-shadow: 0 0 4px #dddddd;
@@ -90,7 +95,6 @@ body.theme-skin-angel .artist {
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 body.theme-skin-default .title,
