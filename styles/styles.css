@@ -1,3 +1,7 @@
+#metalBgVideo {
+  display: none; /* Hidden by default */
+}
+
 /* Box model */
 * {
   box-sizing: border-box;
