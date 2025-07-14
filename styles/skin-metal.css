@@ -347,16 +347,16 @@ body.theme-skin-metal {
 .cover::before {
   content: "";
   position: absolute;
-  top: -12px;
-  left: -12px;
-  width: calc(100% + 24px);
-  height: calc(100% + 24px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  border-radius: 18px;
-  background-image: url('https://i.imgur.com/ZXck1vf.png'); /* Chain pattern PNG */
-  background-repeat: repeat;
-  background-size: 24px 24px;
-  z-index: 10;
+  background-image: url('https://www.dropbox.com/scl/fi/flw5g74j4h1ez6opglxma/ChatGPT-Image-Jul-14-2025-12_10_26-AM.png?rlkey=gjvzgu7ht4mkx66he2j6uscv9&raw=1');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 20;
 }
 
 /* Title & Artist container */
