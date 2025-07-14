@@ -232,6 +232,26 @@ function updateLyricsBox(currentTime) {
   }
 }
 
+function autoScaleText(selector) {
+  document.querySelectorAll(selector).forEach(el => {
+    const parent = el.parentElement;
+    el.style.transform = 'scale(1)';
+    const parentWidth = parent.offsetWidth;
+    const elWidth = el.scrollWidth;
+
+    if (elWidth > parentWidth) {
+      const scale = parentWidth / elWidth;
+      el.style.transform = `scale(${scale})`;
+    }
+  });
+}
+
+// Call after content is loaded
+window.addEventListener('DOMContentLoaded', () => {
+  autoScaleText('.scale-wrapper .title');
+  autoScaleText('.scale-wrapper .artist');
+});
+
 ///// FEATHERS /////
 let featherInterval;
 const featherCount = 15;
@@ -279,3 +299,5 @@ function createFeather() {
 
   setTimeout(() => feather.remove(), duration * 1000);
 }
+
+
