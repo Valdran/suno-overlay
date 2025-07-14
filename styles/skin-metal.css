@@ -139,8 +139,8 @@ body.theme-skin-metal {
 .lyrics-inner::after { bottom: 8px; right: 8px; }
 
 /* Lyrics gradient fade */
+/* Removed gradient fade to keep rivets visible */
 .lyrics-box::after {
-  /* Removed gradient fade to keep rivets visible */
   content: none;
 }
 
@@ -371,9 +371,7 @@ body.theme-skin-metal {
   user-select: text;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /* Removed white-space, overflow, text-overflow for wrapping */
 }
 
 /* Title style */
@@ -386,9 +384,7 @@ body.theme-skin-metal {
     0 0 30px #ff5733;
   animation: flickerGlow 3s infinite;
   margin-bottom: 0.4rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /* Removed overflow, white-space, text-overflow */
 }
 
 /* Artist style */
@@ -398,9 +394,7 @@ body.theme-skin-metal {
   font-size: clamp(1rem, 3vw, 1.4rem);
   color: #ffa07a;
   text-shadow: 0 0 5px #cc3300;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /* Removed overflow, white-space, text-overflow */
 }
 
 /* Flicker glow animation reused */
