@@ -81,8 +81,6 @@ body.theme-skin-angel .metadata-card .title {
   white-space: normal;
   word-break: break-word;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 body.theme-skin-angel .metadata-card .artist {
@@ -93,8 +91,6 @@ body.theme-skin-angel .metadata-card .artist {
   white-space: normal;
   word-break: break-word;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 body.theme-skin-angel .scale-wrapper {
