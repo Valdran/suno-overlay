@@ -81,18 +81,20 @@ skinSelect.addEventListener('change', () => {
 });
 
 function updateBodySkinClass(cssPath) {
-  const match = cssPath.match(/skin-\w+/);
-  const skinClass = match ? `theme-${match[0]}` : '';
+  const match = cssPath.match(/skin-(\w+)/);
+  const skinName = match ? match[1] : 'default';
 
   // Reset and apply the new skin class
   body.className = skinClass;
 
   // ✅ Toggle fire background video
-  if (skinClass === 'theme-skin-metal') {
-    if (metalBgVideo) metalBgVideo.style.display = 'block';
-  } else {
-    if (metalBgVideo) metalBgVideo.style.display = 'none';
-  }
+ body.className = `theme-${skinName}`;
+
+if (skinName === 'metal') {
+  if (metalBgVideo) metalBgVideo.style.display = 'block';
+} else {
+  if (metalBgVideo) metalBgVideo.style.display = 'none';
+}
 
   // ✅ Toggle angel feathers
   if (skinClass === 'theme-skin-angel') {
