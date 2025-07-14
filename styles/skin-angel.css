@@ -97,11 +97,13 @@ body.theme-skin-angel .metadata-card .artist {
   text-overflow: ellipsis;
 }
 
-body.theme-skin-default .title,
-body.theme-skin-default .artist {
-  white-space: normal;
-  word-break: break-word;
+body.theme-skin-angel .metadata-card .title,
+body.theme-skin-angel .metadata-card .artist {
+  white-space: nowrap;              /* Force single line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;               /* Don’t break mid-word */
   text-align: center;
   max-width: 100%;
-  font-size: min(2.5vw, 2.2rem);
+  font-size: clamp(1rem, 4vw, 2.4rem); /* Keeps title responsive */
 }
