@@ -1,6 +1,6 @@
-/* ==== METAL SKIN CSS (Updated) ==== */
+/* ==== METAL SKIN CSS — Enhanced Metal Vibes ==== */
 
-/* ==== Fonts ==== */
+/* ==== Fonts (same as before) ==== */
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
@@ -95,48 +95,58 @@ body.theme-skin-metal {
   flex-shrink: 0;
 }
 
-/* Lyrics box */
+/* Lyrics box with metal plate texture and rivets */
 .lyrics-box {
   width: 420px;
   height: 320px;
-  background: rgba(15, 15, 15, 0.85);
-  border: 3px solid #660000;
+  background: linear-gradient(135deg, #555555, #2f2f2f);
+  border: 5px solid #444;
   border-radius: 12px;
-  box-shadow: 0 0 12px crimson;
-  padding: 1rem;
+  box-shadow:
+    inset 0 0 10px #888,
+    0 0 15px #bb0000;
   position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 2rem 1.5rem 1rem 1.5rem;
   font-family: 'Roboto Slab', serif;
   color: #f44336;
   text-shadow: 0 0 6px #b71c1c;
   user-select: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* Rivets in corners (using pseudo-elements) */
+.lyrics-box::before,
+.lyrics-box::after,
+.lyrics-inner::before,
+.lyrics-inner::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at center, #bbb, #555);
+  border-radius: 50%;
+  box-shadow: 0 0 4px #333 inset;
+  border: 1.5px solid #888;
+  pointer-events: none;
+  z-index: 5;
+}
+.lyrics-box::before { top: 8px; left: 8px; }
+.lyrics-box::after { top: 8px; right: 8px; }
+.lyrics-inner::before { bottom: 8px; left: 8px; }
+.lyrics-inner::after { bottom: 8px; right: 8px; }
 
 /* Lyrics gradient fade */
 .lyrics-box::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  border-radius: 12px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0) 0%,
-    rgba(102, 0, 0, 0.8) 25%,
-    rgba(0, 0, 0, 0.85) 50%,
-    rgba(102, 0, 0, 0.8) 75%,
-    rgba(0,0,0,0) 100%
-  );
-  z-index: 1;
+  /* Removed gradient fade to keep rivets visible */
+  content: none;
 }
 
 .lyrics-inner {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   width: 100%;
   height: 100%;
   padding: 0 1rem;
@@ -181,12 +191,12 @@ body.theme-skin-metal {
   z-index: 10;
 }
 
-/* Custom player */
+/* Custom player with metal plate background */
 .custom-player {
   display: flex;
   align-items: center;
-  background: rgba(20, 0, 0, 0.8);
-  border: 2px solid #cc3300;
+  background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+  border: 3px solid #bb0000;
   border-radius: 8px;
   width: 100%;
   padding: 0.5rem 1rem;
@@ -194,37 +204,56 @@ body.theme-skin-metal {
   color: #ff5722;
   font-family: 'Orbitron', sans-serif;
   user-select: none;
+  box-shadow:
+    inset 0 0 6px #440000,
+    0 0 15px #ff3300;
 }
 
-/* Buttons */
+/* Metal-themed play/pause/playlist/easel buttons */
 .play-button,
 .pause-button,
 .playlist-button,
 .canvas-button {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: drop-shadow(0 0 2px #ff3300);
+  filter: drop-shadow(0 0 6px #ff3300);
   cursor: pointer;
   user-select: none;
+  border: 2px solid #bb0000;
+  border-radius: 4px;
+  background-color: #330000;
+  box-shadow:
+    inset 0 0 8px #660000,
+    0 0 10px #ff3300;
+  transition: background-color 0.3s ease;
 }
 
+.play-button:hover,
+.pause-button:hover,
+.playlist-button:hover,
+.canvas-button:hover {
+  background-color: #660000;
+}
+
+/* Replace icons with metal plate styled text or metal icons */
+/* You can replace these with actual metal icons if you prefer */
 .play-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/play--v1.png');
+  background-image: url('https://cdn-icons-png.flaticon.com/512/64/64595.png'); /* Metal-style play icon */
 }
 
 .pause-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/pause--v1.png');
+  background-image: url('https://cdn-icons-png.flaticon.com/512/64/64580.png'); /* Metal-style pause icon */
 }
 
 .playlist-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/menu.png');
+  background-image: url('https://cdn-icons-png.flaticon.com/512/36/36622.png'); /* Metal menu icon */
 }
 
 .canvas-button {
-  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/canvas.png');
+  background-image: url('https://cdn-icons-png.flaticon.com/512/565/565547.png'); /* Canvas icon with metal look */
 }
 
 /* Time and bar */
@@ -259,8 +288,8 @@ body.theme-skin-metal {
   position: absolute;
   bottom: 100%;
   width: 100%;
-  background: rgba(30, 0, 0, 0.95);
-  border: 2px solid #330000;
+  background: linear-gradient(90deg, #220000, #440000);
+  border: 2px solid #bb0000;
   padding: 0.5rem;
   display: none;
   flex-direction: column;
@@ -298,26 +327,45 @@ body.theme-skin-metal {
   width: 100%;
 }
 
-/* Art cover with rusty metal frame */
+/* Art cover with chains border */
+/* Chain border with repeating chain image around the edges */
 .cover {
   width: 320px;
   height: 320px;
   object-fit: cover;
   object-position: center;
   background: #110000;
-  border: 8px solid #660000;
-  box-shadow: 0 0 20px #cc3300 inset;
   border-radius: 12px;
   box-sizing: border-box;
+  box-shadow: 0 0 20px #cc3300 inset;
+  position: relative;
+  border: 12px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Using a chain image as border */
+.cover::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  pointer-events: none;
+  border-radius: 18px;
+  background-image: url('https://i.imgur.com/ZXck1vf.png'); /* Chain pattern PNG */
+  background-repeat: repeat;
+  background-size: 24px 24px;
+  z-index: 10;
 }
 
 /* Title & Artist container */
 .metadata-card {
   background: linear-gradient(90deg, #220000, #440000);
-  border: 2px solid #cc3300;
+  border: 2px solid #bb0000;
   box-shadow: 0 0 10px #ff3300 inset;
   border-radius: 8px;
-  padding: 1rem 2rem;
+  padding: 1rem 2.5rem; /* more horizontal padding for spacing */
   width: 100%;
   max-width: 320px;
   text-align: center;
