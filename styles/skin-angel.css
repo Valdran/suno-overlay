@@ -90,22 +90,3 @@ body.theme-skin-angel .metadata-card .artist {
   text-align: center;
   /* Removed white-space and word-break */
 }
-
-body.theme-skin-angel .scale-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  overflow: hidden;
-}
-
-body.theme-skin-angel .scale-wrapper > .title,
-body.theme-skin-angel .scale-wrapper > .artist {
-  display: inline-block;
-  white-space: nowrap;        /* Important for scaling */
-  transform-origin: left center;
-  text-align: center;
-  max-width: 100%;
-  font-size: 2.4rem;
-  transform: scale(1);
-}
