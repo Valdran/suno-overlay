@@ -17,6 +17,12 @@
   
 </head>
 <body>
+
+  <!-- Place this inside <body>, near the top or bottom -->
+<video id="metalBackground" autoplay muted loop playsinline style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1;">
+  <source src="https://www.dl.dropboxusercontent.com/scl/fi/8aky3idupwx3i0xn9a50l/Firevideo.mp4?rlkey=y6urkwms2cv8jzc9jwgfk8tev&st=6q6vohdr" type="video/mp4">
+</video>
+
   <!-- Skin Switcher UI -->
   <div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
     <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
@@ -31,11 +37,6 @@
       <option value="styles/skin-storytellerz">Storytellerz</option>
     </select>
   </div>
-
-  <!-- Fire video (should be hidden by default) -->
-<video id="metalBackground" autoplay muted loop playsinline style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1;">
-  <source src="https://www.dl.dropboxusercontent.com/scl/fi/8aky3idupwx3i0xn9a50l/Firevideo.mp4?rlkey=y6urkwms2cv8jzc9jwgfk8tev&st=6q6vohdr" type="video/mp4">
-</video>
   
   <!-- Floating Feathers / Skulls -->
   <div class="feather-container">
