@@ -1,64 +1,36 @@
-/* METAL SKIN — Visuals only */
+/* ==== METAL SKIN CSS ==== */
 
-@font-face {
-  font-family: 'AdhesiveNRSeven';
-  src: url('https://dl.dropboxusercontent.com/scl/fi/4lspd35ucp822z1gpr1aw/Seven-Regular.woff2?rlkey=b0nhhji3ur9gl7v8iz2cjtukn&raw=1') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
+/* ==== Fonts ==== */
+@import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
-.metal-bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.25;
-}
-
-body:not(.metal) .metal-bg-video {
-  display: none !important;
-}.metal-bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.25;
-}
-
-body:not(.theme-skin-metal) #metalBgVideo {
-  display: none !important;
-}
-
+/* ==== Body and Background ==== */
 body.theme-skin-metal {
   background: black;
-  font-family: 'AdhesiveNRSeven', sans-serif;
-  color: white;
+  font-family: 'Orbitron', sans-serif;
+  color: #eee;
+  overflow: hidden;
+  position: relative;
 }
 
-/* 🔥 Video background */
-body.theme-skin-metal #metalBackground {
+/* ==== Video Background ==== */
+#metalBgVideo {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;
-  opacity: 0.25;
+  object-fit: contain;  /* fit fully with possible black bars */
+  opacity: 0.3;
   z-index: -1;
   pointer-events: none;
+  background: black;
 }
 
-/* 💀 Falling skulls */
+/* ==== Falling Embers (feathers replacement) ==== */
 .feather-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -70,28 +42,369 @@ body.theme-skin-metal #metalBackground {
 
 .feather {
   position: absolute;
-  top: -10%;
-  width: 32px;
-  height: 32px;
-  background: url('https://www.dropbox.com/scl/fi/1oosmbm4mazu0675xuvik/FierySkull.png?rlkey=ifflp888h7v31swe7bfp1xf5i&raw=1') no-repeat center;
+  top: -5%;
+  width: 24px;
+  height: 24px;
+  background: url('https://cdn-icons-png.flaticon.com/512/483/483356.png') no-repeat center; /* small ember icon */
   background-size: contain;
-  opacity: 0.6;
-  pointer-events: none;
-  z-index: 0;
-  animation: featherDrift 12s linear infinite;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 3px orange);
+  animation: emberFall 10s linear infinite;
   transform: translateX(-50%);
+  pointer-events: none;
 }
 
-.feather.f1 { left: 10%; animation-delay: 0s; }
-.feather.f2 { left: 25%; animation-delay: 2s; }
-.feather.f3 { left: 50%; animation-delay: 4s; }
-.feather.f4 { left: 75%; animation-delay: 1s; }
-.feather.f5 { left: 90%; animation-delay: 3s; }
+.feather.f1 { left: 12%; animation-delay: 0s; }
+.feather.f2 { left: 28%; animation-delay: 3s; }
+.feather.f3 { left: 50%; animation-delay: 5s; }
+.feather.f4 { left: 75%; animation-delay: 1.5s; }
+.feather.f5 { left: 90%; animation-delay: 4s; }
 
-@keyframes featherDrift {
-  0% { transform: translateX(-50%) translateY(0) rotate(0deg); opacity: 1; }
-  25% { transform: translateX(-50%) translateY(25vh) translateX(-20px) rotate(45deg); }
-  50% { transform: translateX(-50%) translateY(50vh) translateX(20px) rotate(180deg); }
-  75% { transform: translateX(-50%) translateY(75vh) translateX(-10px) rotate(270deg); }
-  100% { transform: translateX(-50%) translateY(110vh) translateX(0px) rotate(360deg); opacity: 0; }
+@keyframes emberFall {
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(-50%) translateY(50vh) rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(-50%) translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ==== Container & Layout ==== */
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  gap: 2rem;
+  align-items: flex-start;
+  z-index: 10;
+  position: relative;
+}
+
+/* Left section (lyrics + player) */
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* Lyrics box */
+.lyrics-box {
+  width: 420px;
+  height: 320px;
+  background: rgba(15, 15, 15, 0.85);
+  border: 3px solid #660000;
+  border-radius: 12px;
+  box-shadow: 0 0 12px crimson;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'UnifrakturCook', serif;
+  color: #f44336;
+  text-shadow: 0 0 6px #b71c1c;
+  user-select: none;
+}
+
+/* Lyrics gradient fade */
+.lyrics-box::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  border-radius: 12px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(102, 0, 0, 0.8) 25%,
+    rgba(0, 0, 0, 0.85) 50%,
+    rgba(102, 0, 0, 0.8) 75%,
+    rgba(0,0,0,0) 100%
+  );
+  z-index: 1;
+}
+
+.lyrics-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  font-weight: 700;
+  opacity: 0.75;
+  user-select: none;
+}
+
+.lyric-line {
+  text-align: center;
+  color: #f44336;
+  text-shadow: 0 0 4px #b71c1c;
+  opacity: 0.25;
+  transition: all 0.3s ease;
+  font-family: 'UnifrakturCook', serif;
+}
+
+.lyric-line.line-4 {
+  opacity: 1;
+  font-size: 2rem;
+  font-weight: 900;
+  text-shadow:
+    0 0 10px #ff5722,
+    0 0 20px #ff3d00,
+    0 0 30px #ff1744;
+  animation: flickerGlow 3s infinite;
+  user-select: text;
+}
+
+@keyframes flickerGlow {
+  0%, 100% { text-shadow: 0 0 10px #ff5722, 0 0 20px #ff3d00, 0 0 30px #ff1744; }
+  50% { text-shadow: 0 0 15px #ff8a50, 0 0 25px #ff6e40, 0 0 40px #ff3d00; }
+}
+
+/* ==== Player wrapper ==== */
+.player-wrapper {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* Custom player */
+.custom-player {
+  display: flex;
+  align-items: center;
+  background: rgba(20, 0, 0, 0.8);
+  border: 2px solid #cc3300;
+  border-radius: 8px;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  color: #ff5722;
+  font-family: 'Orbitron', sans-serif;
+  user-select: none;
+}
+
+/* Buttons */
+.play-button,
+.pause-button,
+.playlist-button,
+.canvas-button {
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 2px #ff3300);
+  cursor: pointer;
+  user-select: none;
+}
+
+.play-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/play--v1.png');
+}
+
+.pause-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/pause--v1.png');
+}
+
+.playlist-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/menu.png');
+}
+
+.canvas-button {
+  background-image: url('https://img.icons8.com/ios-filled/50/ff4500/canvas.png');
+}
+
+/* Time and bar */
+.time {
+  font-size: 0.8rem;
+  min-width: 45px;
+  text-align: center;
+  color: #ff7043;
+  text-shadow: 0 0 4px #bf360c;
+  user-select: none;
+}
+
+.progress {
+  flex-grow: 1;
+  height: 8px;
+  background: #660000;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: inset 0 0 5px #330000;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #ff3300;
+  border-radius: 4px;
+  width: 0%;
+}
+
+/* Playlist */
+.playlist-panel {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  background: rgba(30, 0, 0, 0.95);
+  border: 2px solid #330000;
+  padding: 0.5rem;
+  display: none;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  animation: fadein 0.3s ease-out forwards;
+  z-index: 30;
+}
+
+.playlist-panel.visible {
+  display: flex;
+}
+
+.playlist-entry {
+  color: #ff7a5c;
+  text-shadow: 0 0 3px #bf360c;
+  padding: 0.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.playlist-entry:hover {
+  background: #330000;
+}
+
+/* Metadata container */
+.metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  user-select: none;
+}
+
+/* Art cover with rusty metal frame */
+.cover {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  object-position: center;
+  background: #110000;
+  border: 8px solid #660000;
+  border-image: url('https://i.imgur.com/u7NmZel.png') 30 round; /* Optional custom rusty frame image */
+  box-shadow: 0 0 20px #cc3300 inset;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+/* Title & Artist container */
+.metadata-card {
+  background: linear-gradient(90deg, #220000, #440000);
+  border: 2px solid #cc3300;
+  box-shadow: 0 0 10px #ff3300 inset;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  width: 320px;
+  text-align: center;
+  font-family: 'Metal Mania', cursive;
+  color: #ff4d4d;
+  user-select: text;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Title style */
+.title {
+  font-size: 2.8rem;
+  line-height: 1.1;
+  text-shadow:
+    0 0 8px #ff3300,
+    0 0 20px #ff3300,
+    0 0 30px #ff5733;
+  animation: flickerGlow 3s infinite;
+  margin-bottom: 0.4rem;
+}
+
+/* Artist style */
+.artist {
+  font-family: 'UnifrakturCook', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #ffa07a;
+  text-shadow: 0 0 5px #cc3300;
+}
+
+/* Flicker glow animation reused */
+@keyframes flickerGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 8px #ff3300,
+      0 0 20px #ff3300,
+      0 0 30px #ff5733;
+  }
+  50% {
+    text-shadow:
+      0 0 15px #ff5e33,
+      0 0 25px #ff4511,
+      0 0 40px #ff2a00;
+  }
+}
+
+/* Playlist Toggle Button */
+#playlistToggleButton {
+  filter: drop-shadow(0 0 6px #ff3300);
+}
+
+/* Skin control UI */
+#skinControl {
+  filter: drop-shadow(0 0 6px #ff3300);
+}
+
+/* Scrollbar for playlist */
+.playlist-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.playlist-panel::-webkit-scrollbar-track {
+  background: #220000;
+}
+
+.playlist-panel::-webkit-scrollbar-thumb {
+  background: #660000;
+  border-radius: 4px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 850px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .lyrics-box, .player-wrapper, .metadata-card, .cover {
+    width: 90vw !important;
+    max-width: 400px;
+  }
+  
+  .metadata {
+    gap: 0.5rem;
+  }
 }
