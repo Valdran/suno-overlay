@@ -87,14 +87,16 @@ function updateBodySkinClass(cssPath) {
   // Reset and apply the new skin class
   body.className = skinClass;
 
-  // Control background video (fire for metal skin)
-  if (skinClass === 'theme-skin-metal') {
-    if (metalBgVideo) metalBgVideo.style.display = 'block';
-  } else {
-    if (metalBgVideo) metalBgVideo.style.display = 'none';
+  // Correctly toggle fire background video (only for metal skin)
+  if (metalBgVideo) {
+    if (skinClass === 'theme-skin-metal') {
+      metalBgVideo.style.display = 'block';
+    } else {
+      metalBgVideo.style.display = 'none';
+    }
   }
 
-  // Control feathers (only for angel skin)
+  // Toggle feathers (only for angel skin)
   if (skinClass === 'theme-skin-angel') {
     startFeathers();
   } else {
