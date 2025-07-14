@@ -13,7 +13,7 @@ const skinSelect = document.getElementById('skinSelect');
 const themeLink = document.getElementById('theme-link');
 const easelIcon = document.getElementById('easelIcon');
 const body = document.body;
-const metalBgVideo = document.getElementById('metalBgVideo');
+const metalBgVideo = document.getElementById('metalBackground'); // ✅ ID FIX
 
 let parsedLyrics = [];
 let hasTimestamps = false;
@@ -83,16 +83,18 @@ skinSelect.addEventListener('change', () => {
 function updateBodySkinClass(cssPath) {
   const match = cssPath.match(/skin-\w+/);
   const skinClass = match ? `theme-${match[0]}` : '';
+
+  // Reset and apply the new skin class
   body.className = skinClass;
 
-  // Control background video
+  // ✅ Toggle fire background video
   if (skinClass === 'theme-skin-metal') {
     if (metalBgVideo) metalBgVideo.style.display = 'block';
   } else {
     if (metalBgVideo) metalBgVideo.style.display = 'none';
   }
 
-  // Control feathers
+  // ✅ Toggle angel feathers
   if (skinClass === 'theme-skin-angel') {
     startFeathers();
   } else {
@@ -100,7 +102,7 @@ function updateBodySkinClass(cssPath) {
   }
 }
 
-// On load: Set correct theme class and features
+// ✅ On load: Set correct theme class and video/feathers
 window.addEventListener('load', () => {
   updateBodySkinClass(skinSelect.value);
 });
@@ -205,56 +207,4 @@ function updateLyricsBox(currentTime) {
 
     if (i === 0) div.classList.add('active');
 
-    const opacityLevels = { '-3': 0.25, '-2': 0.35, '-1': 0.45, '0': 1, '1': 0.45, '2': 0.35, '3': 0.25 };
-    div.style.opacity = opacityLevels[i.toString()];
-    lyricsInner.appendChild(div);
-  }
-}
-
-///// FEATHERS /////
-let featherInterval;
-const featherCount = 15;
-const featherImages = [
-  'https://cdn-icons-png.flaticon.com/512/616/616408.png',
-  'https://cdn-icons-png.flaticon.com/512/616/616407.png',
-];
-
-function startFeathers() {
-  stopFeathers();
-  for (let i = 0; i < featherCount; i++) createFeather();
-  featherInterval = setInterval(() => createFeather(), 1000);
-}
-
-function stopFeathers() {
-  clearInterval(featherInterval);
-  document.querySelectorAll('.angel-feather').forEach(el => el.remove());
-}
-
-function createFeather() {
-  const feather = document.createElement('div');
-  feather.className = 'angel-feather';
-  feather.style.setProperty('--dur', `${5 + Math.random() * 10}s`);
-  feather.style.width = `${20 + Math.random() * 25}px`;
-  feather.style.height = 'auto';
-  const imgUrl = featherImages[Math.floor(Math.random() * featherImages.length)];
-  feather.style.backgroundImage = `url(${imgUrl})`;
-
-  const startX = Math.random() * window.innerWidth;
-  const startY = window.innerHeight + 50;
-  feather.style.left = `${startX}px`;
-  feather.style.top = `${startY}px`;
-
-  document.body.appendChild(feather);
-
-  const duration = parseFloat(feather.style.getPropertyValue('--dur'));
-  const endX = startX + (Math.random() * 200 - 100);
-  const endY = -100;
-
-  requestAnimationFrame(() => {
-    feather.style.transition = `transform ${duration}s linear, opacity ${duration}s linear`;
-    feather.style.transform = `translate(${endX - startX}px, ${endY - startY}px) rotate(${Math.random() * 360}deg)`;
-    feather.style.opacity = '0';
-  });
-
-  setTimeout(() => feather.remove(), duration * 1000);
-}
+    const opacityLevels = { '-3': 0.25, '-2': 0.35, '-1':
