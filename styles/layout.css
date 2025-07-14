@@ -299,7 +299,6 @@ html, body {
   width: 100%;
   overflow: hidden;
   padding: 0;
-  max-width: 100%;
 }
 
 .scale-wrapper > .title,
@@ -308,7 +307,6 @@ html, body {
   white-space: nowrap;
   transform-origin: left center;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+  max-width: none;
+  transform: scale(1); /* baseline */
 }
