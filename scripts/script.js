@@ -240,25 +240,33 @@ function updateLyricsBox(currentTime) {
 }
 
 ///// AUTO SCALE TEXT /////
-function autoScaleText(selector) {
+function autoScaleText(selector, maxLines = 2, minScale = 0.6) {
   document.querySelectorAll(selector).forEach(el => {
     const parent = el.parentElement;
     el.style.transform = 'scale(1)';
     el.style.maxWidth = 'none';
+    el.style.whiteSpace = 'normal';
 
     const parentWidth = parent.offsetWidth;
     const textWidth = el.scrollWidth;
 
-    if (textWidth > parentWidth) {
-      const scale = parentWidth / textWidth;
-      el.style.transform = `scale(${scale})`;
-    }
+    const parentHeight = parent.offsetHeight;
+    const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 1.2;
+    const textHeight = el.scrollHeight;
+    const expectedMaxHeight = lineHeight * maxLines;
+
+    const scaleX = parentWidth / textWidth;
+    const scaleY = expectedMaxHeight / textHeight;
+
+    const scale = Math.min(scaleX, scaleY, 1);
+    el.style.transform = `scale(${Math.max(scale, minScale)})`;
+    el.style.transformOrigin = 'top center';
   });
 }
 
 function applyAllScaling() {
-  autoScaleText('.scale-wrapper > .title');
-  autoScaleText('.scale-wrapper > .artist');
+  autoScaleText('.scale-wrapper .title');
+  autoScaleText('.scale-wrapper .artist');
 }
 
 window.addEventListener('load', applyAllScaling);
