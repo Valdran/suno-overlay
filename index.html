@@ -1,208 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spooky Audio Player</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spooky Audio Player</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Medieval+Sharp&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Medieval+Sharp&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
-  <!-- Add this line BEFORE the theme link -->
-  <link rel="stylesheet" href="styles/layout.css" />
+<!-- Your CSS -->
+<link rel="stylesheet" href="styles/layout.css" />
+<link id="theme-link" rel="stylesheet" href="styles/styles.css" />
 
-  <!-- Existing dynamic skin link -->
-  <link id="theme-link" rel="stylesheet" href="styles/styles.css">
+<style>
+  /* Control Area fixed on right */
+  #controlArea {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 160px;
+    height: 100vh;
+    background: rgba(0,0,0,0.9);
+    border-left: 2px solid #00ff00;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    box-sizing: border-box;
+    z-index: 1100;
+    user-select: none;
+  }
+  /* Push main UI left so it doesn't go under control area */
+  .center-wrapper {
+    margin-right: 160px;
+  }
+  /* Play/Pause control button */
+  #controlPlayButton {
+    width: 48px;
+    height: 48px;
+    background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-image 0.3s ease;
+  }
+  #controlPlayButton.playing {
+    background-image: url('https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png');
+  }
 
-  <style>
-    /* Control Area on right */
-    #controlArea {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 140px;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      border-left: 2px solid #00ff00;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem 0;
-      box-sizing: border-box;
-      z-index: 1100;
-      user-select: none;
-    }
+  /* Playlist toggle */
+  #playlistToggleButton {
+    width: 32px;
+    height: 32px;
+    margin-top: auto;
+    background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+  }
 
-    /* Push main UI left */
-    .center-wrapper {
-      margin-right: 140px;
-    }
+  /* Playlist panel inside control */
+  #playlistPanel {
+    width: 100%;
+    max-height: 50vh;
+    overflow-y: auto;
+    background: #111;
+    border: 1px solid #00ff00;
+    display: none;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+  }
+  #playlistPanel.visible {
+    display: flex;
+  }
 
-    /* Play/Pause button in control area */
-    #controlPlayButton {
-      width: 48px;
-      height: 48px;
-      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27223.png'); /* play icon */
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      cursor: pointer;
-      margin: auto 0;
-      transition: background-image 0.3s ease;
-    }
-    #controlPlayButton.paused {
-      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27225.png'); /* pause icon */
-    }
+  .playlist-title {
+    color: #00ff00;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #00ff00;
+    font-family: 'Orbitron', sans-serif;
+  }
+  .playlist-entry {
+    padding: 0.3rem 1rem;
+    color: #ccc;
+    cursor: pointer;
+    border-bottom: 1px solid #002200;
+    user-select: none;
+  }
+  .playlist-entry:hover {
+    background: #003300;
+    color: #00ff00;
+  }
 
-    /* Playlist toggle button inside control area */
-    #playlistToggleButton {
-      width: 32px !important;
-      height: 32px !important;
-      margin-bottom: 1rem;
-      background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') no-repeat center;
-      background-size: contain;
-      cursor: pointer;
-      user-select: none;
-    }
+  /* Vertical skin list */
+  #skinList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    color: #00ff00;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    user-select: none;
+  }
+  #skinList li {
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  #skinList li:hover,
+  #skinList li.active {
+    border-left-color: #00ff00;
+    background: #002200;
+  }
 
-    /* Playlist panel inside control area */
-    #playlistPanel {
-      position: relative;
-      width: 100%;
-      max-height: 50vh;
-      overflow-y: auto;
-      background: #111;
-      border: 1px solid #00ff00;
-      display: none; /* hidden initially */
-      flex-direction: column;
-      box-sizing: border-box;
-      margin-bottom: 0.5rem;
-      z-index: 1200;
-    }
-    #playlistPanel.visible {
-      display: flex;
-    }
-    #playlistPanel.fadeout {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+  /* Hide the original select but keep it for script */
+  #skinSelect {
+    display: none !important;
+  }
 
-    /* Playlist title */
-    .playlist-title {
-      padding: 0.5rem 1rem;
-      font-weight: 700;
-      color: #00ff00;
-      border-bottom: 1px solid #00ff00;
-      user-select: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
-    }
-
-    /* Playlist entries */
-    .playlist-entry {
-      padding: 0.3rem 1rem;
-      color: #ccc;
-      cursor: pointer;
-      font-family: 'Rubik', sans-serif;
-      font-size: 0.9rem;
-      border-bottom: 1px solid #002200;
-      user-select: none;
-    }
-    .playlist-entry:hover {
-      background: #003300;
-      color: #00ff00;
-    }
-
-    /* Vertical skin list */
-    #skinList {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0 0 0;
-      width: 100%;
-      color: #00ff00;
-      font-family: 'Rubik', sans-serif;
-      font-weight: 600;
-      user-select: none;
-    }
-    #skinList li {
-      padding: 0.4rem 1rem;
-      cursor: pointer;
-      border-left: 3px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-    #skinList li:hover,
-    #skinList li.active {
-      border-left-color: #00ff00;
-      background: #002200;
-    }
-
-    /* Hide original skinSelect but keep it in DOM */
-    #skinSelect {
-      display: none !important;
-    }
-
-    /* Prevent feathers overlapping control area */
-    .feather-container {
-      pointer-events: none;
-      overflow: visible;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 140px;
-      height: 100vh;
-      z-index: 50;
-    }
-  </style>
+  /* Prevent feathers overlapping control area */
+  .feather-container {
+    pointer-events: none;
+    overflow: visible;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 160px; /* prevent over control */
+    height: 100vh;
+    z-index: 50;
+  }
+</style>
 </head>
 <body>
 
 <video id="metalBgVideo" autoplay muted loop playsinline
-  style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1;">
+  style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;">
   <source src="https://www.dropbox.com/scl/fi/92390f6gk9vs09i0q9133/172090-846482763.mp4?rlkey=tkuh9m9r8pi4osph44d1n882h&raw=1" type="video/mp4" />
 </video>
 
-<!-- Skin Switcher UI -->
-<div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000; display:none;">
-  <!-- Hidden original easel and select removed from UI -->
-  <select id="skinSelect">
-    <option value="styles/styles" selected>Default</option>
-    <option value="styles/skin-retro">Retro</option>
-    <option value="styles/skin-angel">Angel</option>
-    <option value="styles/skin-haunted">Haunted</option>
-    <option value="styles/skin-metal">Metal</option>
-    <option value="styles/skin-steel">Steel</option>
-    <option value="styles/skin-neon">Neon</option>
-    <option value="styles/skin-storytellerz">Storytellerz</option>
-  </select>
-</div>
-
-<!-- Floating Feathers / Skulls -->
-<div class="feather-container">
-  <div class="feather f1"></div>
-  <div class="feather f2"></div>
-  <div class="feather f3"></div>
-  <div class="feather f4"></div>
-  <div class="feather f5"></div>
-</div>
+<!-- Hidden original select for skin switching -->
+<select id="skinSelect">
+  <option value="styles/styles" selected>Default</option>
+  <option value="styles/skin-retro">Retro</option>
+  <option value="styles/skin-angel">Angel</option>
+  <option value="styles/skin-haunted">Haunted</option>
+  <option value="styles/skin-metal">Metal</option>
+  <option value="styles/skin-steel">Steel</option>
+  <option value="styles/skin-neon">Neon</option>
+  <option value="styles/skin-storytellerz">Storytellerz</option>
+</select>
 
 <!-- Control Area -->
 <div id="controlArea" aria-label="Control Area">
-
-  <!-- Play/Pause button -->
   <div id="controlPlayButton" title="Play / Pause"></div>
 
-  <!-- Playlist panel -->
   <div id="playlistPanel" aria-label="Playlist Panel">
     <div class="playlist-title">PLAYLIST</div>
     <div id="playlistEntries"></div>
   </div>
 
-  <!-- Playlist toggle button -->
   <div id="playlistToggleButton" title="Toggle Playlist"></div>
 
-  <!-- Vertical skin list -->
   <ul id="skinList" aria-label="Skin Selection">
     <li data-skin="styles/styles" class="active">Default</li>
     <li data-skin="styles/skin-retro">Retro</li>
@@ -215,6 +178,15 @@
   </ul>
 </div>
 
+<!-- Floating Feathers / Skulls -->
+<div class="feather-container">
+  <div class="feather f1"></div>
+  <div class="feather f2"></div>
+  <div class="feather f3"></div>
+  <div class="feather f4"></div>
+  <div class="feather f5"></div>
+</div>
+
 <!-- Wrapper to center the UI and prevent shifting -->
 <div class="center-wrapper">
   <div class="container">
@@ -224,7 +196,7 @@
       </div>
 
       <div class="player-wrapper">
-        <!-- Original play button hidden but present for scripts -->
+        <!-- Keep original play button hidden for script -->
         <div class="play-button" id="playButton" style="display:none;"></div>
 
         <div class="custom-player">
@@ -257,10 +229,11 @@
 <!-- CSV Parser -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-<!-- Main Script -->
+<!-- Your main script -->
 <script src="scripts/script.js"></script>
 
 <script>
+  // Sync play/pause control button with audio
   const audio = document.getElementById('audioPlayer');
   const controlPlayBtn = document.getElementById('controlPlayButton');
   const playlistToggleButton = document.getElementById('playlistToggleButton');
@@ -271,15 +244,145 @@
   const body = document.body;
   const metalBgVideo = document.getElementById('metalBgVideo');
 
-  // Forward controlPlayButton clicks to original hidden playButton
+  // Play/pause toggle from control button
   controlPlayBtn.addEventListener('click', () => {
-    if (audio.paused) audio.play();
+    if(audio.paused) audio.play();
     else audio.pause();
   });
 
-  // Sync icon state for controlPlayButton with audio play/pause
-  audio.onplay = () => {
-    controlPlayBtn.classList.add('paused');
-  };
-  audio.onpause = () => {
-    controlPlayBtn.classList.remove
+  // Update controlPlayBtn icon when audio plays or pauses
+  audio.addEventListener('play', () => {
+    controlPlayBtn.classList.add('playing');
+  });
+  audio.addEventListener('pause', () => {
+    controlPlayBtn.classList.remove('playing');
+  });
+
+  // Playlist toggle
+  playlistToggleButton.addEventListener('click', () => {
+    if(playlistPanel.classList.contains('visible')){
+      playlistPanel.classList.remove('visible');
+      playlistPanel.classList.add('fadeout');
+      setTimeout(() => {
+        playlistPanel.style.display = 'none';
+        playlistPanel.classList.remove('fadeout');
+      }, 300);
+    } else {
+      playlistPanel.style.display = 'flex';
+      playlistPanel.classList.remove('fadeout');
+      playlistPanel.classList.add('visible');
+    }
+  });
+
+  // Skin list click sync with hidden select & update theme
+  skinList.addEventListener('click', (e) => {
+    if(e.target.tagName !== 'LI') return;
+
+    // Remove active class from all
+    skinList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+    e.target.classList.add('active');
+
+    const skinPath = e.target.getAttribute('data-skin');
+    skinSelect.value = skinPath; // sync hidden select
+    themeLink.href = skinPath + '.css';
+
+    // Update body class for skin effects (optional)
+    updateBodySkinClass(skinPath);
+  });
+
+  // Sync hidden select change (if any)
+  skinSelect.addEventListener('change', () => {
+    const val = skinSelect.value;
+    themeLink.href = val + '.css';
+    updateBodySkinClass(val);
+
+    // Sync skinList highlight
+    skinList.querySelectorAll('li').forEach(li => {
+      li.classList.toggle('active', li.getAttribute('data-skin') === val);
+    });
+  });
+
+  // On load, set skin to selected value and highlight skinList
+  window.addEventListener('DOMContentLoaded', () => {
+    const val = skinSelect.value;
+    themeLink.href = val + '.css';
+
+    skinList.querySelectorAll('li').forEach(li => {
+      li.classList.toggle('active', li.getAttribute('data-skin') === val);
+    });
+
+    updateBodySkinClass(val);
+  });
+
+  // Same skin class update function from your script
+  function updateBodySkinClass(cssPath) {
+    const match = cssPath.match(/skin-(\w+)/);
+    const skinClass = match ? `theme-${match[0]}` : '';
+    body.className = skinClass;
+
+    if(metalBgVideo){
+      if(skinClass === 'theme-skin-metal'){
+        metalBgVideo.style.display = 'block';
+      } else {
+        metalBgVideo.style.display = 'none';
+      }
+    }
+
+    if(skinClass === 'theme-skin-angel'){
+      startFeathers();
+    } else {
+      stopFeathers();
+    }
+  }
+
+  // Feather effects functions from your script
+  let featherInterval;
+  const featherCount = 15;
+  const featherImages = [
+    'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+    'https://cdn-icons-png.flaticon.com/512/616/616407.png',
+  ];
+
+  function startFeathers() {
+    stopFeathers();
+    for(let i=0; i<featherCount; i++) createFeather();
+    featherInterval = setInterval(() => createFeather(), 1000);
+  }
+  function stopFeathers() {
+    clearInterval(featherInterval);
+    document.querySelectorAll('.angel-feather').forEach(el => el.remove());
+  }
+  function createFeather() {
+    const feather = document.createElement('div');
+    feather.className = 'angel-feather';
+    feather.style.setProperty('--dur', `${5 + Math.random() * 10}s`);
+    feather.style.width = `${20 + Math.random() * 25}px`;
+    feather.style.height = 'auto';
+    const imgUrl = featherImages[Math.floor(Math.random() * featherImages.length)];
+    feather.style.backgroundImage = `url(${imgUrl})`;
+
+    const startX = Math.random() * window.innerWidth;
+    const startY = window.innerHeight + 50;
+    feather.style.left = `${startX}px`;
+    feather.style.top = `${startY}px`;
+
+    document.body.appendChild(feather);
+
+    const duration = parseFloat(feather.style.getPropertyValue('--dur'));
+    const endX = startX + (Math.random() * 200 - 100);
+    const endY = -100;
+
+    requestAnimationFrame(() => {
+      feather.style.transition = `transform ${duration}s linear, opacity ${duration}s linear`;
+      feather.style.transform = `translate(${endX - startX}px, ${endY - startY}px) rotate(${Math.random() * 360}deg)`;
+      feather.style.opacity = '0';
+    });
+
+    setTimeout(() => {
+      feather.remove();
+    }, duration * 1000);
+  }
+</script>
+
+</body>
+</html>
