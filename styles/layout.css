@@ -264,7 +264,7 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Art cover */
+/* Cover art */
 .cover {
   width: 300px;
   height: 300px;
@@ -291,31 +291,33 @@ html, body {
   min-height: 90px;
   position: relative;
   text-align: center;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.metadata-card .title,
-.metadata-card .artist {
+/* Song title */
+.metadata-card .title {
+  font-size: 1.4rem;
+  font-weight: bold;
   display: block;
-  width: 100%;
-  padding: 0 0.5rem;
-  transform-origin: top center;
   text-align: center;
   line-height: 1.2;
-  word-wrap: break-word;
   white-space: normal;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  max-height: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  overflow: visible;
+  height: 2.4em; /* 2 lines max */
+  transform-origin: top center;
 }
 
-.metadata-card .title {
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  font-weight: bold;
-}
-
+/* Artist name */
 .metadata-card .artist {
-  font-size: clamp(0.75rem, 2vw, 1rem);
+  font-size: 1rem;
+  display: block;
+  text-align: center;
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  height: 2.4em; /* 2 lines max */
+  transform-origin: top center;
 }
+
