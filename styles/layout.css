@@ -202,33 +202,18 @@ html, body {
 /* Playlist */
 .playlist-panel {
   position: absolute;
-  top: -210px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
   width: 100%;
+  max-height: 50%;
+  overflow-y: auto;
   background: rgba(0, 0, 0, 0.9);
   border: 2px solid #111;
   padding: 0.5rem;
-  display: none;
-  flex-direction: column;
-  max-height: 200px;
-  overflow-y: auto;
-  animation: fadein 0.3s ease-out forwards;
-  z-index: 3;
-}
-
-.playlist-panel.visible {
   display: flex;
-}
-
-@keyframes fadein {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeout {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(10px); }
+  flex-direction: column;
+  z-index: 3;
+  animation: none;
 }
 
 .playlist-entry {
@@ -293,7 +278,7 @@ html, body {
   white-space: normal;
   word-break: break-word;
   overflow: visible;
-  height: 2.4em; /* 2 lines max */
+  height: 2.4em;
   transform-origin: top center;
 }
 
@@ -306,7 +291,7 @@ html, body {
   white-space: normal;
   word-break: break-word;
   overflow: visible;
-  height: 2.4em; /* 2 lines max */
+  height: 2.4em;
   transform-origin: top center;
 }
 
@@ -321,19 +306,19 @@ html, body {
   background: transparent;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   z-index: 10;
   pointer-events: auto;
+  padding: 1rem 0;
+  box-sizing: border-box;
 }
 
 .control-area .play-button,
 .control-area .pause-button,
-.control-area .playlist-button,
 .control-area .canvas-button {
   width: 48px;
   height: 48px;
-  margin: 0.5rem 0;
   background-color: white;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
@@ -344,6 +329,12 @@ html, body {
   border: 2px solid black;
   background-blend-mode: multiply;
   cursor: pointer;
+  margin: auto 0;
+}
+
+/* Hide playlist button */
+.control-area .playlist-button {
+  display: none;
 }
 
 /* Prevent other UI elements from entering control zone */
