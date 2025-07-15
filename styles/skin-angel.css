@@ -13,6 +13,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Medieval Sharp';
+  src: url('https://www.dropbox.com/scl/fi/b9sqqri664k2dupxe40lo/MedievalSharp.ttf?rlkey=nvp3dtj5jrd5hy8e1lfv2c0a6&dl=1') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body.theme-skin-angel {
   background: url('https://dl.dropboxusercontent.com/scl/fi/mqsz768xvkwkps62eo8uz/ai-generated-8709882_1280.png?rlkey=nrnly5jnjhsv8i6vgf0mjsi4d') no-repeat center center fixed;
   background-size: cover;
