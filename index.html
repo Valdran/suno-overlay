@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lyrics Player</title>
+  <title>Spooky Audio Player</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Medieval+Sharp&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
- <!-- Add this line BEFORE the theme link -->
-<link rel="stylesheet" href="styles/layout.css" />
+  <!-- Add this line BEFORE the theme link -->
+  <link rel="stylesheet" href="styles/layout.css" />
 
-<!-- Existing dynamic skin link -->
-<link id="theme-link" rel="stylesheet" href="styles/styles.css">
-  
+  <!-- Existing dynamic skin link -->
+  <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
 
@@ -24,77 +23,79 @@
   <source src="https://www.dropbox.com/scl/fi/92390f6gk9vs09i0q9133/172090-846482763.mp4?rlkey=tkuh9m9r8pi4osph44d1n882h&raw=1" type="video/mp4" />
 </video>
 
-  <!-- Skin Switcher UI -->
-  <div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
-    <div id="easelIcon" style="width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/easel.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer;"></div>
-    <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
-      <option value="styles/styles">Default</option>
-      <option value="styles/skin-retro">Retro</option>
-      <option value="styles/skin-angel">Angel</option>
-      <option value="styles/skin-haunted">Haunted</option>
-      <option value="styles/skin-metal">Metal</option>
-      <option value="styles/skin-steel">Steel</option>
-      <option value="styles/skin-neon">Neon</option>
-      <option value="styles/skin-storytellerz">Storytellerz</option>
-    </select>
-  </div>
+<!-- NEW Control Area -->
+<div class="control-area" style="position: fixed; top: 0; right: 0; width: 100px; height: 100vh; background: rgba(0,0,0,0.8); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+  <div id="playButton" style="width: 40px; height: 40px; background: url('https://cdn-icons-png.flaticon.com/512/4211/4211750.png') center/contain no-repeat; cursor: pointer;"></div>
   
-  <!-- Floating Feathers / Skulls -->
-  <div class="feather-container">
-    <div class="feather f1"></div>
-    <div class="feather f2"></div>
-    <div class="feather f3"></div>
-    <div class="feather f4"></div>
-    <div class="feather f5"></div>
-  </div>
+  <div id="easelIcon" style="width: 32px; height: 32px; background: url('https://cdn-icons-png.flaticon.com/512/5523/5523553.png') center/contain no-repeat; cursor: pointer;"></div>
+  <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
+    <option value="styles/styles">Default</option>
+    <option value="styles/skin-retro">Retro</option>
+    <option value="styles/skin-angel">Angel</option>
+    <option value="styles/skin-haunted">Haunted</option>
+    <option value="styles/skin-metal">Metal</option>
+    <option value="styles/skin-steel">Steel</option>
+    <option value="styles/skin-neon">Neon</option>
+    <option value="styles/skin-storytellerz">Storytellerz</option>
+  </select>
 
-  <!-- Wrapper to center the UI and prevent shifting -->
-  <div class="center-wrapper">
-    <div class="container">
-      <div class="left-section">
-        <div class="lyrics-box" id="lyricsBox">
-          <div class="lyrics-inner" id="lyricsInner">Loading lyrics…</div>
-        </div>
+  <div id="playlistToggleButton" style="width: 32px; height: 32px; background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') center/contain no-repeat; cursor: pointer;"></div>
+</div>
 
-        <div class="player-wrapper">
-          <div class="playlist-panel" id="playlistPanel">
-            <div class="playlist-title">PLAYLIST</div>
-            <div id="playlistEntries"></div>
-          </div>
+<!-- Floating Feathers / Skulls -->
+<div class="feather-container">
+  <div class="feather f1"></div>
+  <div class="feather f2"></div>
+  <div class="feather f3"></div>
+  <div class="feather f4"></div>
+  <div class="feather f5"></div>
+</div>
 
-          <div class="custom-player">
-            <div class="play-button" id="playButton"></div>
-            <div class="time" id="currentTime">0:00</div>
-            <div class="progress" id="progressBar">
-              <div class="progress-bar" id="progressFill"></div>
-            </div>
-            <div class="time" id="duration">0:00</div>
-          </div>
-        </div>
+<!-- UI with right-side space for control panel -->
+<div class="center-wrapper" style="padding-right: 110px;">
+  <div class="container">
+    <div class="left-section">
+      <div class="lyrics-box" id="lyricsBox">
+        <div class="lyrics-inner" id="lyricsInner">Loading lyrics…</div>
       </div>
 
-      <div class="metadata">
-  <img id="coverArt" class="cover" src="" alt="Cover Art" />
-  <div class="metadata-card">
-    <div class="scale-wrapper">
-      <div class="title" id="songTitle">Loading title…</div>
+      <div class="player-wrapper">
+        <div class="playlist-panel" id="playlistPanel" style="position: absolute; bottom: 80px; right: 100px;">
+          <div class="playlist-title">PLAYLIST</div>
+          <div id="playlistEntries"></div>
+        </div>
+
+        <div class="custom-player">
+          <div class="time" id="currentTime">0:00</div>
+          <div class="progress" id="progressBar">
+            <div class="progress-bar" id="progressFill"></div>
+          </div>
+          <div class="time" id="duration">0:00</div>
+        </div>
+      </div>
     </div>
-    <div class="scale-wrapper">
-      <div class="artist" id="artistName">Loading artist…</div>
+
+    <div class="metadata">
+      <img id="coverArt" class="cover" src="" alt="Cover Art" />
+      <div class="metadata-card">
+        <div class="scale-wrapper">
+          <div class="title" id="songTitle">Loading title…</div>
+        </div>
+        <div class="scale-wrapper">
+          <div class="artist" id="artistName">Loading artist…</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-  <!-- Playlist Toggle Button -->
-  <div id="playlistToggleButton" style="position: fixed; bottom: 1rem; right: 1rem; width: 24px; height: 24px; background: url('https://img.icons8.com/ios-filled/50/00ff00/menu.png') no-repeat center; background-size: contain; filter: drop-shadow(0 0 4px #00ff00); cursor: pointer; z-index: 1000;"></div>
+<!-- Audio Element -->
+<audio id="audioPlayer"></audio>
 
-  <!-- Audio Element -->
-  <audio id="audioPlayer"></audio>
+<!-- CSV Parser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- CSV Parser -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
-  <!-- Main Script -->
-  <script src="scripts/script.js"></script>
+<!-- Main Script -->
+<script src="scripts/script.js"></script>
 </body>
 </html>
