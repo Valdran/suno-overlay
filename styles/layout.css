@@ -1,4 +1,13 @@
 /* Base layout for all themes */
+#metalBgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100vw - 160px);
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
 
 /* Prevent UI shifting */
 html, body {
