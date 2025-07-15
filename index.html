@@ -17,93 +17,148 @@
   <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 
   <style>
-    /* Control Area container on right */
+    /* New styles for Control Area and layout adjustments */
+
+    body {
+      overflow-x: hidden; /* prevent horizontal scroll */
+    }
+
+    /* Control Area on right */
     #controlArea {
       position: fixed;
       top: 0;
       right: 0;
-      width: 140px;
+      width: 140px; /* width of control area */
       height: 100vh;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0, 0, 0, 0.85);
+      border-left: 2px solid #00ff00;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 2rem;
-      z-index: 1000;
-      box-shadow: inset 0 0 10px #000;
+      padding: 1rem 0;
+      box-sizing: border-box;
+      z-index: 1100;
       user-select: none;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
     }
-    /* Push main UI left so it does not overlap Control Area */
+
+    /* Push existing UI left so it does not overlap control area */
     .center-wrapper {
-      padding-right: 140px; /* same as #controlArea width */
+      margin-right: 140px; /* same as controlArea width */
     }
-    /* Playlist panel positioning */
-    #playlistPanel {
-      position: fixed;
-      right: 140px; /* directly left of Control Area */
-      bottom: 80px; /* above playlist button */
-      width: 140px;
-      background: rgba(0,0,0,0.95);
-      border: 2px solid #00ff00;
-      color: #00ff00;
-      font-family: 'Orbitron', sans-serif;
-      padding: 0.5rem;
-      display: none;
-      flex-direction: column;
-      max-height: 300px;
-      overflow-y: auto;
-      z-index: 999;
-    }
-    /* Center icons horizontally */
-    #playButton, #playlistToggleButton {
+
+    /* Play/Pause button in control area - vertically centered */
+    #controlPlayButton {
       width: 48px;
       height: 48px;
-      cursor: pointer;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27223.png'); /* white play icon with black outline */
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
-      filter: drop-shadow(0 0 1px black);
-    }
-    /* White icon with black outline from flaticon */
-    #playButton.paused {
-      background-image: url('https://cdn-icons-png.flaticon.com/512/64/64595.png'); /* white play icon with black outline */
-    }
-    #playButton.playing {
-      background-image: url('https://cdn-icons-png.flaticon.com/512/64/64981.png'); /* white pause icon with black outline */
-    }
-    #playlistToggleButton {
-      background-image: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png'); /* white menu icon with black outline */
-    }
-    /* Skin list styles */
-    #skinList {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      color: white;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      text-align: center;
-      user-select: none;
       cursor: pointer;
-      max-height: 220px;
-      overflow-y: auto;
+      margin: auto 0; /* vertical center */
+      transition: background-image 0.3s ease;
+    }
+    #controlPlayButton.paused {
+      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27225.png'); /* white pause icon with black outline */
+    }
+
+    /* Playlist toggle button moved inside control area */
+    #playlistToggleButton {
+      position: static !important; /* override fixed positioning */
+      width: 32px !important;
+      height: 32px !important;
+      margin-bottom: 1rem;
+      background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') no-repeat center;
+      background-size: contain;
+      filter: none !important; /* remove old glow */
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Playlist panel above playlist button */
+    #playlistPanel {
+      position: relative;
       width: 100%;
-      padding-left: 0;
-      margin: 0;
+      max-height: 50vh;
+      overflow-y: auto;
+      background: #111;
+      border: 1px solid #00ff00;
+      display: none; /* hidden initially */
+      flex-direction: column;
+      box-sizing: border-box;
+      margin-bottom: 0.5rem;
+      z-index: 1200;
     }
-    #skinList div:hover {
+    #playlistPanel.visible {
+      display: flex;
+    }
+    #playlistPanel.fadeout {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Playlist title */
+    .playlist-title {
+      padding: 0.5rem 1rem;
+      font-weight: 700;
       color: #00ff00;
-      text-shadow: 0 0 5px #00ff00;
+      border-bottom: 1px solid #00ff00;
+      user-select: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
     }
-    /* Prevent feathers container from entering control area */
+
+    /* Playlist entries */
+    .playlist-entry {
+      padding: 0.3rem 1rem;
+      color: #ccc;
+      cursor: pointer;
+      font-family: 'Rubik', sans-serif;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #002200;
+      user-select: none;
+    }
+    .playlist-entry:hover {
+      background: #003300;
+      color: #00ff00;
+    }
+
+    /* Vertical skin list inside control area */
+    #skinList {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0 0;
+      width: 100%;
+      color: #00ff00;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 600;
+      user-select: none;
+    }
+    #skinList li {
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    #skinList li:hover,
+    #skinList li.active {
+      border-left-color: #00ff00;
+      background: #002200;
+    }
+
+    /* Prevent feathers from overlapping control area */
     .feather-container {
-      pointer-events: none;
-      margin-right: 140px; /* Prevent overlapping with control area */
+      pointer-events: none; /* feathers non-interactive */
+      overflow: visible;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 140px; /* restrict feathers so they don't go under control area */
+      height: 100vh;
+      z-index: 50;
     }
   </style>
+
 </head>
 <body>
 
@@ -112,30 +167,36 @@
   <source src="https://www.dropbox.com/scl/fi/92390f6gk9vs09i0q9133/172090-846482763.mp4?rlkey=tkuh9m9r8pi4osph44d1n882h&raw=1" type="video/mp4" />
 </video>
 
-<!-- New Control Area on the right -->
-<div id="controlArea">
+<!-- Control Area on right -->
+<div id="controlArea" aria-label="Control Area">
 
-  <!-- Play/Pause Button -->
-  <div id="playButton" class="paused" aria-label="Play/Pause Button" role="button" tabindex="0"></div>
+  <!-- Play/Pause button vertically centered -->
+  <div id="controlPlayButton" title="Play / Pause"></div>
 
-  <!-- Skin list as vertical buttons -->
-  <div id="skinList" aria-label="Skin Selector">
-    <div data-skin="styles/styles">Default</div>
-    <div data-skin="styles/skin-retro">Retro</div>
-    <div data-skin="styles/skin-angel">Angel</div>
-    <div data-skin="styles/skin-haunted">Haunted</div>
-    <div data-skin="styles/skin-metal">Metal</div>
-    <div data-skin="styles/skin-steel">Steel</div>
-    <div data-skin="styles/skin-neon">Neon</div>
-    <div data-skin="styles/skin-storytellerz">Storytellerz</div>
+  <!-- Playlist panel above playlist button -->
+  <div id="playlistPanel" aria-label="Playlist Panel">
+    <div class="playlist-title">PLAYLIST</div>
+    <div id="playlistEntries"></div>
   </div>
 
-  <!-- Playlist Toggle Button -->
-  <div id="playlistToggleButton" aria-label="Toggle Playlist" role="button" tabindex="0"></div>
+  <!-- Playlist toggle button -->
+  <div id="playlistToggleButton" title="Toggle Playlist"></div>
+
+  <!-- Vertical skin list -->
+  <ul id="skinList" aria-label="Skin Selection">
+    <li data-skin="styles/styles" class="active">Default</li>
+    <li data-skin="styles/skin-retro">Retro</li>
+    <li data-skin="styles/skin-angel">Angel</li>
+    <li data-skin="styles/skin-haunted">Haunted</li>
+    <li data-skin="styles/skin-metal">Metal</li>
+    <li data-skin="styles/skin-steel">Steel</li>
+    <li data-skin="styles/skin-neon">Neon</li>
+    <li data-skin="styles/skin-storytellerz">Storytellerz</li>
+  </ul>
 
 </div>
 
-<!-- Playlist panel -->
+<!-- Floating Feathers / Skulls -->
 <div class="feather-container">
   <div class="feather f1"></div>
   <div class="feather f2"></div>
@@ -153,13 +214,14 @@
       </div>
 
       <div class="player-wrapper">
-        <div class="playlist-panel" id="playlistPanel">
+        <!-- Playlist panel is now inside control area so remove here or keep hidden -->
+        <div class="playlist-panel" id="playlistPanel-left" style="display:none;">
           <div class="playlist-title">PLAYLIST</div>
-          <div id="playlistEntries"></div>
+          <div id="playlistEntries-left"></div>
         </div>
 
         <div class="custom-player">
-          <!-- Play button removed from here -->
+          <div class="play-button" id="playButton" style="display:none;"></div> <!-- Hide old play button -->
           <div class="time" id="currentTime">0:00</div>
           <div class="progress" id="progressBar">
             <div class="progress-bar" id="progressFill"></div>
@@ -193,62 +255,78 @@
 <script src="scripts/script.js"></script>
 
 <script>
-  // Keep play/pause toggle logic consistent with new button in Control Area
-  const playBtn = document.getElementById('playButton');
+  // --- Sync controlPlayButton with audio play/pause ---
   const audio = document.getElementById('audioPlayer');
+  const controlPlayBtn = document.getElementById('controlPlayButton');
   const playlistToggleButton = document.getElementById('playlistToggleButton');
   const playlistPanel = document.getElementById('playlistPanel');
   const skinList = document.getElementById('skinList');
   const themeLink = document.getElementById('theme-link');
-  const metalBgVideo = document.getElementById('metalBgVideo');
   const body = document.body;
+  const metalBgVideo = document.getElementById('metalBgVideo');
 
-  audio.onplay = () => {
-    playBtn.classList.remove('paused');
-    playBtn.classList.add('playing');
-  };
-  audio.onpause = () => {
-    playBtn.classList.remove('playing');
-    playBtn.classList.add('paused');
-  };
-
-  playBtn.addEventListener('click', () => {
+  // Play/pause toggle from control area button
+  controlPlayBtn.addEventListener('click', () => {
     if (audio.paused) audio.play();
     else audio.pause();
   });
 
+  // Update icon on play/pause
+  audio.onplay = () => {
+    controlPlayBtn.classList.add('paused');
+  };
+  audio.onpause = () => {
+    controlPlayBtn.classList.remove('paused');
+  };
+
+  // Playlist toggle logic
   playlistToggleButton.addEventListener('click', () => {
-    if (playlistPanel.style.display === 'flex' || playlistPanel.style.display === 'block') {
-      playlistPanel.style.display = 'none';
+    if (playlistPanel.classList.contains('visible')) {
+      playlistPanel.classList.remove('visible');
+      playlistPanel.classList.add('fadeout');
+      setTimeout(() => (playlistPanel.style.display = 'none'), 300);
     } else {
       playlistPanel.style.display = 'flex';
-      playlistPanel.style.flexDirection = 'column';
+      playlistPanel.classList.remove('fadeout');
+      playlistPanel.classList.add('visible');
     }
   });
 
-  skinList.querySelectorAll('div').forEach(skinDiv => {
-    skinDiv.addEventListener('click', () => {
-      const skinPath = skinDiv.getAttribute('data-skin');
+  // Skin selection logic
+  skinList.querySelectorAll('li').forEach((li) => {
+    li.addEventListener('click', () => {
+      // Remove active from all
+      skinList.querySelectorAll('li').forEach(el => el.classList.remove('active'));
+      li.classList.add('active');
+
+      const skinPath = li.dataset.skin;
       themeLink.href = skinPath + '.css';
 
-      // Update body class for skin
+      // Update body class to toggle skins
       const match = skinPath.match(/skin-(\w+)/);
       const skinClass = match ? `theme-${match[0]}` : '';
       body.className = skinClass;
 
-      // Show/hide metalBgVideo based on skin
+      // Fire background video toggle for metal skin
       if (metalBgVideo) {
-        metalBgVideo.style.display = (skinClass === 'theme-skin-metal') ? 'block' : 'none';
-      }
-
-      // Start/stop feathers based on skin
-      if (skinClass === 'theme-skin-angel') {
-        if (typeof startFeathers === 'function') startFeathers();
-      } else {
-        if (typeof stopFeathers === 'function') stopFeathers();
+        if (skinClass === 'theme-skin-metal') {
+          metalBgVideo.style.display = 'block';
+        } else {
+          metalBgVideo.style.display = 'none';
+        }
       }
     });
   });
+
+  // Initialize skin list active item based on current href
+  (() => {
+    const currentSkin = themeLink.href.split('/').pop().replace('.css', '');
+    const matchingLi = Array.from(skinList.children).find(li => li.dataset.skin.endsWith(currentSkin));
+    if (matchingLi) {
+      skinList.querySelectorAll('li').forEach(el => el.classList.remove('active'));
+      matchingLi.classList.add('active');
+    }
+  })();
 </script>
 
 </body>
