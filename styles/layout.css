@@ -301,14 +301,17 @@ html, body {
   padding: 0;
 }
 
-.scale-wrapper > .title,
+scale-wrapper > .title,
 .scale-wrapper > .artist {
-    color: rgba(0, 0, 0, 0.85); /* black at 85% opacity */
-  text-shadow: none; /* optional: remove existing white glows */
+  color: white;
+  text-shadow: 1px 1px 3px black;
   display: inline-block;
   white-space: nowrap;
   transform-origin: left center;
   text-align: center;
   max-width: none;
-  transform: scale(1); /* baseline */
+  transform: scale(1);
+  background: rgba(0, 0, 0, 0.85); /* background behind text */
+  padding: 0 0.5rem;               /* slight padding around text */
+  border-radius: 6px;              /* optional: round corners */
 }
