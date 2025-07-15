@@ -1,6 +1,7 @@
 // Core DOM elements
 const audio = document.getElementById('audioPlayer');
-const playBtn = document.getElementById('playButton');
+const playBtn = document.getElementById('playButton'); // old hidden button, keep for icon sync
+const controlPlayBtn = document.getElementById('controlPlayButton'); // new play button in control area
 const progressBar = document.getElementById('progressBar');
 const progressFill = document.getElementById('progressFill');
 const currentTime = document.getElementById('currentTime');
@@ -9,28 +10,43 @@ const lyricsInner = document.getElementById('lyricsInner');
 const playlistPanel = document.getElementById('playlistPanel');
 const playlistEntries = document.getElementById('playlistEntries');
 const playlistToggleButton = document.getElementById('playlistToggleButton');
-const skinSelect = document.getElementById('skinSelect');
 const themeLink = document.getElementById('theme-link');
-const easelIcon = document.getElementById('easelIcon');
 const body = document.body;
 const metalBgVideo = document.getElementById('metalBgVideo');
+
+const skinList = document.getElementById('skinList'); // vertical skin list container
 
 let parsedLyrics = [];
 let hasTimestamps = false;
 
 ///// PLAY/PAUSE TOGGLE /////
+// Old playBtn listener (hidden button)
 playBtn.addEventListener('click', () => {
   if (audio.paused) audio.play();
   else audio.pause();
 });
 
-audio.onplay = () => {
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
-};
+// New control area play button listener
+if (controlPlayBtn) {
+  controlPlayBtn.addEventListener('click', () => {
+    if (audio.paused) audio.play();
+    else audio.pause();
+  });
+}
 
-audio.onpause = () => {
-  playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
-};
+// Sync icon on play/pause for both buttons
+function updatePlayPauseIcons() {
+  if (audio.paused) {
+    playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/play--v1.png")';
+    if (controlPlayBtn) controlPlayBtn.classList.remove('playing');
+  } else {
+    playBtn.style.backgroundImage = 'url("https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png")';
+    if (controlPlayBtn) controlPlayBtn.classList.add('playing');
+  }
+}
+
+audio.addEventListener('play', updatePlayPauseIcons);
+audio.addEventListener('pause', updatePlayPauseIcons);
 
 ///// PROGRESS BAR UPDATE /////
 audio.ontimeupdate = () => {
@@ -68,17 +84,28 @@ playlistToggleButton.addEventListener('click', () => {
   }
 });
 
-///// SKIN DROPDOWN TOGGLE /////
-easelIcon.addEventListener('click', () => {
-  skinSelect.style.display = skinSelect.style.display === 'block' ? 'none' : 'block';
-});
+///// SKIN SWITCHING VIA VERTICAL LIST /////
+if (skinList) {
+  skinList.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'LI') return;
 
-///// SKIN SWITCHER /////
-skinSelect.addEventListener('change', () => {
-  themeLink.href = `${skinSelect.value}.css`;
-  skinSelect.style.display = 'none';
-  updateBodySkinClass(skinSelect.value);
-});
+    // Remove active class from all skins
+    skinList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+
+    // Mark clicked skin as active
+    e.target.classList.add('active');
+
+    // Get skin path from data attribute
+    const skinPath = e.target.getAttribute('data-skin');
+    if (!skinPath) return;
+
+    // Update theme stylesheet
+    themeLink.href = skinPath + '.css';
+
+    // Update body skin class and effects
+    updateBodySkinClass(skinPath);
+  });
+}
 
 function updateBodySkinClass(cssPath) {
   const match = cssPath.match(/skin-(\w+)/);
@@ -87,7 +114,7 @@ function updateBodySkinClass(cssPath) {
   // Reset and apply the new skin class
   body.className = skinClass;
 
-  // Correctly toggle fire background video (only for metal skin)
+  // Toggle fire background video (only for metal skin)
   if (metalBgVideo) {
     if (skinClass === 'theme-skin-metal') {
       metalBgVideo.style.display = 'block';
@@ -107,7 +134,16 @@ function updateBodySkinClass(cssPath) {
 ///// CSV LOADER FOR SONG DATA /////
 window.addEventListener('DOMContentLoaded', () => {
   // Set initial skin on load
-  updateBodySkinClass(skinSelect.value);
+  if (skinList) {
+    // If none active, set first skin active
+    if (!skinList.querySelector('li.active')) {
+      const firstSkin = skinList.querySelector('li');
+      if (firstSkin) firstSkin.classList.add('active');
+    }
+    // Load skin from active li
+    const activeSkin = skinList.querySelector('li.active');
+    if (activeSkin) updateBodySkinClass(activeSkin.getAttribute('data-skin'));
+  }
 
   Papa.parse('/.netlify/functions/fetchSheet', {
     download: true,
