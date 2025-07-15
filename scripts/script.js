@@ -9,11 +9,9 @@ const duration = document.getElementById('duration');
 const lyricsInner = document.getElementById('lyricsInner');
 const playlistPanel = document.getElementById('playlistPanel');
 const playlistEntries = document.getElementById('playlistEntries');
-const playlistToggleButton = document.getElementById('playlistToggleButton');
 const themeLink = document.getElementById('theme-link');
 const body = document.body;
 const metalBgVideo = document.getElementById('metalBgVideo');
-
 const skinList = document.getElementById('skinList'); // vertical skin list container
 
 let parsedLyrics = [];
@@ -70,19 +68,6 @@ function formatTime(sec) {
   const s = Math.floor(sec % 60).toString().padStart(2, '0');
   return `${m}:${s}`;
 }
-
-///// PLAYLIST TOGGLE /////
-playlistToggleButton.addEventListener('click', () => {
-  if (playlistPanel.classList.contains('visible')) {
-    playlistPanel.classList.remove('visible');
-    playlistPanel.classList.add('fadeout');
-    setTimeout(() => (playlistPanel.style.display = 'none'), 300);
-  } else {
-    playlistPanel.style.display = 'flex';
-    playlistPanel.classList.remove('fadeout');
-    playlistPanel.classList.add('visible');
-  }
-});
 
 ///// SKIN SWITCHING VIA VERTICAL LIST /////
 if (skinList) {
