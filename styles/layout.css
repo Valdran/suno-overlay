@@ -278,46 +278,52 @@ html, body {
 /* Metadata card */
 .metadata-card {
   background: rgba(0, 0, 0, 0.85);
-  padding: 0.5rem 1rem;
   border-radius: 12px;
   border: 2px solid white;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 300px;
-  height: auto;
-  min-height: 90px;
-  position: relative;
+  height: 90px;
+  padding: 0.5rem 1rem;
   text-align: center;
-  overflow: visible;
+  overflow: hidden;
 }
 
-/* Song title */
+/* Title */
 .metadata-card .title {
   font-size: 1.4rem;
   font-weight: bold;
-  display: block;
   text-align: center;
   line-height: 1.2;
   white-space: normal;
   word-break: break-word;
-  overflow: visible;
-  height: 2.4em; /* 2 lines max */
+  overflow: hidden;
+  min-height: 1.2em;
+  max-height: 2.4em;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   transform-origin: top center;
 }
 
-/* Artist name */
+/* Artist */
 .metadata-card .artist {
   font-size: 1rem;
-  display: block;
   text-align: center;
   line-height: 1.2;
   white-space: normal;
   word-break: break-word;
-  overflow: visible;
-  height: 2.4em; /* 2 lines max */
+  overflow: hidden;
+  min-height: 1.2em;
+  max-height: 2.4em;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   transform-origin: top center;
 }
 
