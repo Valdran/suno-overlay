@@ -301,7 +301,7 @@ html, body {
   padding: 0;
 }
 
-scale-wrapper > .title,
+.scale-wrapper > .title,
 .scale-wrapper > .artist {
   color: white;
   text-shadow: 1px 1px 3px black;
@@ -311,7 +311,6 @@ scale-wrapper > .title,
   text-align: center;
   max-width: none;
   transform: scale(1);
-  background: rgba(0, 0, 0, 0.85); /* background behind text */
   padding: 0 0.5rem;               /* slight padding around text */
   border-radius: 6px;              /* optional: round corners */
 }
