@@ -23,23 +23,32 @@
   <source src="https://www.dropbox.com/scl/fi/92390f6gk9vs09i0q9133/172090-846482763.mp4?rlkey=tkuh9m9r8pi4osph44d1n882h&raw=1" type="video/mp4" />
 </video>
 
-<!-- NEW Control Area -->
-<div class="control-area" style="position: fixed; top: 0; right: 0; width: 100px; height: 100vh; background: rgba(0,0,0,0.8); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-  <div id="playButton" style="width: 40px; height: 40px; background: url('https://cdn-icons-png.flaticon.com/512/4211/4211750.png') center/contain no-repeat; cursor: pointer;"></div>
+<!-- Control Area on Right -->
+<div class="control-area" style="position: fixed; top: 0; right: 0; width: 110px; height: 100vh; background: rgba(0,0,0,0.85); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem 0; gap: 1rem; box-shadow: inset 0 0 8px #000;">
   
-  <div id="easelIcon" style="width: 32px; height: 32px; background: url('https://cdn-icons-png.flaticon.com/512/5523/5523553.png') center/contain no-repeat; cursor: pointer;"></div>
-  <select id="skinSelect" style="display: none; margin-top: 0.5rem;">
-    <option value="styles/styles">Default</option>
-    <option value="styles/skin-retro">Retro</option>
-    <option value="styles/skin-angel">Angel</option>
-    <option value="styles/skin-haunted">Haunted</option>
-    <option value="styles/skin-metal">Metal</option>
-    <option value="styles/skin-steel">Steel</option>
-    <option value="styles/skin-neon">Neon</option>
-    <option value="styles/skin-storytellerz">Storytellerz</option>
-  </select>
+  <!-- Play/Pause Button -->
+  <div id="playButton" style="width: 40px; height: 40px; background: url('https://cdn-icons-png.flaticon.com/512/4211/4211750.png') center/contain no-repeat; cursor: pointer;"></div>
 
-  <div id="playlistToggleButton" style="width: 32px; height: 32px; background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') center/contain no-repeat; cursor: pointer;"></div>
+  <!-- Static Skin List -->
+  <div id="skinList" style="display: flex; flex-direction: column; gap: 0.25rem; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: white; margin-top: 2rem;">
+    <div class="skin-option" data-skin="styles/styles" style="cursor:pointer;">Default</div>
+    <div class="skin-option" data-skin="styles/skin-retro" style="cursor:pointer;">Retro</div>
+    <div class="skin-option" data-skin="styles/skin-angel" style="cursor:pointer;">Angel</div>
+    <div class="skin-option" data-skin="styles/skin-haunted" style="cursor:pointer;">Haunted</div>
+    <div class="skin-option" data-skin="styles/skin-metal" style="cursor:pointer;">Metal</div>
+    <div class="skin-option" data-skin="styles/skin-steel" style="cursor:pointer;">Steel</div>
+    <div class="skin-option" data-skin="styles/skin-neon" style="cursor:pointer;">Neon</div>
+    <div class="skin-option" data-skin="styles/skin-storytellerz" style="cursor:pointer;">Storytellerz</div>
+  </div>
+
+  <!-- Playlist Button -->
+  <div id="playlistToggleButton" style="width: 32px; height: 32px; background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') center/contain no-repeat; cursor: pointer; margin-top: auto;"></div>
+</div>
+
+<!-- Playlist Panel aligned to Control Area -->
+<div class="playlist-panel" id="playlistPanel" style="position: fixed; bottom: 72px; right: 110px; width: 240px; max-height: 300px; overflow-y: auto; display: none; flex-direction: column; background: rgba(0,0,0,0.9); padding: 1rem; border: 2px solid #00ff00; z-index: 998;">
+  <div class="playlist-title" style="color: #00ff00; font-family: 'Orbitron'; font-weight: bold; margin-bottom: 0.5rem;">PLAYLIST</div>
+  <div id="playlistEntries"></div>
 </div>
 
 <!-- Floating Feathers / Skulls -->
@@ -51,8 +60,8 @@
   <div class="feather f5"></div>
 </div>
 
-<!-- UI with right-side space for control panel -->
-<div class="center-wrapper" style="padding-right: 110px;">
+<!-- Main UI shifted left to accommodate Control Area -->
+<div class="center-wrapper" style="padding-right: 120px;">
   <div class="container">
     <div class="left-section">
       <div class="lyrics-box" id="lyricsBox">
@@ -60,11 +69,6 @@
       </div>
 
       <div class="player-wrapper">
-        <div class="playlist-panel" id="playlistPanel" style="position: absolute; bottom: 80px; right: 100px;">
-          <div class="playlist-title">PLAYLIST</div>
-          <div id="playlistEntries"></div>
-        </div>
-
         <div class="custom-player">
           <div class="time" id="currentTime">0:00</div>
           <div class="progress" id="progressBar">
@@ -97,5 +101,43 @@
 
 <!-- Main Script -->
 <script src="scripts/script.js"></script>
+
+<!-- Skin Switcher Script -->
+<script>
+  document.querySelectorAll('.skin-option').forEach(option => {
+    option.addEventListener('click', () => {
+      const skin = option.getAttribute('data-skin');
+      document.getElementById('theme-link').href = skin + '.css';
+
+      // Apply class to <body>
+      const body = document.body;
+      const match = skin.match(/skin-(\w+)/);
+      const skinClass = match ? `theme-${match[0]}` : '';
+      body.className = skinClass;
+
+      const metalBgVideo = document.getElementById('metalBgVideo');
+      if (metalBgVideo) {
+        metalBgVideo.style.display = (skinClass === 'theme-skin-metal') ? 'block' : 'none';
+      }
+
+      if (skinClass === 'theme-skin-angel') {
+        startFeathers?.();
+      } else {
+        stopFeathers?.();
+      }
+    });
+  });
+
+  // Playlist Toggle
+  document.getElementById('playlistToggleButton').addEventListener('click', () => {
+    const panel = document.getElementById('playlistPanel');
+    if (panel.style.display === 'none') {
+      panel.style.display = 'flex';
+    } else {
+      panel.style.display = 'none';
+    }
+  });
+</script>
+
 </body>
 </html>
