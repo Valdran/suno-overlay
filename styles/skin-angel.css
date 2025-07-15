@@ -72,7 +72,6 @@ body.theme-skin-angel .metadata-card {
 
 body.theme-skin-angel .metadata-card .title {
   font-family: 'Medieval Sharp', cursive;
-  font-weight: 400; /* optional, default */
   font-size: clamp(1.2rem, 4vw, 2.6rem);
   color: white;
   text-shadow:
