@@ -10,27 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap&family=Carrois+Gothic+SC&display=swap&family=Rubik:wght@400;600&display=swap&family=Orbitron&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
-  <!-- Add this line BEFORE the theme link -->
   <link rel="stylesheet" href="styles/layout.css" />
-
-  <!-- Existing dynamic skin link -->
   <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
 
+<!-- Background Video -->
 <video id="metalBgVideo" autoplay muted loop playsinline
   style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1;">
   <source src="https://www.dropbox.com/scl/fi/92390f6gk9vs09i0q9133/172090-846482763.mp4?rlkey=tkuh9m9r8pi4osph44d1n882h&raw=1" type="video/mp4" />
 </video>
 
-<!-- Control Area on Right -->
-<div class="control-area" style="position: fixed; top: 0; right: 0; width: 110px; height: 100vh; background: rgba(0,0,0,0.85); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem 0; gap: 1rem; box-shadow: inset 0 0 8px #000;">
-  
-  <!-- Play/Pause Button -->
-  <div id="playButton" style="width: 40px; height: 40px; background: url('https://cdn-icons-png.flaticon.com/512/4211/4211750.png') center/contain no-repeat; cursor: pointer;"></div>
+<!-- RIGHT CONTROL AREA -->
+<div class="control-area" style="position: fixed; top: 0; right: 0; width: 120px; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; box-shadow: inset 0 0 8px #000;">
 
-  <!-- Static Skin List -->
-  <div id="skinList" style="display: flex; flex-direction: column; gap: 0.25rem; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: white; margin-top: 2rem;">
+  <!-- Play/Pause Button -->
+  <div id="playButton" style="width: 48px; height: 48px; background: url('https://cdn-icons-png.flaticon.com/512/4211/4211750.png') center/contain no-repeat; cursor: pointer;"></div>
+
+  <!-- Skins List -->
+  <div id="skinList" style="display: flex; flex-direction: column; align-items: center; font-family: Orbitron; font-size: 0.75rem; color: white; gap: 0.3rem;">
     <div class="skin-option" data-skin="styles/styles" style="cursor:pointer;">Default</div>
     <div class="skin-option" data-skin="styles/skin-retro" style="cursor:pointer;">Retro</div>
     <div class="skin-option" data-skin="styles/skin-angel" style="cursor:pointer;">Angel</div>
@@ -41,27 +39,21 @@
     <div class="skin-option" data-skin="styles/skin-storytellerz" style="cursor:pointer;">Storytellerz</div>
   </div>
 
-  <!-- Playlist Button -->
+  <!-- Playlist Toggle Button -->
   <div id="playlistToggleButton" style="width: 32px; height: 32px; background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') center/contain no-repeat; cursor: pointer; margin-top: auto;"></div>
 </div>
 
-<!-- Playlist Panel aligned to Control Area -->
-<div class="playlist-panel" id="playlistPanel" style="position: fixed; bottom: 72px; right: 110px; width: 240px; max-height: 300px; overflow-y: auto; display: none; flex-direction: column; background: rgba(0,0,0,0.9); padding: 1rem; border: 2px solid #00ff00; z-index: 998;">
-  <div class="playlist-title" style="color: #00ff00; font-family: 'Orbitron'; font-weight: bold; margin-bottom: 0.5rem;">PLAYLIST</div>
+<!-- PLAYLIST PANEL -->
+<div class="playlist-panel" id="playlistPanel" style="position: fixed; right: 120px; bottom: 80px; width: 120px; background: rgba(0,0,0,0.95); color: #00ff00; border: 2px solid #00ff00; display: none; flex-direction: column; padding: 0.5rem; font-family: Orbitron; z-index: 998; max-height: 300px; overflow-y: auto;">
+  <div class="playlist-title" style="text-align: center; font-weight: bold; margin-bottom: 0.5rem;">PLAYLIST</div>
   <div id="playlistEntries"></div>
 </div>
 
-<!-- Floating Feathers / Skulls -->
-<div class="feather-container">
-  <div class="feather f1"></div>
-  <div class="feather f2"></div>
-  <div class="feather f3"></div>
-  <div class="feather f4"></div>
-  <div class="feather f5"></div>
-</div>
+<!-- Feathers Container -->
+<div class="feather-container" style="pointer-events: none;"></div>
 
-<!-- Main UI shifted left to accommodate Control Area -->
-<div class="center-wrapper" style="padding-right: 120px;">
+<!-- MAIN UI WRAPPER, shifted left -->
+<div class="center-wrapper" style="padding-right: 130px;">
   <div class="container">
     <div class="left-section">
       <div class="lyrics-box" id="lyricsBox">
@@ -93,23 +85,23 @@
   </div>
 </div>
 
-<!-- Audio Element -->
+<!-- AUDIO ELEMENT -->
 <audio id="audioPlayer"></audio>
 
-<!-- CSV Parser -->
+<!-- CSV PARSER -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-<!-- Main Script -->
+<!-- YOUR MAIN SCRIPT -->
 <script src="scripts/script.js"></script>
 
-<!-- Skin Switcher Script -->
+<!-- INLINE SCRIPT: Skin + Playlist logic -->
 <script>
+  // Skin Switching
   document.querySelectorAll('.skin-option').forEach(option => {
     option.addEventListener('click', () => {
       const skin = option.getAttribute('data-skin');
       document.getElementById('theme-link').href = skin + '.css';
 
-      // Apply class to <body>
       const body = document.body;
       const match = skin.match(/skin-(\w+)/);
       const skinClass = match ? `theme-${match[0]}` : '';
@@ -128,14 +120,10 @@
     });
   });
 
-  // Playlist Toggle
+  // Playlist toggle
   document.getElementById('playlistToggleButton').addEventListener('click', () => {
     const panel = document.getElementById('playlistPanel');
-    if (panel.style.display === 'none') {
-      panel.style.display = 'flex';
-    } else {
-      panel.style.display = 'none';
-    }
+    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
   });
 </script>
 
