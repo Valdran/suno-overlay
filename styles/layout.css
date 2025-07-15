@@ -227,6 +227,10 @@ html, body {
   background: #111;
 }
 
+.playlist-panel, .playlist-entry {
+  font-family: 'Roboto Slab', serif;
+}
+
 /* Metadata container */
 .metadata {
   display: flex;
