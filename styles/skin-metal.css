@@ -1,6 +1,6 @@
 /* ==== METAL SKIN CSS — Enhanced Metal Vibes ==== */
 
-/* ==== Fonts (same as before) ==== */
+/* ==== Fonts ==== */
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
@@ -8,19 +8,9 @@
 /* ==== Body and Background ==== */
 body.theme-skin-metal {
   background: black;
-  font-family: 'Orbitron', sans-serif;
   color: #eee;
   overflow: hidden;
   position: relative;
-}
-
-body.theme-skin-metal .playlist-panel,
-body.theme-skin-metal .playlist-entry {
-  font-family: 'Roboto Slab', serif !important; /* or your default font */
-  font-size: 0.95rem !important; /* adjust to match layout.css size */
-  line-height: 1.4;
-  text-shadow: 1px 1px 2px black;
-  color: white;
 }
 
 /* ==== Video Background ==== */
@@ -94,6 +84,7 @@ body.theme-skin-metal .lyrics-box {
   color: #f44336;
   text-shadow: 0 0 6px #b71c1c;
   user-select: none;
+  position: relative;
 }
 
 body.theme-skin-metal .lyrics-box::before,
@@ -177,6 +168,7 @@ body.theme-skin-metal .title {
   text-shadow: 0 0 8px #ff3300, 0 0 20px #ff3300, 0 0 30px #ff5733;
   animation: flickerGlow 3s infinite;
   margin-bottom: 0.4rem;
+  font-family: 'Orbitron', sans-serif;
 }
 
 body.theme-skin-metal .artist {
@@ -210,10 +202,6 @@ body.theme-skin-metal .cover::before {
   background-image: url('https://www.dropbox.com/scl/fi/flw5g74j4h1ez6opglxma/ChatGPT-Image-Jul-14-2025-12_10_26-AM.png?rlkey=gjvzgu7ht4mkx66he2j6uscv9&raw=1');
   background-size: cover;
   background-repeat: no-repeat;
-
-  .playlist-panel, .playlist-entry {
-  font-family: 'Roboto Slab', serif;
-}
   background-position: center;
   z-index: 20;
 }
