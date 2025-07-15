@@ -15,87 +15,103 @@
 <link id="theme-link" rel="stylesheet" href="styles/styles.css" />
 
 <style>
-  #controlArea {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 160px;
-    height: 100vh;
-    background: rgba(0,0,0,0.9);
-    border-left: 2px solid #00ff00;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 0;
-    box-sizing: border-box;
-    z-index: 1100;
-    user-select: none;
-  }
-  .center-wrapper {
-    margin-right: 160px;
-  }
-  #controlPlayButton {
-    width: 48px;
-    height: 48px;
-    background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
-    background-size: contain;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    transition: background-image 0.3s ease;
-  }
-  #controlPlayButton.playing {
-    background-image: url('https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png');
-  }
-  #playlistPanel {
-    width: 100%;
-    max-height: 50vh;
-    overflow-y: auto;
-    background: #111;
-    border: 1px solid #00ff00;
-    display: flex !important;
-    flex-direction: column;
-    box-sizing: border-box;
-    margin-bottom: 1rem;
-  }
-  .playlist-title {
-    color: #00ff00;
-    font-weight: 700;
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #00ff00;
-    font-family: 'Orbitron', sans-serif;
-  }
-  .playlist-entry {
-    padding: 0.3rem 1rem;
-    color: #ccc;
-    cursor: pointer;
-    border-bottom: 1px solid #002200;
-    user-select: none;
-  }
-  .playlist-entry:hover {
-    background: #003300;
-    color: #00ff00;
-  }
-  #skinList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    color: #00ff00;
-    font-family: 'Rubik', sans-serif;
-    font-weight: 600;
-    user-select: none;
-  }
-  #skinList li {
-    padding: 0.4rem 1rem;
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: border-color 0.3s ease;
-  }
-  #skinList li:hover,
-  #skinList li.active {
-    border-left-color: #00ff00;
-    background: #002200;
-  }
+ #controlArea {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 160px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  border-left: 2px solid #00ff00;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center */
+  align-items: center;
+  padding: 1rem 0;
+  box-sizing: border-box;
+  z-index: 1100;
+  user-select: none;
+}
+
+#controlPlayButton {
+  width: 48px;
+  height: 48px;
+  background: url('https://img.icons8.com/ios-filled/50/00ff00/play--v1.png') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+  transition: background-image 0.3s ease;
+  z-index: 2;
+}
+
+#controlPlayButton.playing {
+  background-image: url('https://img.icons8.com/ios-filled/50/00ff00/pause--v1.png');
+}
+
+#playlistPanel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: calc(50% - 60px); /* stay above the play button */
+  overflow-y: auto;
+  background: #111;
+  border-bottom: 1px solid #00ff00;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.playlist-title {
+  color: #00ff00;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  font-family: 'Orbitron', sans-serif;
+  background: #000;
+  border-bottom: 1px solid #004400;
+}
+
+.playlist-entry {
+  padding: 0.3rem 1rem;
+  color: #ccc;
+  cursor: pointer;
+  border-bottom: 1px solid #002200;
+  user-select: none;
+}
+
+.playlist-entry:hover {
+  background: #003300;
+  color: #00ff00;
+}
+
+/* Skin list anchored at the bottom */
+#skinList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
+  color: #00ff00;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #000;
+  border-top: 1px solid #00ff00;
+}
+
+#skinList li {
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+#skinList li:hover,
+#skinList li.active {
+  border-left-color: #00ff00;
+  background: #002200;
+}
+
   #skinSelect {
     display: none !important;
   }
