@@ -290,6 +290,7 @@ html, body {
   height: 90px;
   position: relative;
   text-align: center;
+  overflow: hidden;
 }
 
 .metadata-card .title,
@@ -303,6 +304,9 @@ html, body {
   white-space: normal;
   overflow-wrap: break-word;
   hyphens: auto;
+  max-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .metadata-card .title {
