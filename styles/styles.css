@@ -1,39 +1,77 @@
-/* Title and artist card style */
-.metadata-card {
-  background: rgba(0, 0, 0, 0.75);
-  border: 2px solid white;
-  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.6), -2px -2px 8px rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 1rem 1.5rem; /* add some padding */
-  max-width: 100%;
-  user-select: text;
-  /* Removed any forced overflow or ellipsis here */
+/* DEFAULT MODERN SKIN — Visuals only */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+#metalBgVideo {
+  display: none;
 }
 
-/* Title and artist base styles */
-.title, .artist {
-  font-family: 'Bebas Neue', cursive;
+body.theme-skin-default {
+  background: transparent;
+  font-family: 'Bebas Neue', sans-serif;
   color: white;
-  text-shadow: 1px 1px 3px black;
-  -webkit-text-stroke: 0.5px black;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Clean glow particles (optional visual element) */
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.2;
+  animation: floatParticles 10s linear infinite;
+}
+
+@keyframes floatParticles {
+  0% { transform: translateY(0); opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* Metadata card styling */
+body.theme-skin-default .metadata-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.05);
+}
+
+/* Title text */
+body.theme-skin-default .metadata-card .title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2.8rem);
+  color: white;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
   text-align: center;
-  word-break: break-word;
-  /* Removed overflow, display: -webkit-box, -webkit-box-orient, and ellipsis */
-  max-width: 100%;
-  padding: 0 0.25rem;
-  /* Allow normal wrapping */
   white-space: normal;
+  word-break: break-word;
 }
 
-/* Title specific */
-.title {
-  font-size: 2.6rem;
-  line-height: 1.1;
-  margin-bottom: 0.3rem;
-}
-
-/* Artist specific */
-.artist {
-  font-size: 1.4rem;
-  line-height: 1.2;
+/* Artist text */
+body.theme-skin-default .metadata-card .artist {
+  font-family: 'Roboto', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 400;
+  color: #cccccc;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
 }
