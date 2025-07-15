@@ -9,6 +9,13 @@ html, body {
   height: 100%;
 }
 
+/* Box model */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 /* Wrapper to center UI safely */
 .center-wrapper {
   max-width: 100%;
@@ -20,6 +27,7 @@ html, body {
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  margin-right: 120px; /* Push UI left for Control Area */
 }
 
 /* Main layout container */
@@ -43,13 +51,6 @@ html, body {
 .container > * {
   flex-shrink: 1;
   min-width: 0;
-}
-
-/* Box model */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 /* Left section */
@@ -173,20 +174,6 @@ html, body {
   z-index: 2;
 }
 
-/* Buttons */
-.play-button,
-.pause-button,
-.playlist-button,
-.canvas-button {
-  width: 32px;
-  height: 32px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: drop-shadow(0 0 2px black);
-  cursor: pointer;
-}
-
 /* Time and bar */
 .time {
   font-size: 0.8rem;
@@ -215,7 +202,9 @@ html, body {
 /* Playlist */
 .playlist-panel {
   position: absolute;
-  bottom: 100%;
+  top: -210px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   background: rgba(0, 0, 0, 0.9);
   border: 2px solid #111;
@@ -319,4 +308,46 @@ html, body {
   overflow: visible;
   height: 2.4em; /* 2 lines max */
   transform-origin: top center;
+}
+
+/* ========== CONTROL AREA ========== */
+
+.control-area {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 120px;
+  height: 100vh;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.control-area .play-button,
+.control-area .pause-button,
+.control-area .playlist-button,
+.control-area .canvas-button {
+  width: 48px;
+  height: 48px;
+  margin: 0.5rem 0;
+  background-color: white;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  border: 2px solid black;
+  background-blend-mode: multiply;
+  cursor: pointer;
+}
+
+/* Prevent other UI elements from entering control zone */
+.feather {
+  pointer-events: none;
+  z-index: 1;
 }
