@@ -23,18 +23,24 @@ body.theme-skin-metal .playlist-entry {
   color: white;
 }
 
-/* ==== Video Background ==== */
-#metalBgVideo {
+/* ==== Video Background (fixed for control area overlap) ==== */
+#videoContainer {
   position: fixed;
   top: 0;
   left: 0;
-  right: 160px;   /* constrain video from overlapping control area */
+  width: calc(100vw - 160px); /* leave space for control area */
   height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  background: black;
+}
+
+#metalBgVideo {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   opacity: 0.3;
-  z-index: -1;
   pointer-events: none;
-  background: black;
 }
 
 /* ==== Falling Embers ==== */
