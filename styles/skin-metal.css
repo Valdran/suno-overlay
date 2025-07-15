@@ -28,9 +28,9 @@ body.theme-skin-metal .playlist-entry {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: calc(100vw - 160px);;
   height: 100vh;
-  object-fit: contain;
+  object-fit: cover;
   opacity: 0.3;
   z-index: -1;
   pointer-events: none;
