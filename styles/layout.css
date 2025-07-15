@@ -287,7 +287,8 @@ html, body {
   align-items: center;
   justify-content: center;
   width: 300px;
-  height: 90px;
+  height: auto;
+  min-height: 90px;
   position: relative;
   text-align: center;
   overflow: hidden;
@@ -298,8 +299,9 @@ html, body {
   display: block;
   width: 100%;
   padding: 0 0.5rem;
+  transform-origin: top center;
   text-align: center;
-  line-height: 1.1;
+  line-height: 1.2;
   word-wrap: break-word;
   white-space: normal;
   overflow-wrap: break-word;
