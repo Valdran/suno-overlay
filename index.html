@@ -17,18 +17,12 @@
   <link id="theme-link" rel="stylesheet" href="styles/styles.css">
 
   <style>
-    /* New styles for Control Area and layout adjustments */
-
-    body {
-      overflow-x: hidden; /* prevent horizontal scroll */
-    }
-
     /* Control Area on right */
     #controlArea {
       position: fixed;
       top: 0;
       right: 0;
-      width: 140px; /* width of control area */
+      width: 140px;
       height: 100vh;
       background: rgba(0, 0, 0, 0.85);
       border-left: 2px solid #00ff00;
@@ -41,41 +35,39 @@
       user-select: none;
     }
 
-    /* Push existing UI left so it does not overlap control area */
+    /* Push main UI left */
     .center-wrapper {
-      margin-right: 140px; /* same as controlArea width */
+      margin-right: 140px;
     }
 
-    /* Play/Pause button in control area - vertically centered */
+    /* Play/Pause button in control area */
     #controlPlayButton {
       width: 48px;
       height: 48px;
-      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27223.png'); /* white play icon with black outline */
+      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27223.png'); /* play icon */
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
       cursor: pointer;
-      margin: auto 0; /* vertical center */
+      margin: auto 0;
       transition: background-image 0.3s ease;
     }
     #controlPlayButton.paused {
-      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27225.png'); /* white pause icon with black outline */
+      background-image: url('https://cdn-icons-png.flaticon.com/512/27/27225.png'); /* pause icon */
     }
 
-    /* Playlist toggle button moved inside control area */
+    /* Playlist toggle button inside control area */
     #playlistToggleButton {
-      position: static !important; /* override fixed positioning */
       width: 32px !important;
       height: 32px !important;
       margin-bottom: 1rem;
       background: url('https://cdn-icons-png.flaticon.com/512/1828/1828859.png') no-repeat center;
       background-size: contain;
-      filter: none !important; /* remove old glow */
       cursor: pointer;
       user-select: none;
     }
 
-    /* Playlist panel above playlist button */
+    /* Playlist panel inside control area */
     #playlistPanel {
       position: relative;
       width: 100%;
@@ -123,7 +115,7 @@
       color: #00ff00;
     }
 
-    /* Vertical skin list inside control area */
+    /* Vertical skin list */
     #skinList {
       list-style: none;
       padding: 0;
@@ -146,19 +138,23 @@
       background: #002200;
     }
 
-    /* Prevent feathers from overlapping control area */
+    /* Hide original skinSelect but keep it in DOM */
+    #skinSelect {
+      display: none !important;
+    }
+
+    /* Prevent feathers overlapping control area */
     .feather-container {
-      pointer-events: none; /* feathers non-interactive */
+      pointer-events: none;
       overflow: visible;
       position: fixed;
       top: 0;
       left: 0;
-      right: 140px; /* restrict feathers so they don't go under control area */
+      right: 140px;
       height: 100vh;
       z-index: 50;
     }
   </style>
-
 </head>
 <body>
 
@@ -167,13 +163,37 @@
   <source src="https://www.dropbox.com/scl/fi/92390f6gk9vs09i0q9133/172090-846482763.mp4?rlkey=tkuh9m9r8pi4osph44d1n882h&raw=1" type="video/mp4" />
 </video>
 
-<!-- Control Area on right -->
+<!-- Skin Switcher UI -->
+<div id="skinControl" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000; display:none;">
+  <!-- Hidden original easel and select removed from UI -->
+  <select id="skinSelect">
+    <option value="styles/styles" selected>Default</option>
+    <option value="styles/skin-retro">Retro</option>
+    <option value="styles/skin-angel">Angel</option>
+    <option value="styles/skin-haunted">Haunted</option>
+    <option value="styles/skin-metal">Metal</option>
+    <option value="styles/skin-steel">Steel</option>
+    <option value="styles/skin-neon">Neon</option>
+    <option value="styles/skin-storytellerz">Storytellerz</option>
+  </select>
+</div>
+
+<!-- Floating Feathers / Skulls -->
+<div class="feather-container">
+  <div class="feather f1"></div>
+  <div class="feather f2"></div>
+  <div class="feather f3"></div>
+  <div class="feather f4"></div>
+  <div class="feather f5"></div>
+</div>
+
+<!-- Control Area -->
 <div id="controlArea" aria-label="Control Area">
 
-  <!-- Play/Pause button vertically centered -->
+  <!-- Play/Pause button -->
   <div id="controlPlayButton" title="Play / Pause"></div>
 
-  <!-- Playlist panel above playlist button -->
+  <!-- Playlist panel -->
   <div id="playlistPanel" aria-label="Playlist Panel">
     <div class="playlist-title">PLAYLIST</div>
     <div id="playlistEntries"></div>
@@ -193,16 +213,6 @@
     <li data-skin="styles/skin-neon">Neon</li>
     <li data-skin="styles/skin-storytellerz">Storytellerz</li>
   </ul>
-
-</div>
-
-<!-- Floating Feathers / Skulls -->
-<div class="feather-container">
-  <div class="feather f1"></div>
-  <div class="feather f2"></div>
-  <div class="feather f3"></div>
-  <div class="feather f4"></div>
-  <div class="feather f5"></div>
 </div>
 
 <!-- Wrapper to center the UI and prevent shifting -->
@@ -214,14 +224,10 @@
       </div>
 
       <div class="player-wrapper">
-        <!-- Playlist panel is now inside control area so remove here or keep hidden -->
-        <div class="playlist-panel" id="playlistPanel-left" style="display:none;">
-          <div class="playlist-title">PLAYLIST</div>
-          <div id="playlistEntries-left"></div>
-        </div>
+        <!-- Original play button hidden but present for scripts -->
+        <div class="play-button" id="playButton" style="display:none;"></div>
 
         <div class="custom-player">
-          <div class="play-button" id="playButton" style="display:none;"></div> <!-- Hide old play button -->
           <div class="time" id="currentTime">0:00</div>
           <div class="progress" id="progressBar">
             <div class="progress-bar" id="progressFill"></div>
@@ -255,79 +261,25 @@
 <script src="scripts/script.js"></script>
 
 <script>
-  // --- Sync controlPlayButton with audio play/pause ---
   const audio = document.getElementById('audioPlayer');
   const controlPlayBtn = document.getElementById('controlPlayButton');
   const playlistToggleButton = document.getElementById('playlistToggleButton');
   const playlistPanel = document.getElementById('playlistPanel');
   const skinList = document.getElementById('skinList');
+  const skinSelect = document.getElementById('skinSelect');
   const themeLink = document.getElementById('theme-link');
   const body = document.body;
   const metalBgVideo = document.getElementById('metalBgVideo');
 
-  // Play/pause toggle from control area button
+  // Forward controlPlayButton clicks to original hidden playButton
   controlPlayBtn.addEventListener('click', () => {
     if (audio.paused) audio.play();
     else audio.pause();
   });
 
-  // Update icon on play/pause
+  // Sync icon state for controlPlayButton with audio play/pause
   audio.onplay = () => {
     controlPlayBtn.classList.add('paused');
   };
   audio.onpause = () => {
-    controlPlayBtn.classList.remove('paused');
-  };
-
-  // Playlist toggle logic
-  playlistToggleButton.addEventListener('click', () => {
-    if (playlistPanel.classList.contains('visible')) {
-      playlistPanel.classList.remove('visible');
-      playlistPanel.classList.add('fadeout');
-      setTimeout(() => (playlistPanel.style.display = 'none'), 300);
-    } else {
-      playlistPanel.style.display = 'flex';
-      playlistPanel.classList.remove('fadeout');
-      playlistPanel.classList.add('visible');
-    }
-  });
-
-  // Skin selection logic
-  skinList.querySelectorAll('li').forEach((li) => {
-    li.addEventListener('click', () => {
-      // Remove active from all
-      skinList.querySelectorAll('li').forEach(el => el.classList.remove('active'));
-      li.classList.add('active');
-
-      const skinPath = li.dataset.skin;
-      themeLink.href = skinPath + '.css';
-
-      // Update body class to toggle skins
-      const match = skinPath.match(/skin-(\w+)/);
-      const skinClass = match ? `theme-${match[0]}` : '';
-      body.className = skinClass;
-
-      // Fire background video toggle for metal skin
-      if (metalBgVideo) {
-        if (skinClass === 'theme-skin-metal') {
-          metalBgVideo.style.display = 'block';
-        } else {
-          metalBgVideo.style.display = 'none';
-        }
-      }
-    });
-  });
-
-  // Initialize skin list active item based on current href
-  (() => {
-    const currentSkin = themeLink.href.split('/').pop().replace('.css', '');
-    const matchingLi = Array.from(skinList.children).find(li => li.dataset.skin.endsWith(currentSkin));
-    if (matchingLi) {
-      skinList.querySelectorAll('li').forEach(el => el.classList.remove('active'));
-      matchingLi.classList.add('active');
-    }
-  })();
-</script>
-
-</body>
-</html>
+    controlPlayBtn.classList.remove
