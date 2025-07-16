@@ -285,6 +285,7 @@ html, body {
 .metadata-card .title {
   font-size: 1.4rem;
   font-weight: bold;
+  font-family: 'Oswald', sans-serif;
   display: block;
   text-align: center;
   line-height: 1.2;
@@ -299,6 +300,7 @@ html, body {
 /* Artist name */
 .metadata-card .artist {
   font-size: 1rem;
+  font-family: 'Oswald', sans-serif;
   display: block;
   text-align: center;
   line-height: 1.2;
