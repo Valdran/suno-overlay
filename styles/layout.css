@@ -288,6 +288,7 @@ html, body {
   display: block;
   text-align: center;
   line-height: 1.2;
+  color: white;
   white-space: normal;
   word-break: break-word;
   overflow: visible;
@@ -301,6 +302,7 @@ html, body {
   display: block;
   text-align: center;
   line-height: 1.2;
+  color: white;
   white-space: normal;
   word-break: break-word;
   overflow: visible;
